@@ -806,14 +806,28 @@ EL:SECTION  (Contact — 2 columns: details/map | static dummy form)
       <h2 class="font-display text-4xl">Let's Grow Together</h2>
       <!-- EL:WIDGET:Icon List -->
       <div class="mt-8 space-y-5 text-sm hc-contact-list">
-        <p class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>Office Address — [Street, City], Sri Lanka</p>
-        <p class="flex items-start gap-3"><i data-lucide="phone" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>+94 XX XXX XXXX</p>
-        <p class="flex items-start gap-3"><i data-lucide="mail" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>info@heritagecrops.lk</p>
-        <p class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>Mon – Fri, 9:00 AM – 5:30 PM</p>
+        <!-- Opens Google Maps (app on mobile) -->
+        <p class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=196%2F2%2F2+Dayananda+Building+High+Level+Road+Nugegoda+Sri+Lanka" target="_blank" rel="noopener noreferrer" aria-label="Open our location in Google Maps">196/2/2, Dayananda Building, High Level Road,<br>Nugegoda</a>
+        </p>
+        <!-- tel: links start a call on phones -->
+        <p class="flex items-start gap-3"><i data-lucide="phone" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>
+          <span><a href="tel:+94112809340" aria-label="Call +94 11 280 9340">(+94) 11 280 9340</a> | <a href="tel:+94744121900" aria-label="Call +94 74 412 1900">(+94) 74 412 1900</a></span>
+        </p>
+        <!-- mailto: opens the visitor's email app -->
+        <p class="flex items-start gap-3"><i data-lucide="mail" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>
+          <a href="mailto:info@heritagecrops.lk" aria-label="Email info@heritagecrops.lk">info@heritagecrops.lk</a>
+        </p>
       </div>
       <!-- EL:WIDGET:Google Maps -->
-      <div class="mt-8 rounded-2xl overflow-hidden h-56 hc-map-placeholder flex items-center justify-center text-sm border" role="img" aria-label="Map placeholder — replace with a live Google Maps embed of the Heritage Crops office">
-        Google Map Embed
+      <div class="mt-8 rounded-2xl overflow-hidden h-72 border hc-map-frame">
+        <iframe
+          title="Heritage Crops office location on Google Maps"
+          src="https://maps.google.com/maps?q=196%2F2%2F2%20Dayananda%20Building%2C%20High%20Level%20Road%2C%20Nugegoda%2C%20Sri%20Lanka&amp;z=16&amp;output=embed"
+          class="w-full h-full border-0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
       </div>
     </div>
 
