@@ -1,0 +1,347 @@
+/* ==================================================================
+   HERITAGE CROPS — CUSTOM.CSS
+   Everything in this file is styling Tailwind's utility classes can't
+   express: brand tokens, decorative shapes, gradients, hover/animation
+   states, and the few structural tweaks (inline nav, timeline connector,
+   journey strip) needed to fake native-Elementor-widget layouts in this
+   HTML prototype.
+
+   HANDOFF: once rebuilt with native Elementor widgets, paste this whole
+   file into WordPress → Appearance → Customize → Additional CSS. Class
+   names below are intentionally descriptive/unique (hc- prefix) so you
+   can re-apply them as "CSS Classes" in each widget's Advanced tab.
+   ================================================================== */
+
+:root{
+  --hc-green:#006A50;
+  --hc-forest:#063B2A;
+  --hc-darkgreen:#0B3D2E;
+  --hc-gold:#C8A951;
+  --hc-cream:#F7F5ED;
+  --hc-offwhite:#FCFCF8;
+  --hc-charcoal:#1D2722;
+  --hc-ease:cubic-bezier(.16,.8,.24,1);
+}
+
+html{ scroll-behavior:smooth; }
+.font-display{ font-family:'Fraunces', serif; font-feature-settings:'ss01' 1; }
+
+/* ---------------------------------------------------------------
+   ACCESSIBILITY: skip link + focus states
+----------------------------------------------------------------*/
+.hc-skip-link{
+  position:absolute; left:-999px; top:auto; background:var(--hc-forest); color:#fff;
+  padding:12px 20px; border-radius:6px; z-index:9999; font-size:14px;
+}
+.hc-skip-link:focus{ left:16px; top:16px; }
+
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
+  outline:2px solid var(--hc-gold); outline-offset:3px; border-radius:2px;
+}
+
+/* ---------------------------------------------------------------
+   HEADER / NAV
+----------------------------------------------------------------*/
+.hc-nav-header{
+  background:transparent;
+  transition: background-color .5s var(--hc-ease), box-shadow .5s var(--hc-ease);
+}
+.hc-nav-header.is-scrolled{
+  background:rgba(252,252,248,.94);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 30px -12px rgba(6,59,42,.15);
+}
+
+.hc-logo-mark{ border:1px solid rgba(200,169,81,.7); }
+.hc-logo-letter{ color:var(--hc-gold); }
+.hc-logo-text, .hc-logo-subtext{ color:#fff; transition:color .4s var(--hc-ease); }
+.hc-logo-subtext{ color:rgba(200,169,81,.9); }
+.hc-nav-header.is-scrolled .hc-logo-text{ color:var(--hc-charcoal); }
+
+/* Nav links laid out inline (native-compatible substitute for Nav Menu widget) */
+.hc-nav-links{ list-style:none; }
+.hc-nav-link{
+  color:#fff; position:relative; transition:color .4s var(--hc-ease);
+}
+.hc-nav-header.is-scrolled .hc-nav-link{ color:var(--hc-charcoal); }
+.hc-nav-link::after{
+  content:''; position:absolute; left:0; bottom:-6px; width:0; height:1px;
+  background:var(--hc-gold); transition:width .35s var(--hc-ease);
+}
+.hc-nav-link:hover::after, .hc-nav-link.active::after{ width:100%; }
+
+.hc-burger-line{ background:#fff; transition:background-color .4s var(--hc-ease); }
+.hc-nav-header.is-scrolled .hc-burger-line{ background:var(--hc-charcoal); }
+
+.hc-mobile-menu{
+  background:var(--hc-forest); opacity:0; visibility:hidden;
+  transition: opacity .45s var(--hc-ease), visibility .45s var(--hc-ease);
+}
+.hc-mobile-menu.is-open{ opacity:1; visibility:visible; }
+.hc-mobile-link{
+  color:#fff; opacity:0; transform:translateY(14px);
+  transition: opacity .5s var(--hc-ease), transform .5s var(--hc-ease);
+}
+.hc-mobile-menu.is-open .hc-mobile-link{ opacity:1; transform:translateY(0); }
+
+/* ---------------------------------------------------------------
+   BUTTONS / LINKS
+----------------------------------------------------------------*/
+.hc-btn-primary{
+  background:var(--hc-green); color:var(--hc-offwhite);
+  transition: transform .4s var(--hc-ease), box-shadow .4s var(--hc-ease);
+}
+.hc-btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(0,106,80,.55); color:var(--hc-offwhite); }
+.hc-btn-arrow{ display:inline-block; transition: transform .35s var(--hc-ease); }
+.hc-btn-primary:hover .hc-btn-arrow{ transform:translateX(5px); }
+
+.hc-btn-ghost-dark{
+  color:#fff; border:1px solid rgba(255,255,255,.4);
+  transition: background-color .35s var(--hc-ease), border-color .35s var(--hc-ease);
+}
+.hc-btn-ghost-dark:hover{ background:rgba(255,255,255,.1); }
+
+.hc-text-link{ color:var(--hc-green); border-bottom:1px solid rgba(0,106,80,.3); transition:border-color .3s var(--hc-ease); }
+.hc-text-link:hover{ border-color:var(--hc-green); }
+.hc-text-link-gold{ color:var(--hc-gold); border-bottom:1px solid rgba(200,169,81,.4); transition:border-color .3s var(--hc-ease); }
+.hc-text-link-gold:hover{ border-color:var(--hc-gold); }
+.hc-text-link:hover .hc-btn-arrow, .hc-text-link-gold:hover .hc-btn-arrow{ transform:translateX(5px); }
+
+/* ---------------------------------------------------------------
+   EYEBROW LABEL
+----------------------------------------------------------------*/
+.hc-eyebrow{
+  letter-spacing:.22em; text-transform:uppercase; font-weight:600;
+  font-size:.72rem; color:var(--hc-green);
+}
+.hc-eyebrow.hc-eyebrow-on-dark{ color:var(--hc-gold); }
+.hc-eyebrow::before{
+  content:''; display:inline-block; width:22px; height:1px;
+  background:var(--hc-gold); margin-right:10px; vertical-align:middle;
+}
+
+/* ---------------------------------------------------------------
+   HERO
+----------------------------------------------------------------*/
+.hc-hero-section{
+  background-image: linear-gradient(180deg, rgba(6,59,42,.55) 0%, rgba(6,59,42,.35) 40%, rgba(6,59,42,.78) 100%),
+    url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=2000&q=80');
+  background-size:cover; background-position:center;
+  animation: hcHeroZoom 24s ease-in-out infinite alternate;
+}
+@keyframes hcHeroZoom{ from{ transform:scale(1);} to{ transform:scale(1.07);} }
+
+.hc-hero-heading{ color:#fff; }
+.hc-hero-heading-accent{ color:var(--hc-gold); }
+.hc-hero-copy{ color:rgba(255,255,255,.85); }
+
+.hc-float-panel{
+  backdrop-filter: blur(16px);
+  background:rgba(252,252,248,.12);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;
+}
+.hc-float-panel-title{ color:var(--hc-gold); }
+.hc-icon-gold{ color:var(--hc-gold); }
+.hc-icon-green{ color:var(--hc-green); }
+
+.hc-scroll-cue{ color:rgba(255,255,255,.7); }
+.hc-scroll-line{ width:1px; height:32px; background:rgba(255,255,255,.4); display:block; }
+
+/* ---------------------------------------------------------------
+   STATS SECTION
+----------------------------------------------------------------*/
+.hc-stats-section{ background:var(--hc-forest); }
+.hc-stat-number{ color:var(--hc-gold); font-variant-numeric:tabular-nums; }
+.hc-stat-label{ font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.6); }
+.hc-stats-note{ color:rgba(255,255,255,.35); }
+
+/* ---------------------------------------------------------------
+   ABOUT
+----------------------------------------------------------------*/
+.hc-about-section{ background:var(--hc-offwhite); }
+.hc-img-zoom{ overflow:hidden; }
+.hc-img-zoom img{ transition: transform .8s var(--hc-ease); }
+.hc-img-zoom:hover img{ transform:scale(1.06); }
+
+.hc-floating-badge{
+  background:var(--hc-offwhite); box-shadow:0 20px 40px -18px rgba(6,59,42,.35);
+  border:1px solid rgba(0,106,80,.1); color:var(--hc-green);
+}
+.hc-body-copy{ color:rgba(29,39,34,.7); }
+.hc-body-copy-on-dark{ color:rgba(255,255,255,.7); }
+.hc-check-list li{ color:var(--hc-charcoal); }
+
+/* ---------------------------------------------------------------
+   CARD LIFT (shared hover treatment)
+----------------------------------------------------------------*/
+.hc-lift-card{ transition: transform .5s var(--hc-ease), box-shadow .5s var(--hc-ease); }
+.hc-lift-card:hover{ transform:translateY(-6px); box-shadow: 0 26px 50px -22px rgba(6,59,42,.28); }
+
+/* ---------------------------------------------------------------
+   WHAT WE DO — Icon Box cards
+----------------------------------------------------------------*/
+.hc-whatwedo-section{ background:var(--hc-cream); }
+.hc-icon-box{ background:var(--hc-offwhite); border:1px solid rgba(29,39,34,.06); }
+.hc-icon-box-circle{ background:rgba(0,106,80,.1); color:var(--hc-green); transition: background-color .35s var(--hc-ease), color .35s var(--hc-ease); }
+.hc-icon-box:hover .hc-icon-box-circle{ background:var(--hc-green); color:#fff; }
+.hc-card-copy{ color:rgba(29,39,34,.6); }
+
+/* ---------------------------------------------------------------
+   INVESTMENT PLANS
+----------------------------------------------------------------*/
+.hc-investment-section{ background:var(--hc-forest); color:#fff; }
+.hc-heading-on-dark{ color:#fff; }
+.hc-plan-card{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); }
+.hc-plan-card-featured{ background:rgba(255,255,255,.06); border:1px solid rgba(200,169,81,.3); }
+.hc-plan-list{ color:rgba(255,255,255,.7); }
+.hc-plan-value{ color:#fff; }
+.hc-investment-disclaimer{ color:rgba(255,255,255,.35); }
+
+/* ---------------------------------------------------------------
+   HOW IT WORKS — vertical timeline
+----------------------------------------------------------------*/
+.hc-howitworks-section{ background:var(--hc-offwhite); }
+.hc-timeline-line{ background:linear-gradient(180deg, var(--hc-gold), rgba(200,169,81,.15)); }
+.hc-timeline-dot{ background:var(--hc-green); color:#fff; box-shadow:0 0 0 6px rgba(0,106,80,.08); }
+
+/* ---------------------------------------------------------------
+   SIGNATURE JOURNEY STRIP (static, native-friendly)
+----------------------------------------------------------------*/
+.hc-journey-section{
+  background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=80');
+  background-size:cover; background-position:center;
+}
+.hc-journey-overlay{ background:rgba(6,59,42,.78); }
+.hc-journey-list{ list-style:none; padding:0; margin:0; }
+.hc-journey-step{ color:rgba(255,255,255,.45); transition:color .3s var(--hc-ease); }
+.hc-journey-step-current, .hc-journey-step:hover{ color:var(--hc-gold); }
+.hc-journey-arrow{ color:rgba(255,255,255,.25); }
+
+/* ---------------------------------------------------------------
+   PLANTATIONS
+----------------------------------------------------------------*/
+.hc-plantations-section{ background:var(--hc-cream); }
+.hc-plantation-card{ background:var(--hc-offwhite); border:1px solid rgba(29,39,34,.06); }
+.hc-status-badge{ color:#fff; }
+.hc-status-active{ background:var(--hc-green); }
+.hc-status-developing{ background:var(--hc-gold); color:var(--hc-forest); }
+.hc-status-harvesting{ background:#2563eb; }
+
+/* ---------------------------------------------------------------
+   CROPS
+----------------------------------------------------------------*/
+.hc-crops-section{ background:var(--hc-offwhite); }
+.hc-crop-card-overlay{ background:linear-gradient(0deg, rgba(6,59,42,.92) 0%, rgba(6,59,42,.08) 55%, transparent 100%); }
+.hc-crop-card-text{ color:#fff; }
+.hc-note-text{ color:rgba(29,39,34,.4); }
+
+/* ---------------------------------------------------------------
+   EXPORTS
+----------------------------------------------------------------*/
+.hc-exports-section{ background:var(--hc-forest); color:#fff; }
+.hc-process-list{ list-style:none; padding:0; margin-top:2.25rem; }
+.hc-process-step{ border:1px solid rgba(255,255,255,.15); color:#fff; }
+.hc-process-step-final{ background:var(--hc-gold); color:var(--hc-forest); border-color:var(--hc-gold); }
+.hc-process-arrow{ color:var(--hc-gold); }
+
+/* ---------------------------------------------------------------
+   SUSTAINABILITY
+----------------------------------------------------------------*/
+.hc-sustainability-section{ background:var(--hc-cream); }
+.hc-sustain-card{ background:var(--hc-offwhite); border:1px solid rgba(29,39,34,.06); }
+.hc-sustain-label{ font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; color:rgba(29,39,34,.5); }
+
+/* ---------------------------------------------------------------
+   TECHNOLOGY / DASHBOARD MOCK
+----------------------------------------------------------------*/
+.hc-technology-section{ background:var(--hc-offwhite); }
+.hc-dashboard-frame{ background:var(--hc-forest); box-shadow:0 30px 60px -30px rgba(6,59,42,.5); }
+.hc-dashboard-inner{ background:var(--hc-offwhite); }
+.hc-live-badge{ color:var(--hc-green); background:rgba(0,106,80,.1); }
+.hc-dashboard-tile{ background:var(--hc-cream); }
+.hc-dashboard-label{ color:rgba(29,39,34,.5); }
+.hc-progress-track{ background:#fff; }
+.hc-progress-fill{ background:var(--hc-green); }
+
+/* ---------------------------------------------------------------
+   TESTIMONIALS
+----------------------------------------------------------------*/
+.hc-testimonials-section{ background:var(--hc-cream); }
+.hc-star-rating{ color:var(--hc-gold); }
+.hc-star-rating i{ fill:var(--hc-gold); }
+.hc-testimonial-byline{ color:rgba(29,39,34,.5); }
+
+/* ---------------------------------------------------------------
+   BLOG
+----------------------------------------------------------------*/
+.hc-blog-section{ background:var(--hc-offwhite); }
+.hc-blog-card{ background:var(--hc-cream); }
+.hc-blog-category{ color:var(--hc-green); }
+.hc-blog-date{ color:rgba(29,39,34,.4); }
+
+/* ---------------------------------------------------------------
+   FAQ / ACCORDION
+----------------------------------------------------------------*/
+.hc-faq-section{ background:var(--hc-cream); }
+.hc-accordion{ border-top:1px solid rgba(29,39,34,.1); }
+.hc-accordion-item{ border-bottom:1px solid rgba(29,39,34,.1); }
+.hc-accordion-item summary{ list-style:none; cursor:pointer; }
+.hc-accordion-item summary::-webkit-details-marker{ display:none; }
+.hc-accordion-chev{ color:var(--hc-green); transition: transform .35s var(--hc-ease); }
+.hc-accordion-item[open] .hc-accordion-chev{ transform:rotate(45deg); }
+
+/* ---------------------------------------------------------------
+   FINAL CTA
+----------------------------------------------------------------*/
+.hc-finalcta-section{ background:var(--hc-forest); color:#fff; }
+
+/* ---------------------------------------------------------------
+   CONTACT + DUMMY FORM (static mockup — Text Editor widget)
+----------------------------------------------------------------*/
+.hc-contact-section{ background:var(--hc-offwhite); }
+.hc-contact-list{ color:var(--hc-charcoal); }
+.hc-map-placeholder{ background:var(--hc-cream); color:rgba(29,39,34,.3); border-color:rgba(29,39,34,.06); }
+
+.hc-dummy-form .hc-dummy-input,
+.hc-dummy-form .hc-dummy-select,
+.hc-dummy-form .hc-dummy-textarea{
+  background:#fff; border:1px solid rgba(29,39,34,.15); color:rgba(29,39,34,.45);
+}
+.hc-dummy-form .hc-dummy-textarea{ min-height:110px; align-items:flex-start; display:flex; }
+
+/* ---------------------------------------------------------------
+   FOOTER
+----------------------------------------------------------------*/
+.hc-footer{ background:var(--hc-darkgreen); color:#fff; }
+.hc-footer-hairline{ height:2px; background:linear-gradient(90deg, transparent, var(--hc-gold), transparent); }
+.hc-footer-brand{ color:#fff; }
+.hc-footer-copy{ color:rgba(255,255,255,.5); }
+.hc-social-list a{ color:rgba(255,255,255,.6); transition:color .3s var(--hc-ease); }
+.hc-social-list a:hover{ color:var(--hc-gold); }
+.hc-footer-col-title{ color:var(--hc-gold); }
+.hc-footer-links{ list-style:none; padding:0; margin:0; }
+.hc-footer-links a{ color:rgba(255,255,255,.6); transition:color .3s var(--hc-ease); }
+.hc-footer-links a:hover{ color:#fff; }
+.hc-investor-login{ color:var(--hc-gold); }
+.hc-investor-login:hover{ color:#fff; }
+.hc-footer-bottom{ border-top:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.4); }
+.hc-footer-legal-links a{ color:rgba(255,255,255,.4); transition:color .3s var(--hc-ease); }
+.hc-footer-legal-links a:hover{ color:#fff; }
+
+/* ---------------------------------------------------------------
+   MOBILE STICKY CTA
+   KNOWN LIMITATION: free Elementor has no native "sticky/fixed
+   section" control (that's a Pro motion-effect). Rebuild this bar
+   with a Custom HTML widget, or accept it as a theme-level element
+   outside the Elementor canvas.
+----------------------------------------------------------------*/
+.hc-mobile-cta{ background:rgba(6,59,42,.95); backdrop-filter:blur(10px); border-top:1px solid rgba(255,255,255,.1); }
+
+/* ---------------------------------------------------------------
+   REDUCED MOTION
+----------------------------------------------------------------*/
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .hc-reveal{ opacity:1; transform:none; }
+}

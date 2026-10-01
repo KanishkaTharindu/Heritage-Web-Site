@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heritage Crops Plantation and Exports (Pvt) Ltd | Growing Investments. Cultivating Tomorrow.</title>
+<meta name="description" content="Heritage Crops combines plantation development, agricultural expertise and investment opportunities across vanilla, cinnamon and Sri Lanka's heritage spice crops.">
+
+<!-- Fonts: Fraunces (display/serif) + Inter (body/UI) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN — layout/utility styling only. Decorative/non-utility CSS lives in custom.css -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          hgreen:   '#006A50',
+          forest:   '#063B2A',
+          darkgrn:  '#0B3D2E',
+          gold:     '#C8A951',
+          cream:    '#F7F5ED',
+          offwhite: '#FCFCF8',
+          charcoal: '#1D2722',
+        },
+        fontFamily: {
+          display: ['"Fraunces"', 'serif'],
+          body: ['"Inter"', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+<!-- Lucide icons — swap for Elementor's native Icon Library on rebuild -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<!-- Custom stylesheet (paste into WP Customizer → Additional CSS after Elementor rebuild) -->
+<link rel="stylesheet" href="custom.css">
+</head>
+
+<body class="font-body bg-offwhite text-charcoal antialiased">
+
+<!-- Skip link for keyboard/screen-reader users -->
+<a href="#main-content" class="hc-skip-link">Skip to main content</a>
+
+<!-- ============================================================
+EL:SECTION  (Header — sticky, transparent-to-solid on scroll)
+============================================================= -->
+<header id="site-nav" class="hc-nav-header fixed top-0 inset-x-0 z-50" role="banner">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 flex items-center justify-between py-5">
+
+    <!-- EL:COLUMN (logo) -->
+    <a href="#home" class="flex items-center gap-3 group hc-logo-link" aria-label="Heritage Crops — home">
+      <!-- EL:WIDGET:Image (logo mark; replace with real logo file) -->
+      <span class="hc-logo-mark w-10 h-10 rounded-full flex items-center justify-center" aria-hidden="true">
+        <span class="font-display italic text-lg hc-logo-letter">H</span>
+      </span>
+      <!-- EL:WIDGET:Heading (site title, mini) -->
+      <span class="leading-none">
+        <span class="block font-display text-lg tracking-wide hc-logo-text">Heritage Crops</span>
+        <span class="block text-[10px] tracking-[0.28em] uppercase hc-logo-subtext">Plantation &amp; Exports</span>
+      </span>
+    </a>
+
+    <!-- EL:COLUMN (nav) / EL:WIDGET:Icon List (horizontal nav links — free Elementor has no Nav Menu widget;
+         Icon List set to inline via custom.css is the native-compatible substitute) -->
+    <nav class="hidden lg:flex items-center gap-9 text-sm hc-nav-links" aria-label="Primary">
+      <a href="#about" class="hc-nav-link active">About</a>
+      <a href="#plantations" class="hc-nav-link">Plantations</a>
+      <a href="#investment" class="hc-nav-link">Investment</a>
+      <a href="#crops" class="hc-nav-link">Crops</a>
+      <a href="#exports" class="hc-nav-link">Exports</a>
+      <a href="#sustainability" class="hc-nav-link">Sustainability</a>
+      <a href="#management" class="hc-nav-link">Management</a>
+      <a href="#resources" class="hc-nav-link">Resources</a>
+      <a href="#contact" class="hc-nav-link">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <!-- EL:WIDGET:Button (primary CTA) -->
+      <a href="#investment" class="hc-btn-primary hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium">
+        Become an Investor <span class="hc-btn-arrow" aria-hidden="true">→</span>
+      </a>
+      <!-- Mobile menu toggle — not an Elementor widget; maps to the Section's built-in
+           "Mobile Menu Icon" behaviour when rebuilt inside an Elementor Header template -->
+      <button id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" class="hc-burger lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px]">
+        <span class="hc-burger-line block w-6 h-[1.5px]"></span>
+        <span class="hc-burger-line block w-6 h-[1.5px]"></span>
+        <span class="hc-burger-line block w-4 h-[1.5px] self-end"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+EL:SECTION  (Mobile fullscreen nav overlay)
+============================================================= -->
+<div id="mobile-menu" class="hc-mobile-menu fixed inset-0 z-40 flex flex-col justify-center items-center gap-7 lg:hidden" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <!-- EL:WIDGET:Icon List (stacked, mobile) -->
+  <a class="hc-mobile-link font-display text-3xl" href="#about">About</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#plantations">Plantations</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#investment">Investment</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#crops">Crops</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#exports">Exports</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#sustainability">Sustainability</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#management">Management</a>
+  <a class="hc-mobile-link font-display text-3xl" href="#contact">Contact</a>
+  <!-- EL:WIDGET:Button -->
+  <a href="#investment" class="hc-btn-primary hc-mobile-link mt-4 px-8 py-3 rounded-full">Become an Investor →</a>
+</div>
+
+<main id="main-content">
+<div id="home"></div>
+
+<!-- ============================================================
+EL:SECTION  (Hero — background image + overlay)
+============================================================= -->
+<section class="hc-hero-section relative min-h-screen flex items-end lg:items-center overflow-hidden">
+  <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 w-full pt-40 pb-16 lg:py-0 relative z-10">
+    <div class="grid lg:grid-cols-12 gap-10 items-center">
+
+      <!-- EL:COLUMN (hero copy) -->
+      <div class="lg:col-span-7">
+        <!-- EL:WIDGET:Text (eyebrow) -->
+        <p class="hc-eyebrow hc-eyebrow-on-dark mb-6">Smart Agriculture · Responsible Investment</p>
+        <!-- EL:WIDGET:Heading (H1) -->
+        <h1 class="hc-hero-heading font-display text-[2.6rem] leading-[1.08] sm:text-6xl lg:text-7xl">
+          Growing<br>
+          <span class="italic hc-hero-heading-accent">Investments.</span><br>
+          Cultivating Tomorrow.
+        </h1>
+        <!-- EL:WIDGET:Text Editor (supporting paragraph) -->
+        <p class="hc-hero-copy mt-7 max-w-lg text-[15px] leading-relaxed">
+          Heritage Crops combines plantation development, agricultural expertise and investment
+          opportunities to create long-term value — while contributing to a more sustainable
+          agricultural future for Sri Lanka.
+        </p>
+        <!-- EL:INNER-SECTION (button row) -->
+        <div class="mt-9 flex flex-wrap gap-4">
+          <!-- EL:WIDGET:Button -->
+          <a href="#investment" class="hc-btn-primary inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium">
+            Explore Investment Plans <span class="hc-btn-arrow" aria-hidden="true">→</span>
+          </a>
+          <!-- EL:WIDGET:Button (ghost variant) -->
+          <a href="#plantations" class="hc-btn-ghost-dark inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium">
+            Discover Our Plantations
+          </a>
+        </div>
+      </div>
+
+      <!-- EL:COLUMN (floating info panel) -->
+      <div class="lg:col-span-4 lg:col-start-9">
+        <!-- EL:INNER-SECTION (glass card) -->
+        <div class="hc-float-panel rounded-2xl p-7">
+          <!-- EL:WIDGET:Heading -->
+          <p class="font-display italic text-lg hc-float-panel-title mb-5">Heritage Crops</p>
+          <!-- EL:WIDGET:Icon List -->
+          <ul class="space-y-4 text-sm hc-float-panel-list">
+            <li class="flex items-center gap-3"><i data-lucide="sprout" class="w-4 h-4 hc-icon-gold" aria-hidden="true"></i> Sustainable Cultivation</li>
+            <li class="flex items-center gap-3"><i data-lucide="trending-up" class="w-4 h-4 hc-icon-gold" aria-hidden="true"></i> Investment Opportunities</li>
+            <li class="flex items-center gap-3"><i data-lucide="ship" class="w-4 h-4 hc-icon-gold" aria-hidden="true"></i> Export-Oriented Agriculture</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden lg:flex hc-scroll-cue absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-[11px] tracking-[0.2em] uppercase" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="hc-scroll-line"></span>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Trust statistics — dark background, 5 Counter widgets)
+============================================================= -->
+<section class="hc-stats-section py-16 lg:py-20">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-6 text-center">
+
+      <!-- EL:COLUMN / EL:WIDGET:Counter -->
+      <div>
+        <p class="font-display text-4xl lg:text-5xl hc-stat-number" data-count="2021" data-suffix="">0</p>
+        <p class="mt-2 hc-stat-label">Established</p>
+      </div>
+      <div>
+        <p class="font-display text-4xl lg:text-5xl hc-stat-number" data-count="12" data-suffix="+">0</p>
+        <p class="mt-2 hc-stat-label">Plantation Projects</p>
+      </div>
+      <div>
+        <p class="font-display text-4xl lg:text-5xl hc-stat-number" data-count="XX" data-suffix="+ Acres">—</p>
+        <p class="mt-2 hc-stat-label">Cultivation Areas</p>
+      </div>
+      <div>
+        <p class="font-display text-4xl lg:text-5xl hc-stat-number" data-count="5" data-suffix="">0</p>
+        <p class="mt-2 hc-stat-label">Crop Categories</p>
+      </div>
+      <div class="col-span-2 lg:col-span-1">
+        <p class="font-display text-4xl lg:text-5xl hc-stat-number" data-count="XX" data-suffix="+">—</p>
+        <p class="mt-2 hc-stat-label">Investment Partners</p>
+      </div>
+    </div>
+    <!-- EL:WIDGET:Text -->
+    <p class="hc-stats-note text-center text-[11px] mt-10">Figures marked "XX" are placeholders pending verified company data — replace via the editable stats config.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (About — 2 columns: Image | Text)
+============================================================= -->
+<section id="about" class="py-24 lg:py-32 hc-about-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-12 gap-14 items-center">
+
+      <!-- EL:COLUMN -->
+      <div class="lg:col-span-6 relative">
+        <!-- EL:WIDGET:Image -->
+        <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+        <div class="hc-img-zoom rounded-2xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80" alt="Green rolling plantation hillside in Sri Lanka" class="w-full h-[420px] lg:h-[540px] object-cover">
+        </div>
+        <!-- EL:INNER-SECTION (floating badge) / EL:WIDGET:Text -->
+        <div class="hc-floating-badge absolute -bottom-6 left-6 rounded-xl px-5 py-3">
+          <p class="text-xs tracking-[0.15em] uppercase font-semibold">Growing Since 2021</p>
+        </div>
+      </div>
+
+      <!-- EL:COLUMN -->
+      <div class="lg:col-span-6">
+        <!-- EL:WIDGET:Text (eyebrow) -->
+        <p class="hc-eyebrow mb-5">Who We Are</p>
+        <!-- EL:WIDGET:Heading -->
+        <h2 class="font-display text-4xl lg:text-5xl leading-tight">Growing Agriculture.<br>Creating Opportunity.</h2>
+        <!-- EL:WIDGET:Text Editor -->
+        <p class="hc-body-copy mt-6 leading-relaxed max-w-xl">
+          Heritage Crops Plantation and Exports (Pvt) Ltd is an agriculture-focused organisation
+          working across plantation development, agricultural investment and export-oriented
+          opportunities — rooted in Sri Lanka's heritage spice-growing regions.
+        </p>
+        <!-- EL:WIDGET:Icon List -->
+        <ul class="mt-8 space-y-4 hc-check-list">
+          <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 hc-icon-green mt-0.5" aria-hidden="true"></i><span>Sustainable cultivation across our plantation network</span></li>
+          <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 hc-icon-green mt-0.5" aria-hidden="true"></i><span>Structured investment opportunities tied to real projects</span></li>
+          <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 hc-icon-green mt-0.5" aria-hidden="true"></i><span>Plantation management by an experienced agricultural team</span></li>
+          <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 hc-icon-green mt-0.5" aria-hidden="true"></i><span>Export potential connecting Sri Lankan crops to global markets</span></li>
+        </ul>
+        <!-- EL:WIDGET:Button (text-link style) -->
+        <a href="#" class="hc-text-link mt-9 inline-flex items-center gap-2 pb-1">
+          Discover Our Story <span class="hc-btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (What We Do — 5 Icon Box widgets)
+============================================================= -->
+<section class="py-24 lg:py-28 hc-whatwedo-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="hc-eyebrow justify-center flex mb-5">What We Do</p>
+      <h2 class="font-display text-4xl lg:text-5xl">Smart Agriculture. Real Opportunities.</h2>
+    </div>
+
+    <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+      <!-- EL:COLUMN / EL:WIDGET:Icon Box -->
+      <div class="hc-lift-card hc-icon-box rounded-2xl p-7">
+        <div class="hc-icon-box-circle w-11 h-11 rounded-full flex items-center justify-center mb-6">
+          <i data-lucide="leaf" class="w-5 h-5" aria-hidden="true"></i>
+        </div>
+        <h3 class="font-display text-lg mb-2">Plantation Development</h3>
+        <p class="hc-card-copy text-sm leading-relaxed">Establishing and expanding cultivation across Sri Lanka's heritage growing regions.</p>
+      </div>
+      <div class="hc-lift-card hc-icon-box rounded-2xl p-7">
+        <div class="hc-icon-box-circle w-11 h-11 rounded-full flex items-center justify-center mb-6">
+          <i data-lucide="line-chart" class="w-5 h-5" aria-hidden="true"></i>
+        </div>
+        <h3 class="font-display text-lg mb-2">Agricultural Investments</h3>
+        <p class="hc-card-copy text-sm leading-relaxed">Structured investment plans connected to real, monitored cultivation projects.</p>
+      </div>
+      <div class="hc-lift-card hc-icon-box rounded-2xl p-7">
+        <div class="hc-icon-box-circle w-11 h-11 rounded-full flex items-center justify-center mb-6">
+          <i data-lucide="ship" class="w-5 h-5" aria-hidden="true"></i>
+        </div>
+        <h3 class="font-display text-lg mb-2">Export &amp; International Markets</h3>
+        <p class="hc-card-copy text-sm leading-relaxed">Bringing Sri Lankan vanilla, cinnamon and heritage spices to global buyers.</p>
+      </div>
+      <div class="hc-lift-card hc-icon-box rounded-2xl p-7">
+        <div class="hc-icon-box-circle w-11 h-11 rounded-full flex items-center justify-center mb-6">
+          <i data-lucide="recycle" class="w-5 h-5" aria-hidden="true"></i>
+        </div>
+        <h3 class="font-display text-lg mb-2">Sustainable Agriculture</h3>
+        <p class="hc-card-copy text-sm leading-relaxed">Responsible land, water and community practices across every plantation.</p>
+      </div>
+      <div class="hc-lift-card hc-icon-box rounded-2xl p-7">
+        <div class="hc-icon-box-circle w-11 h-11 rounded-full flex items-center justify-center mb-6">
+          <i data-lucide="layout-dashboard" class="w-5 h-5" aria-hidden="true"></i>
+        </div>
+        <h3 class="font-display text-lg mb-2">Digital Agricultural Management</h3>
+        <p class="hc-card-copy text-sm leading-relaxed">Tracking cultivation, investment and export activity through our internal platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Investment Plans preview — dark, 3 columns)
+============================================================= -->
+<section id="investment" class="py-24 lg:py-28 hc-investment-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div>
+        <p class="hc-eyebrow hc-eyebrow-on-dark mb-5">Investment Plans</p>
+        <h2 class="font-display text-4xl lg:text-5xl max-w-xl hc-heading-on-dark">Invest in Agriculture.<br>Grow With Purpose.</h2>
+      </div>
+      <!-- EL:WIDGET:Button (text-link style) -->
+      <a href="#" class="hc-text-link-gold inline-flex items-center gap-2 pb-1 whitespace-nowrap">
+        Explore All Investment Plans <span class="hc-btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-6">
+      <!-- EL:COLUMN / EL:INNER-SECTION (plan card) -->
+      <div class="hc-lift-card hc-plan-card rounded-2xl p-8">
+        <p class="hc-eyebrow hc-eyebrow-on-dark mb-4">Vanilla</p>
+        <h3 class="font-display text-2xl mb-4 hc-heading-on-dark">Vanilla Cultivation Plan</h3>
+        <!-- EL:WIDGET:Icon List -->
+        <ul class="space-y-3 text-sm hc-plan-list">
+          <li class="flex justify-between"><span>Investment Amount</span><span class="hc-plan-value">LKR XX,XXX</span></li>
+          <li class="flex justify-between"><span>Investment Period</span><span class="hc-plan-value">XX Months</span></li>
+          <li class="flex justify-between"><span>Harvest Cycle</span><span class="hc-plan-value">Annual</span></li>
+        </ul>
+        <a href="#" class="hc-text-link-gold mt-7 inline-flex items-center gap-2 text-sm">View Plan <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div class="hc-lift-card hc-plan-card hc-plan-card-featured rounded-2xl p-8">
+        <p class="hc-eyebrow hc-eyebrow-on-dark mb-4">Cinnamon</p>
+        <h3 class="font-display text-2xl mb-4 hc-heading-on-dark">Cinnamon Estate Plan</h3>
+        <ul class="space-y-3 text-sm hc-plan-list">
+          <li class="flex justify-between"><span>Investment Amount</span><span class="hc-plan-value">LKR XX,XXX</span></li>
+          <li class="flex justify-between"><span>Investment Period</span><span class="hc-plan-value">XX Months</span></li>
+          <li class="flex justify-between"><span>Harvest Cycle</span><span class="hc-plan-value">Bi-Annual</span></li>
+        </ul>
+        <a href="#" class="hc-text-link-gold mt-7 inline-flex items-center gap-2 text-sm">View Plan <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div class="hc-lift-card hc-plan-card rounded-2xl p-8">
+        <p class="hc-eyebrow hc-eyebrow-on-dark mb-4">Cardamom</p>
+        <h3 class="font-display text-2xl mb-4 hc-heading-on-dark">Cardamom Growth Plan</h3>
+        <ul class="space-y-3 text-sm hc-plan-list">
+          <li class="flex justify-between"><span>Investment Amount</span><span class="hc-plan-value">LKR XX,XXX</span></li>
+          <li class="flex justify-between"><span>Investment Period</span><span class="hc-plan-value">XX Months</span></li>
+          <li class="flex justify-between"><span>Harvest Cycle</span><span class="hc-plan-value">Annual</span></li>
+        </ul>
+        <a href="#" class="hc-text-link-gold mt-7 inline-flex items-center gap-2 text-sm">View Plan <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <!-- EL:WIDGET:Text -->
+    <p class="hc-investment-disclaimer text-[11px] mt-8 max-w-2xl">Plan figures shown are structural placeholders. No returns are guaranteed; see the full Investment Disclaimer on the Resources page before proceeding.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (How It Works — vertical timeline / Icon List with connector)
+============================================================= -->
+<section class="py-24 lg:py-28 hc-howitworks-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl">
+      <p class="hc-eyebrow mb-5">How It Works</p>
+      <h2 class="font-display text-4xl lg:text-5xl">From First Enquiry to First Harvest</h2>
+    </div>
+
+    <!-- EL:INNER-SECTION (timeline column with connecting Divider) -->
+    <div class="mt-16 relative hc-timeline">
+      <div class="hc-timeline-line hidden lg:block absolute left-[15px] top-2 bottom-2 w-[2px]" aria-hidden="true"></div>
+      <div class="space-y-10 lg:space-y-14">
+
+        <!-- EL:WIDGET:Icon Box (number as icon substitute) x7 -->
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">1</span>
+          <div><h3 class="font-display text-xl">Choose Your Investment Plan</h3><p class="hc-card-copy text-sm mt-1 max-w-md">Review crops, terms and cultivation projects to find the right fit.</p></div>
+        </div>
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">2</span>
+          <div><h3 class="font-display text-xl">Submit Your Details</h3><p class="hc-card-copy text-sm mt-1 max-w-md">Share your information with our investment advisory team.</p></div>
+        </div>
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">3</span>
+          <div><h3 class="font-display text-xl">Investment Review</h3><p class="hc-card-copy text-sm mt-1 max-w-md">We confirm plan availability and prepare your proposal.</p></div>
+        </div>
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">4</span>
+          <div><h3 class="font-display text-xl">Agreement &amp; Documentation</h3><p class="hc-card-copy text-sm mt-1 max-w-md">Formal agreement and investment documentation is finalised.</p></div>
+        </div>
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">5</span>
+          <div><h3 class="font-display text-xl">Cultivation Begins</h3><p class="hc-card-copy text-sm mt-1 max-w-md">Our agricultural team begins land preparation and planting.</p></div>
+        </div>
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">6</span>
+          <div><h3 class="font-display text-xl">Monitor Plantation Progress</h3><p class="hc-card-copy text-sm mt-1 max-w-md">Track updates through the Investor Portal as your crop grows.</p></div>
+        </div>
+        <div class="flex gap-6 items-start">
+          <span class="hc-timeline-dot shrink-0 w-8 h-8 rounded-full text-xs flex items-center justify-center font-semibold" aria-hidden="true">7</span>
+          <div><h3 class="font-display text-xl">Harvest &amp; Returns</h3><p class="hc-card-copy text-sm mt-1 max-w-md">Harvest is processed and returns are structured per your agreement.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Signature "Journey" strip — static, background image +
+Icon List sequence. Kept static/native-only; no JS word-cycling.)
+============================================================= -->
+<section class="hc-journey-section relative overflow-hidden">
+  <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+  <div class="hc-journey-overlay absolute inset-0" aria-hidden="true"></div>
+  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-24">
+    <p class="hc-eyebrow hc-eyebrow-on-dark mb-4">The Heritage Crops Journey</p>
+    <h2 class="font-display hc-heading-on-dark text-4xl lg:text-5xl italic mb-10">Land to Global Markets.</h2>
+    <!-- EL:WIDGET:Icon List (horizontal sequence) -->
+    <ol class="hc-journey-list flex flex-wrap gap-x-3 gap-y-3 text-xs tracking-[0.2em] uppercase">
+      <li class="hc-journey-step hc-journey-step-current">Land</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Cultivation</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Growth</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Harvest</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Value</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Investment</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Community</li>
+      <li class="hc-journey-arrow" aria-hidden="true">→</li>
+      <li class="hc-journey-step">Global Markets</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Our Plantations preview — 3 Image Box widgets)
+============================================================= -->
+<section id="plantations" class="py-24 lg:py-28 hc-plantations-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div>
+        <p class="hc-eyebrow mb-5">Our Plantations</p>
+        <h2 class="font-display text-4xl lg:text-5xl max-w-xl">Rooted in Sri Lankan Soil.<br>Built for the Future.</h2>
+      </div>
+      <a href="#" class="hc-text-link inline-flex items-center gap-2 pb-1 whitespace-nowrap">
+        View All Plantations <span class="hc-btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-6">
+      <!-- EL:COLUMN / EL:WIDGET:Image Box -->
+      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+      <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-56 relative">
+          <img src="https://images.unsplash.com/photo-1594970484552-4390e8b4a6ea?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Vanilla plantation cultivation project in Kandy">
+          <span class="hc-status-badge hc-status-active absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full">Active</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl">Vanilla Estate — Kandy</h3>
+          <p class="hc-card-copy text-sm mt-1">Land Extent: XX Acres · Cultivation Stage: Growth</p>
+        </div>
+      </div>
+      <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-56 relative">
+          <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Cinnamon plantation cultivation project in Matara">
+          <span class="hc-status-badge hc-status-developing absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full font-medium">Developing</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl">Cinnamon Grove — Matara</h3>
+          <p class="hc-card-copy text-sm mt-1">Land Extent: XX Acres · Cultivation Stage: Planting</p>
+        </div>
+      </div>
+      <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-56 relative">
+          <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Cardamom plantation cultivation project in Nuwara Eliya">
+          <span class="hc-status-badge hc-status-harvesting absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full">Harvesting</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl">Cardamom Fields — Nuwara Eliya</h3>
+          <p class="hc-card-copy text-sm mt-1">Land Extent: XX Acres · Cultivation Stage: Harvest</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Our Crops — 4 Image Box widgets w/ overlay caption)
+============================================================= -->
+<section id="crops" class="py-24 lg:py-28 hc-crops-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl">
+      <p class="hc-eyebrow mb-5">Our Crops</p>
+      <h2 class="font-display text-4xl lg:text-5xl">Heritage Spices. Global Demand.</h2>
+    </div>
+
+    <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- EL:WIDGET:Image Box -->
+      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Vanilla pods on the vine">
+        <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
+        <div class="absolute bottom-0 p-6 hc-crop-card-text">
+          <h3 class="font-display text-2xl">Vanilla</h3>
+          <p class="text-xs mt-1">Explore Crop →</p>
+        </div>
+      </a>
+      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Cinnamon sticks and bark">
+        <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
+        <div class="absolute bottom-0 p-6 hc-crop-card-text">
+          <h3 class="font-display text-2xl">Cinnamon</h3>
+          <p class="text-xs mt-1">Explore Crop →</p>
+        </div>
+      </a>
+      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Cardamom pods">
+        <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
+        <div class="absolute bottom-0 p-6 hc-crop-card-text">
+          <h3 class="font-display text-2xl">Cardamom</h3>
+          <p class="text-xs mt-1">Explore Crop →</p>
+        </div>
+      </a>
+      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Fresh pomegranate fruit">
+        <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
+        <div class="absolute bottom-0 p-6 hc-crop-card-text">
+          <h3 class="font-display text-2xl">Pomegranate</h3>
+          <p class="text-xs mt-1">Explore Crop →</p>
+        </div>
+      </a>
+    </div>
+    <!-- EL:WIDGET:Text -->
+    <p class="hc-note-text text-[11px] mt-6">Crop list to be verified against heritagecrops.lk before final publish (Scotch Bonnet not shown above — confirm inclusion).</p>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Exports teaser — 2 columns: text/process | Image)
+============================================================= -->
+<section id="exports" class="py-24 lg:py-28 hc-exports-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14 items-center">
+    <div class="lg:col-span-6">
+      <p class="hc-eyebrow hc-eyebrow-on-dark mb-5">Exports</p>
+      <h2 class="font-display text-4xl lg:text-5xl leading-tight hc-heading-on-dark">From Sri Lankan Soil<br>to Global Markets.</h2>
+      <p class="hc-body-copy-on-dark mt-6 max-w-md leading-relaxed">Every export shipment follows the same disciplined path — from plantation to processing, quality control, packaging and international delivery.</p>
+
+      <!-- EL:WIDGET:Icon List (process steps) -->
+      <ol class="mt-9 flex flex-wrap gap-3 text-xs tracking-[0.12em] uppercase hc-process-list">
+        <li class="hc-process-step px-4 py-2 rounded-full">Plantation</li>
+        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
+        <li class="hc-process-step px-4 py-2 rounded-full">Harvest</li>
+        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
+        <li class="hc-process-step px-4 py-2 rounded-full">Processing</li>
+        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
+        <li class="hc-process-step px-4 py-2 rounded-full">Quality Control</li>
+        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
+        <li class="hc-process-step px-4 py-2 rounded-full">Packaging</li>
+        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
+        <li class="hc-process-step hc-process-step-final px-4 py-2 rounded-full font-medium">Global Market</li>
+      </ol>
+      <a href="#" class="hc-text-link-gold mt-9 inline-flex items-center gap-2 pb-1">Explore Exports <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+    </div>
+    <div class="lg:col-span-6">
+      <!-- EL:WIDGET:Image -->
+      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+      <div class="hc-img-zoom rounded-2xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1524594152303-9fd13543fe64?auto=format&fit=crop&w=1000&q=80" class="w-full h-[420px] object-cover" alt="Export-ready packaging of Sri Lankan spices">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Sustainability teaser — 4 Icon Box widgets)
+============================================================= -->
+<section id="sustainability" class="py-24 lg:py-28 hc-sustainability-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl">
+      <p class="hc-eyebrow mb-5">Sustainability</p>
+      <h2 class="font-display text-4xl lg:text-5xl">Growing More. Protecting More.</h2>
+    </div>
+    <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- EL:WIDGET:Icon Box -->
+      <div class="hc-sustain-card rounded-2xl p-7">
+        <i data-lucide="trees" class="w-6 h-6 hc-icon-green mb-4" aria-hidden="true"></i>
+        <p class="font-display text-2xl">XX+ Acres</p>
+        <p class="hc-sustain-label mt-1">Under Sustainable Management</p>
+      </div>
+      <div class="hc-sustain-card rounded-2xl p-7">
+        <i data-lucide="droplets" class="w-6 h-6 hc-icon-green mb-4" aria-hidden="true"></i>
+        <p class="font-display text-2xl">XX%</p>
+        <p class="hc-sustain-label mt-1">Water Managed Responsibly</p>
+      </div>
+      <div class="hc-sustain-card rounded-2xl p-7">
+        <i data-lucide="users" class="w-6 h-6 hc-icon-green mb-4" aria-hidden="true"></i>
+        <p class="font-display text-2xl">XX+</p>
+        <p class="hc-sustain-label mt-1">Communities Supported</p>
+      </div>
+      <div class="hc-sustain-card rounded-2xl p-7">
+        <i data-lucide="briefcase" class="w-6 h-6 hc-icon-green mb-4" aria-hidden="true"></i>
+        <p class="font-display text-2xl">XX+</p>
+        <p class="hc-sustain-label mt-1">Jobs Created</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Technology — text/Icon List | dashboard mock w/ Progress Bar)
+============================================================= -->
+<section class="py-24 lg:py-28 hc-technology-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14 items-center">
+    <div class="lg:col-span-6 order-2 lg:order-1">
+      <p class="hc-eyebrow mb-5">Digital Agriculture</p>
+      <h2 class="font-display text-4xl lg:text-5xl leading-tight">Technology Behind<br>Every Acre.</h2>
+      <p class="hc-body-copy mt-6 max-w-md leading-relaxed">Plantation monitoring, investment tracking and reporting run through our internal management platform — giving investors real visibility into project progress.</p>
+      <!-- EL:WIDGET:Icon List -->
+      <div class="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm hc-tech-list">
+        <span class="flex items-center gap-2"><i data-lucide="monitor-check" class="w-4 h-4 hc-icon-green" aria-hidden="true"></i>Plantation Monitoring</span>
+        <span class="flex items-center gap-2"><i data-lucide="wallet" class="w-4 h-4 hc-icon-green" aria-hidden="true"></i>Investment Management</span>
+        <span class="flex items-center gap-2"><i data-lucide="bar-chart-3" class="w-4 h-4 hc-icon-green" aria-hidden="true"></i>Data Analytics</span>
+        <span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 hc-icon-green" aria-hidden="true"></i>Automated Reports</span>
+        <span class="flex items-center gap-2"><i data-lucide="bell" class="w-4 h-4 hc-icon-green" aria-hidden="true"></i>Notifications</span>
+        <span class="flex items-center gap-2"><i data-lucide="smartphone" class="w-4 h-4 hc-icon-green" aria-hidden="true"></i>Mobile Access</span>
+      </div>
+    </div>
+    <div class="lg:col-span-6 order-1 lg:order-2">
+      <!-- EL:INNER-SECTION (dashboard mock) -->
+      <div class="hc-dashboard-frame rounded-2xl p-6 lg:p-8">
+        <div class="hc-dashboard-inner rounded-xl p-6">
+          <div class="flex items-center justify-between mb-6">
+            <p class="font-display text-lg">Investor Dashboard</p>
+            <span class="hc-live-badge text-[10px] uppercase tracking-wide px-2 py-1 rounded-full">Live</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="hc-dashboard-tile rounded-lg p-4">
+              <p class="hc-dashboard-label text-[11px] uppercase">Total Investment</p>
+              <p class="font-display text-xl mt-1">LKR XXX,XXX</p>
+            </div>
+            <div class="hc-dashboard-tile rounded-lg p-4">
+              <p class="hc-dashboard-label text-[11px] uppercase">Active Projects</p>
+              <p class="font-display text-xl mt-1">03</p>
+            </div>
+          </div>
+          <!-- EL:WIDGET:Progress Bar -->
+          <div class="mt-4 hc-dashboard-tile rounded-lg p-4">
+            <p class="hc-dashboard-label text-[11px] uppercase mb-2">Plantation Progress</p>
+            <div class="hc-progress-track w-full h-2 rounded-full overflow-hidden">
+              <div class="hc-progress-fill h-full" style="width:72%" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Plantation growth progress"></div>
+            </div>
+            <p class="hc-dashboard-label text-[11px] mt-1">Growth stage · 72%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Testimonials — static pair of native Testimonial + Star Rating widgets)
+============================================================= -->
+<section class="py-24 lg:py-28 hc-testimonials-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="text-center max-w-2xl mx-auto">
+      <p class="hc-eyebrow justify-center flex mb-5">Testimonials</p>
+      <h2 class="font-display text-4xl lg:text-5xl">Trusted by Investors</h2>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+      <!-- EL:WIDGET:Testimonial -->
+      <div class="hc-testimonial-card text-center px-4">
+        <!-- EL:WIDGET:Star Rating -->
+        <div class="hc-star-rating flex justify-center gap-1 mb-4" aria-label="5 out of 5 stars">
+          <i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i>
+        </div>
+        <p class="font-display italic text-xl lg:text-2xl leading-snug">"Placeholder testimonial — replace with a genuine, approved investor quote before publishing."</p>
+        <p class="hc-testimonial-byline mt-6 text-sm">— Investor Name, Vanilla Estate Plan</p>
+      </div>
+      <div class="hc-testimonial-card text-center px-4">
+        <div class="hc-star-rating flex justify-center gap-1 mb-4" aria-label="5 out of 5 stars">
+          <i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i><i data-lucide="star" class="w-4 h-4"></i>
+        </div>
+        <p class="font-display italic text-xl lg:text-2xl leading-snug">"Placeholder testimonial — replace with a genuine, approved investor quote before publishing."</p>
+        <p class="hc-testimonial-byline mt-6 text-sm">— Investor Name, Cinnamon Estate Plan</p>
+      </div>
+    </div>
+    <p class="hc-note-text text-center text-[11px] mt-10">Only genuine, approved testimonials should appear here — do not publish placeholder quotes.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Blog / News — 3 Image Box widgets)
+============================================================= -->
+<section class="py-24 lg:py-28 hc-blog-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div>
+        <p class="hc-eyebrow mb-5">Blog &amp; News</p>
+        <h2 class="font-display text-4xl lg:text-5xl">From the Plantation</h2>
+      </div>
+      <a href="#" class="hc-text-link inline-flex items-center gap-2 pb-1 whitespace-nowrap">Visit the Blog <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+    </div>
+    <div class="mt-16 grid md:grid-cols-3 gap-6">
+      <!-- EL:WIDGET:Image Box -->
+      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+      <a href="#" class="hc-lift-card hc-blog-card block rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-48"><img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Plantation landscape update"></div>
+        <div class="p-6">
+          <p class="hc-blog-category text-[11px] uppercase tracking-wide">Plantation Updates</p>
+          <h3 class="font-display text-lg mt-2">Season Progress Across Our Vanilla Estates</h3>
+          <p class="hc-blog-date text-xs mt-3">XX Month 2026</p>
+        </div>
+      </a>
+      <a href="#" class="hc-lift-card hc-blog-card block rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-48"><img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Tea and spice plantation rows"></div>
+        <div class="p-6">
+          <p class="hc-blog-category text-[11px] uppercase tracking-wide">Investment Insights</p>
+          <h3 class="font-display text-lg mt-2">Understanding Cultivation-Linked Investment</h3>
+          <p class="hc-blog-date text-xs mt-3">XX Month 2026</p>
+        </div>
+      </a>
+      <a href="#" class="hc-lift-card hc-blog-card block rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-48"><img src="https://images.unsplash.com/photo-1615486364836-45b8f8de8d0a?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Export shipment preparation"></div>
+        <div class="p-6">
+          <p class="hc-blog-category text-[11px] uppercase tracking-wide">Export News</p>
+          <h3 class="font-display text-lg mt-2">Sri Lankan Cinnamon in International Markets</h3>
+          <p class="hc-blog-date text-xs mt-3">XX Month 2026</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (FAQ — native Accordion widget)
+============================================================= -->
+<section class="py-24 lg:py-28 hc-faq-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14">
+    <div class="lg:col-span-4">
+      <p class="hc-eyebrow mb-5">FAQ</p>
+      <h2 class="font-display text-4xl">Common Questions</h2>
+      <p class="hc-body-copy mt-5 text-sm max-w-xs">Still have a question? Our investment advisory team is happy to help.</p>
+      <a href="#contact" class="hc-text-link mt-6 inline-flex items-center gap-2 text-sm">Talk to an Advisor <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+    </div>
+    <!-- EL:WIDGET:Accordion -->
+    <div class="lg:col-span-8 hc-accordion">
+      <details class="hc-accordion-item py-5" open>
+        <summary class="flex items-center justify-between gap-4"><span class="font-display text-lg">What is plantation investment?</span><span class="hc-accordion-chev text-xl" aria-hidden="true">+</span></summary>
+        <p class="hc-card-copy text-sm mt-3 leading-relaxed">A structured investment linked directly to a cultivation project — you invest in a defined plan tied to a specific crop and plantation.</p>
+      </details>
+      <details class="hc-accordion-item py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="font-display text-lg">How does the investment process work?</span><span class="hc-accordion-chev text-xl" aria-hidden="true">+</span></summary>
+        <p class="hc-card-copy text-sm mt-3 leading-relaxed">You choose a plan, submit your details, complete documentation, and our team begins cultivation on your behalf.</p>
+      </details>
+      <details class="hc-accordion-item py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="font-display text-lg">Can I visit the plantation?</span><span class="hc-accordion-chev text-xl" aria-hidden="true">+</span></summary>
+        <p class="hc-card-copy text-sm mt-3 leading-relaxed">Yes — plantation visits can be arranged with our team. Contact us to schedule a visit.</p>
+      </details>
+      <details class="hc-accordion-item py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="font-display text-lg">How are plantation updates provided?</span><span class="hc-accordion-chev text-xl" aria-hidden="true">+</span></summary>
+        <p class="hc-card-copy text-sm mt-3 leading-relaxed">Through the Investor Portal, including progress updates, gallery images and harvest reporting.</p>
+      </details>
+      <details class="hc-accordion-item py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="font-display text-lg">What happens during harvest?</span><span class="hc-accordion-chev text-xl" aria-hidden="true">+</span></summary>
+        <p class="hc-card-copy text-sm mt-3 leading-relaxed">Crops are harvested, processed and prepared for either local sale or export, per your plan's return structure.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Final CTA — centred)
+============================================================= -->
+<section class="py-24 hc-finalcta-section text-center">
+  <div class="max-w-2xl mx-auto px-6">
+    <h2 class="font-display text-4xl lg:text-5xl hc-heading-on-dark">Let's Grow Together.</h2>
+    <p class="hc-body-copy-on-dark mt-5">Request a proposal or speak with our investment advisory team about your next cultivation project.</p>
+    <div class="mt-9 flex flex-wrap justify-center gap-4">
+      <a href="#contact" class="hc-btn-primary inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium">Request Investment Proposal <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+      <a href="#contact" class="hc-btn-ghost-dark inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium">Talk to an Advisor</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+EL:SECTION  (Contact — 2 columns: details/map | static dummy form)
+============================================================= -->
+<section id="contact" class="py-24 lg:py-28 hc-contact-section">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-14">
+    <div class="lg:col-span-5">
+      <p class="hc-eyebrow mb-5">Contact</p>
+      <h2 class="font-display text-4xl">Let's Grow Together</h2>
+      <!-- EL:WIDGET:Icon List -->
+      <div class="mt-8 space-y-5 text-sm hc-contact-list">
+        <p class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>Office Address — [Street, City], Sri Lanka</p>
+        <p class="flex items-start gap-3"><i data-lucide="phone" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>+94 XX XXX XXXX</p>
+        <p class="flex items-start gap-3"><i data-lucide="mail" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>info@heritagecrops.lk</p>
+        <p class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>Mon – Fri, 9:00 AM – 5:30 PM</p>
+      </div>
+      <!-- EL:WIDGET:Google Maps -->
+      <div class="mt-8 rounded-2xl overflow-hidden h-56 hc-map-placeholder flex items-center justify-center text-sm border" role="img" aria-label="Map placeholder — replace with a live Google Maps embed of the Heritage Crops office">
+        Google Map Embed
+      </div>
+    </div>
+
+    <div class="lg:col-span-7">
+      <!--
+        EL:WIDGET:Text
+        Per project spec: this contact form is a STATIC, NON-FUNCTIONAL mockup only.
+        It is not wired to any submission handler and will become a Text Editor
+        widget (raw formatted HTML) in Elementor, not a Form widget.
+      -->
+      <div class="hc-dummy-form grid sm:grid-cols-2 gap-5">
+        <div class="sm:col-span-2 hc-dummy-select px-4 py-3 text-sm rounded-lg" role="note">General Enquiry ▾ <span class="hc-note-text">(enquiry type — static)</span></div>
+        <div class="hc-dummy-input px-4 py-3 text-sm rounded-lg" role="note">Full Name</div>
+        <div class="hc-dummy-input px-4 py-3 text-sm rounded-lg" role="note">Email Address</div>
+        <div class="sm:col-span-2 hc-dummy-input px-4 py-3 text-sm rounded-lg" role="note">Phone Number</div>
+        <div class="sm:col-span-2 hc-dummy-textarea px-4 py-3 text-sm rounded-lg" role="note">Message</div>
+        <span class="hc-btn-primary sm:col-span-2 justify-center inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium" role="note" aria-hidden="true">Request an Investment Consultation <span class="hc-btn-arrow">→</span></span>
+      </div>
+      <p class="hc-note-text text-[11px] mt-4">This form is a static visual mockup. Connect a real Elementor Form widget (Pro) or a plugin such as WPForms/Contact Form 7 when the site goes live.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+EL:SECTION  (Footer — dark, 5 columns + bottom bar. Investor Login
+lives ONLY here, never in main nav.)
+============================================================= -->
+<footer class="hc-footer" role="contentinfo">
+  <div class="hc-footer-hairline" aria-hidden="true"></div>
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 pt-20 pb-10">
+    <div class="grid lg:grid-cols-12 gap-12">
+
+      <!-- EL:COLUMN -->
+      <div class="lg:col-span-4">
+        <div class="flex items-center gap-3">
+          <span class="hc-logo-mark w-10 h-10 rounded-full flex items-center justify-center" aria-hidden="true">
+            <span class="font-display italic text-lg hc-logo-letter">H</span>
+          </span>
+          <span class="font-display text-lg hc-footer-brand">Heritage Crops</span>
+        </div>
+        <p class="hc-footer-copy mt-5 text-sm max-w-xs leading-relaxed">Plantation development, agricultural investment and export-oriented agriculture, grown from Sri Lankan soil.</p>
+        <!-- EL:WIDGET:Icon List (social) -->
+        <div class="mt-6 flex gap-3 hc-social-list">
+          <a href="#" aria-label="WhatsApp"><i data-lucide="message-circle" class="w-4 h-4" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Email"><i data-lucide="mail" class="w-4 h-4" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram" class="w-4 h-4" aria-hidden="true"></i></a>
+          <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <!-- EL:COLUMN / EL:WIDGET:Icon List (x4 nav columns) -->
+      <div class="lg:col-span-2">
+        <p class="hc-footer-col-title text-[11px] uppercase tracking-[0.18em] mb-5">Company</p>
+        <ul class="space-y-3 text-sm hc-footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#management">Management</a></li>
+          <li><a href="#plantations">Our Plantations</a></li>
+          <li><a href="#sustainability">Sustainability</a></li>
+        </ul>
+      </div>
+      <div class="lg:col-span-2">
+        <p class="hc-footer-col-title text-[11px] uppercase tracking-[0.18em] mb-5">Invest</p>
+        <ul class="space-y-3 text-sm hc-footer-links">
+          <li><a href="#investment">Investment Plans</a></li>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">Investment Calculator</a></li>
+          <li><a href="#">Investor FAQ</a></li>
+        </ul>
+      </div>
+      <div class="lg:col-span-2">
+        <p class="hc-footer-col-title text-[11px] uppercase tracking-[0.18em] mb-5">Agriculture</p>
+        <ul class="space-y-3 text-sm hc-footer-links">
+          <li><a href="#crops">Our Crops</a></li>
+          <li><a href="#">Plantation Development</a></li>
+          <li><a href="#exports">Exports</a></li>
+          <li><a href="#resources">Resources</a></li>
+        </ul>
+      </div>
+      <div class="lg:col-span-2">
+        <p class="hc-footer-col-title text-[11px] uppercase tracking-[0.18em] mb-5">Quick Access</p>
+        <ul class="space-y-3 text-sm hc-footer-links">
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li>
+            <!-- EL:WIDGET:Button (Investor Login — footer only, per brief) -->
+            <a href="#" class="hc-investor-login inline-flex items-center gap-2 font-medium">
+              <i data-lucide="lock" class="w-3.5 h-3.5" aria-hidden="true"></i> Investor Login
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-16 pt-8 hc-footer-bottom flex flex-col md:flex-row justify-between gap-4 text-xs">
+      <p>© <span id="year"></span> Heritage Crops Plantation and Exports (Pvt) Ltd. All Rights Reserved. Reg No: PV 00267466.</p>
+      <div class="flex flex-wrap gap-x-6 gap-y-2 hc-footer-legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms &amp; Conditions</a>
+        <a href="#">Investment Disclaimer</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+EL:SECTION  (Mobile sticky CTA bar — 2 Buttons.
+Note: fixed/sticky positioning is a known Elementor-free limitation;
+see build notes in custom.css.)
+============================================================= -->
+<div class="hc-mobile-cta lg:hidden fixed bottom-0 inset-x-0 z-40 px-4 py-3 flex gap-3">
+  <a href="#investment" class="hc-btn-primary flex-1 text-center py-3 rounded-full text-sm font-medium">Invest Now</a>
+  <a href="#" class="hc-btn-ghost-dark flex-1 text-center py-3 rounded-full text-sm font-medium">WhatsApp</a>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
