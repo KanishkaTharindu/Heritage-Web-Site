@@ -371,3 +371,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-team-group-title::before, .hc-team-group-title::after{
   content:""; height:1px; width:36px; background:var(--hc-gold);
 }
+
+/* Decorative flourish — kept small so it accents the heading and divider, never the whole section.
+   The filter shifts the original blue artwork toward the brand green; delete the filter line to see the original colour. */
+.hc-ornament{ display:block; width:min(280px,70%); height:auto; opacity:.9; filter:hue-rotate(-32deg) saturate(1.1) brightness(.8); }
+.hc-ornament-sm{ width:min(200px,55%); opacity:.8; }
