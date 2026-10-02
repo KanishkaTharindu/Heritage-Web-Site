@@ -136,7 +136,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 @keyframes hcHeroZoom{ from{ transform:scale(1);} to{ transform:scale(1.07);} }
 
 .hc-hero-heading{ color:#fff; }
-.hc-hero-heading-accent{ color:var(--hc-gold); }
+.hc-hero-heading-accent{ color:var(--hc-green); }
 .hc-hero-copy{ color:rgba(255,255,255,.85); }
 
 .hc-float-panel{
@@ -145,8 +145,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   border:1px solid rgba(255,255,255,.18);
   color:#fff;
 }
-.hc-float-panel-title{ color:var(--hc-gold); }
-.hc-icon-gold{ color:var(--hc-gold); }
+.hc-float-panel-title{ color:var(--hc-green); }
+.hc-icon-gold{ color:var(--hc-green); }
 .hc-icon-green{ color:var(--hc-green); }
 
 .hc-scroll-cue{ color:rgba(255,255,255,.7); }
