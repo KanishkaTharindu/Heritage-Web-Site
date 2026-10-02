@@ -297,4 +297,67 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+
+  /* ----------------------------------------------------------
+     7) EXPORTS — animated process cycle
+     Highlights each step in turn (Plantation → Global Market),
+     draws the gold progress ring, then loops. Pauses while the
+     section is off-screen; static (all steps lit) when the visitor
+     prefers reduced motion.
+  ----------------------------------------------------------- */
+  var cycle = document.getElementById('hc-cycle');
+  if (cycle) {
+    var cNodes = cycle.querySelectorAll('.hc-cycle-node');
+    var cArc = cycle.querySelector('.hc-cycle-progress');
+    var cDot = cycle.querySelector('.hc-cycle-dot');
+    var cCenter = cycle.querySelector('.hc-cycle-center');
+    var cCount = cycle.querySelector('.hc-cycle-count');
+    var cName = cycle.querySelector('.hc-cycle-name');
+    var C_LEN = 1068.14, TOTAL = cNodes.length, STEP_MS = 2000, cIndex = -1, cTimer = null;
+    var cNames = [];
+    cycle.querySelector('svg').getAttribute('aria-label').replace('Export process cycle: ', '').split(', ').forEach(function (n) { cNames.push(n); });
+
+    function cSet(progressSteps, activeIdx) {
+      cArc.style.strokeDashoffset = C_LEN * (1 - progressSteps / TOTAL);
+      cDot.style.transform = 'rotate(' + (progressSteps * 360 / TOTAL) + 'deg)';
+      cNodes.forEach(function (n, k) {
+        n.classList.toggle('is-active', k === activeIdx);
+        n.classList.toggle('is-done', activeIdx === -1 ? true : k < activeIdx);
+      });
+    }
+
+    function cShowStep(k) {
+      cSet(k, k);
+      cCount.textContent = 'STEP 0' + (k + 1) + ' / 0' + TOTAL;
+      cName.textContent = cNames[k];
+      cCenter.classList.remove('is-swap'); void cCenter.getBoundingClientRect(); cCenter.classList.add('is-swap');
+    }
+
+    function cTick() {
+      cIndex++;
+      if (cIndex < TOTAL) { cShowStep(cIndex); return; }
+      if (cIndex === TOTAL) { cSet(TOTAL, -1); return; }   // ring closes, all steps lit
+      cIndex = 0;                                           // snap back and start over
+      cycle.classList.add('is-reset');
+      cShowStep(0);
+      void cycle.getBoundingClientRect();
+      cycle.classList.remove('is-reset');
+    }
+
+    function cStart() { if (!cTimer) { cTick(); cTimer = setInterval(cTick, STEP_MS); } }
+    function cStop() { clearInterval(cTimer); cTimer = null; }
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cSet(TOTAL, -1);
+      cCount.textContent = 'EXPORT PROCESS';
+      cName.textContent = '6 steps';
+    } else if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries[0].isIntersecting ? cStart() : cStop();
+      }, { threshold: 0.3 }).observe(cycle);
+    } else {
+      cStart();
+    }
+  }
+
 });

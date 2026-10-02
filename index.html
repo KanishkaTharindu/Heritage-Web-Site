@@ -540,6 +540,7 @@ EL:SECTION  (Our Crops — 4 Image Box widgets w/ overlay caption)
       </div>
     </div>
     <!-- EL:WIDGET:Text -->
+    <p class="hc-note-text text-[11px] mt-6">Crop list to be verified against heritagecrops.lk before final publish (Scotch Bonnet not shown above — confirm inclusion).</p>
   </div>
 </section>
 
@@ -553,27 +554,55 @@ EL:SECTION  (Exports teaser — 2 columns: text/process | Image)
       <h2 class="font-display text-4xl lg:text-5xl leading-tight hc-heading-on-dark">From Sri Lankan Soil<br>to Global Markets.</h2>
       <p class="hc-body-copy-on-dark mt-6 max-w-md leading-relaxed">Every export shipment follows the same disciplined path — from plantation to processing, quality control, packaging and international delivery.</p>
 
-      <!-- EL:WIDGET:Icon List (process steps) -->
-      <ol class="mt-9 flex flex-wrap gap-3 text-xs tracking-[0.12em] uppercase hc-process-list">
-        <li class="hc-process-step px-4 py-2 rounded-full">Plantation</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Harvest</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Processing</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Quality Control</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Packaging</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step hc-process-step-final px-4 py-2 rounded-full font-medium">Global Market</li>
-      </ol>
-      <a href="#" class="hc-text-link-gold mt-9 inline-flex items-center gap-2 pb-1">Explore Exports <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
     </div>
     <div class="lg:col-span-6">
-      <!-- EL:WIDGET:Image -->
-      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
-      <div class="hc-img-zoom rounded-2xl overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1524594152303-9fd13543fe64?auto=format&fit=crop&w=1000&q=80" class="w-full h-[420px] object-cover" alt="Export-ready packaging of Sri Lankan spices">
+      <!-- Animated export process cycle (replaces the old static step list + photo). Driven by script.js section 7. -->
+      <div class="hc-cycle" id="hc-cycle">
+        <svg viewBox="0 0 660 600" role="img" aria-label="Export process cycle: Plantation, Harvest, Processing, Quality Control, Packaging, Global Market">
+          <circle class="hc-cycle-track" cx="330" cy="300" r="170"/>
+          <circle class="hc-cycle-progress" cx="330" cy="300" r="170" transform="rotate(-90 330 300)"/>
+          <g class="hc-cycle-dot" aria-hidden="true"><circle cx="330" cy="130" r="7"/></g>
+      <g class="hc-cycle-node is-active">
+        <circle class="hc-cycle-pulse" cx="330.0" cy="130.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="330.0" cy="130.0" r="30"/>
+        <text class="hc-cycle-node-num" x="330.0" y="136.0" text-anchor="middle">01</text>
+        <text class="hc-cycle-label" text-anchor="middle" x="330.0" y="84.0">Plantation</text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="477.2" cy="215.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="477.2" cy="215.0" r="30"/>
+        <text class="hc-cycle-node-num" x="477.2" y="221.0" text-anchor="middle">02</text>
+        <text class="hc-cycle-label" text-anchor="start" x="521.2" y="222.0">Harvest</text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="477.2" cy="385.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="477.2" cy="385.0" r="30"/>
+        <text class="hc-cycle-node-num" x="477.2" y="391.0" text-anchor="middle">03</text>
+        <text class="hc-cycle-label" text-anchor="start" x="521.2" y="392.0">Processing</text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="330.0" cy="470.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="330.0" cy="470.0" r="30"/>
+        <text class="hc-cycle-node-num" x="330.0" y="476.0" text-anchor="middle">04</text>
+        <text class="hc-cycle-label" text-anchor="middle" x="330.0" y="528.0"><tspan x="330.0" y="528.0">Quality</tspan><tspan x="330.0" y="552.0">Control</tspan></text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="182.8" cy="385.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="182.8" cy="385.0" r="30"/>
+        <text class="hc-cycle-node-num" x="182.8" y="391.0" text-anchor="middle">05</text>
+        <text class="hc-cycle-label" text-anchor="end" x="138.8" y="392.0">Packaging</text>
+      </g>
+      <g class="hc-cycle-node hc-cycle-node-final">
+        <circle class="hc-cycle-pulse" cx="182.8" cy="215.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="182.8" cy="215.0" r="30"/>
+        <text class="hc-cycle-node-num" x="182.8" y="221.0" text-anchor="middle">06</text>
+        <text class="hc-cycle-label" text-anchor="end" x="138.8" y="222.0"><tspan x="138.8" y="210.0">Global</tspan><tspan x="138.8" y="234.0">Market</tspan></text>
+      </g>
+          <g class="hc-cycle-center" aria-hidden="true">
+            <text class="hc-cycle-count" x="330" y="286" text-anchor="middle">STEP 01 / 06</text>
+            <text class="hc-cycle-name font-display" x="330" y="328" text-anchor="middle">Plantation</text>
+          </g>
+        </svg>
       </div>
     </div>
   </div>
