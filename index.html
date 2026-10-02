@@ -633,46 +633,100 @@ EL:SECTION  (Management — intro: Image | Text, then Image Box widgets grouped 
       </p>
     </div>
 
-    <!-- EL:INNER-SECTION  (Chairman / Managing Director) -->
-    <div class="mt-16">
-      <h3 class="hc-team-group-title text-center">Chairman / Managing Director</h3>
-      <div class="mt-8 flex justify-center">
-        <!-- EL:WIDGET:Image Box -->
-        <article class="hc-lift-card hc-team-card rounded-2xl p-6 text-center w-full max-w-xs">
-          <div class="hc-team-photo hc-team-photo--trim">
-            <img src="https://heritagecrops.lk/wp-content/uploads/Mr.-Ganganath-Kumarasinghe.jpg" alt="Portrait of Dr. Ganganath Kumarasinghe" loading="lazy">
-          </div>
-          <h4 class="font-display text-xl mt-5">Dr. Ganganath Kumarasinghe</h4>
-          <p class="hc-team-role mt-1">Chairman | Managing Director</p>
-        </article>
-      </div>
-    </div>
+    <!-- EL:INNER-SECTION  (Organisation chart: Chairman → Directors → Managers)
+         Built with plain CSS connectors so it rebuilds easily with Inner Sections + Image Box widgets. -->
+    <div class="hc-org mt-16" id="org-chart">
+      <h3 class="sr-only">Chairman / Managing Director</h3>
 
-    <!-- EL:WIDGET:Image (decorative ornament divider) -->
-    <img src="https://heritagecrops.lk/wp-content/uploads/2022/12/WhatsApp_Image_2022-12-25_at_4.12.59_PM-removebg-preview1.png" alt="" aria-hidden="true" class="hc-ornament hc-ornament-sm mx-auto mt-16" loading="lazy">
+      <!-- Tier 1 — Chairman -->
+      <div class="hc-org-tier">
+        <article class="hc-org-card hc-org-card--chair hc-lift-card">
+          <div class="hc-org-avatar">
+            <div class="hc-team-photo hc-team-photo--trim">
+              <img src="https://heritagecrops.lk/wp-content/uploads/Mr.-Ganganath-Kumarasinghe.jpg" alt="Portrait of Dr. Ganganath Kumarasinghe" loading="lazy">
+            </div>
+          </div>
+          <h4 class="hc-org-name font-display">Dr. Ganganath Kumarasinghe</h4>
+          <p class="hc-org-role">Chairman | Managing Director</p>
+        </article>
+      </div>
 
-    <!-- EL:INNER-SECTION  (Directors | Company Lawyers) -->
-    <div class="mt-12 grid sm:grid-cols-2 gap-12 max-w-3xl mx-auto">
-      <div>
-        <h3 class="hc-team-group-title text-center">Directors</h3>
-        <article class="hc-lift-card hc-team-card rounded-2xl p-6 text-center mt-8 max-w-xs mx-auto">
-          <div class="hc-team-photo">
-            <img src="https://heritagecrops.lk/wp-content/uploads/Heritage-team2-800x800.png" alt="Portrait of Mr. Prasad Rubasinghe" loading="lazy">
-          </div>
-          <h4 class="font-display text-xl mt-5">Mr. Prasad Rubasinghe</h4>
-          <p class="hc-team-role mt-1">Director / CEO</p>
-        </article>
+      <div class="hc-org-link hc-org-link--branch" data-org-reveal>
+        <h3 class="hc-org-tag">Directors</h3>
       </div>
-      <div>
-        <h3 class="hc-team-group-title text-center">Company Lawyers</h3>
-        <article class="hc-lift-card hc-team-card rounded-2xl p-6 text-center mt-8 max-w-xs mx-auto">
-          <div class="hc-team-photo hc-team-photo--trim">
-            <img src="https://heritagecrops.lk/wp-content/uploads/Heritage-team-800x800.webp" alt="Portrait of Mr. Ayeshmantha Gayan Fransiscus" loading="lazy">
-          </div>
-          <h4 class="font-display text-xl mt-5">Mr. Ayeshmantha Gayan Fransiscus</h4>
-          <p class="hc-team-role mt-1">Company Lawyer</p>
-        </article>
+
+      <!-- Tier 2 — Directors (one <li> per director; add/remove freely, 2–4 fit comfortably in one row).
+           To add a photo, replace the .hc-org-avatar--empty block with:
+           <div class="hc-org-avatar"><div class="hc-team-photo"><img src="..." alt="Portrait of NAME" loading="lazy"></div></div> -->
+      <ul class="hc-org-row hc-org-row--directors" role="list" data-org-reveal>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--director hc-lift-card">
+            <div class="hc-org-avatar">
+              <div class="hc-team-photo">
+                <img src="https://heritagecrops.lk/wp-content/uploads/Heritage-team2-800x800.png" alt="Portrait of Mr. Prasad Rubasinghe" loading="lazy">
+              </div>
+            </div>
+            <h4 class="hc-org-name font-display">Mr. Prasad Rubasinghe</h4>
+            <p class="hc-org-role">Director / CEO</p>
+          </article>
+          <span class="hc-org-merge" aria-hidden="true"></span>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--director hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Director Name</h4>
+            <p class="hc-org-role">Director</p>
+          </article>
+          <span class="hc-org-merge" aria-hidden="true"></span>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--director hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Director Name</h4>
+            <p class="hc-org-role">Director</p>
+          </article>
+          <span class="hc-org-merge" aria-hidden="true"></span>
+        </li>
+      </ul>
+
+      <div class="hc-org-link hc-org-link--branch" data-org-reveal>
+        <h3 class="hc-org-tag">Managers</h3>
       </div>
+
+      <!-- Tier 3 — Managers
+           To add a photo: replace the .hc-org-avatar--empty block's inner <span> with
+           <div class="hc-team-photo"><img src="..." alt="Portrait of NAME" loading="lazy"></div>
+           and remove the --empty modifier + aria-hidden. Add or remove <li> items freely (2–5 fit in one row). -->
+      <ul class="hc-org-row" role="list" data-org-reveal>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Plantation Manager</p>
+          </article>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Finance Manager</p>
+          </article>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Exports &amp; Logistics Manager</p>
+          </article>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Investor Relations Manager</p>
+          </article>
+        </li>
+      </ul>
     </div>
 
   </div>
