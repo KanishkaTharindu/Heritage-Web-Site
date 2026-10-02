@@ -364,3 +364,34 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
   .hc-reveal{ opacity:1; transform:none; }
 }
+
+/* ---------------------------------------------------------------
+   MANAGEMENT / TEAM
+   Placeholder blocks stand in for photos — when a real <img> is
+   dropped into .hc-team-photo / .hc-team-placeholder, give it
+   w-full h-full object-cover and the layout stays identical.
+----------------------------------------------------------------*/
+.hc-management-section{ background:#fff; }
+.hc-team-placeholder{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  background:linear-gradient(145deg, var(--hc-cream), rgba(0,106,80,.12));
+  color:var(--hc-green); font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+}
+.hc-team-photo{ width:100%; aspect-ratio:1/1; border-radius:9999px; overflow:hidden; background:transparent; }
+.hc-team-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+/* Portraits that ship with a white square around the circle: zoom slightly so the circle clip trims the white */
+.hc-team-photo--trim img{ transform:scale(1.1); }
+.hc-team-card{ background:var(--hc-cream); border:1px solid rgba(6,59,42,.08); }
+.hc-team-role{ color:var(--hc-green); font-size:13px; font-weight:600; letter-spacing:.04em; }
+.hc-team-group-title{
+  font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--hc-charcoal); display:flex; align-items:center; justify-content:center; gap:14px;
+}
+.hc-team-group-title::before, .hc-team-group-title::after{
+  content:""; height:1px; width:36px; background:var(--hc-gold);
+}
+
+/* Decorative flourish — kept small so it accents the heading and divider, never the whole section.
+   The filter shifts the original blue artwork toward the brand green; delete the filter line to see the original colour. */
+.hc-ornament{ display:block; width:min(280px,70%); height:auto; opacity:.9; filter:hue-rotate(-32deg) saturate(1.1) brightness(.8); }
+.hc-ornament-sm{ width:min(200px,55%); opacity:.8; }
