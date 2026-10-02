@@ -53,6 +53,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 }
 
 .hc-logo-mark{ border:1px solid rgba(200,169,81,.7); }
+/* Logo image — shown as-is with its original background */
+.hc-logo-badge{ display:inline-flex; align-items:center; flex-shrink:0; }
+.hc-logo-badge img{ width:150px; height:auto; display:block; border-radius:8px; }
+@media (min-width:1024px){ .hc-logo-badge img{ width:190px; } }
 .hc-logo-letter{ color:var(--hc-gold); }
 .hc-logo-text, .hc-logo-subtext{ color:#fff; transition:color .4s var(--hc-ease); }
 .hc-logo-subtext{ color:rgba(200,169,81,.9); }
