@@ -806,33 +806,80 @@ EL:SECTION  (Contact — 2 columns: details/map | static dummy form)
       <h2 class="font-display text-4xl">Let's Grow Together</h2>
       <!-- EL:WIDGET:Icon List -->
       <div class="mt-8 space-y-5 text-sm hc-contact-list">
-        <p class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>Office Address — [Street, City], Sri Lanka</p>
-        <p class="flex items-start gap-3"><i data-lucide="phone" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>+94 XX XXX XXXX</p>
-        <p class="flex items-start gap-3"><i data-lucide="mail" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>info@heritagecrops.lk</p>
-        <p class="flex items-start gap-3"><i data-lucide="clock" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>Mon – Fri, 9:00 AM – 5:30 PM</p>
+        <!-- Opens Google Maps (app on mobile) -->
+        <p class="flex items-start gap-3"><i data-lucide="map-pin" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=196%2F2%2F2+Dayananda+Building+High+Level+Road+Nugegoda+Sri+Lanka" target="_blank" rel="noopener noreferrer" aria-label="Open our location in Google Maps">196/2/2, Dayananda Building, High Level Road,<br>Nugegoda</a>
+        </p>
+        <!-- tel: links start a call on phones -->
+        <p class="flex items-start gap-3"><i data-lucide="phone" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>
+          <span><a href="tel:+94112809340" aria-label="Call +94 11 280 9340">(+94) 11 280 9340</a> | <a href="tel:+94744121900" aria-label="Call +94 74 412 1900">(+94) 74 412 1900</a></span>
+        </p>
+        <!-- mailto: opens the visitor's email app -->
+        <p class="flex items-start gap-3"><i data-lucide="mail" class="w-4 h-4 hc-icon-green mt-0.5" aria-hidden="true"></i>
+          <a href="mailto:info@heritagecrops.lk" aria-label="Email info@heritagecrops.lk">info@heritagecrops.lk</a>
+        </p>
       </div>
       <!-- EL:WIDGET:Google Maps -->
-      <div class="mt-8 rounded-2xl overflow-hidden h-56 hc-map-placeholder flex items-center justify-center text-sm border" role="img" aria-label="Map placeholder — replace with a live Google Maps embed of the Heritage Crops office">
-        Google Map Embed
+      <div class="mt-8 rounded-2xl overflow-hidden h-72 border hc-map-frame">
+        <iframe
+          title="Heritage Crops office location on Google Maps"
+          src="https://maps.google.com/maps?q=196%2F2%2F2%20Dayananda%20Building%2C%20High%20Level%20Road%2C%20Nugegoda%2C%20Sri%20Lanka&amp;z=16&amp;output=embed"
+          class="w-full h-full border-0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
       </div>
     </div>
 
     <div class="lg:col-span-7">
       <!--
-        EL:WIDGET:Text
-        Per project spec: this contact form is a STATIC, NON-FUNCTIONAL mockup only.
-        It is not wired to any submission handler and will become a Text Editor
-        widget (raw formatted HTML) in Elementor, not a Form widget.
+        Working enquiry form — sends submissions to info@heritagecrops.lk via Web3Forms (free).
+        Setup: get an access key at https://web3forms.com (enter info@heritagecrops.lk), then replace
+        YOUR_ACCESS_KEY_HERE below. The key is safe to be public; it can only send to that address.
+        Submission handling lives in script.js (section 6).
       -->
-      <div class="hc-dummy-form grid sm:grid-cols-2 gap-5">
-        <div class="sm:col-span-2 hc-dummy-select px-4 py-3 text-sm rounded-lg" role="note">General Enquiry ▾ <span class="hc-note-text">(enquiry type — static)</span></div>
-        <div class="hc-dummy-input px-4 py-3 text-sm rounded-lg" role="note">Full Name</div>
-        <div class="hc-dummy-input px-4 py-3 text-sm rounded-lg" role="note">Email Address</div>
-        <div class="sm:col-span-2 hc-dummy-input px-4 py-3 text-sm rounded-lg" role="note">Phone Number</div>
-        <div class="sm:col-span-2 hc-dummy-textarea px-4 py-3 text-sm rounded-lg" role="note">Message</div>
-        <span class="hc-btn-primary sm:col-span-2 justify-center inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium" role="note" aria-hidden="true">Request an Investment Consultation <span class="hc-btn-arrow">→</span></span>
-      </div>
-      <p class="hc-note-text text-[11px] mt-4">This form is a static visual mockup. Connect a real Elementor Form widget (Pro) or a plugin such as WPForms/Contact Form 7 when the site goes live.</p>
+      <form id="contact-form" class="hc-form grid sm:grid-cols-2 gap-5" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="18e44e12-e2cc-4792-b925-e95dd8960437">
+        <input type="hidden" name="subject" value="New website enquiry — Heritage Crops">
+        <input type="hidden" name="from_name" value="Heritage Crops Website">
+        <!-- Honeypot: real visitors never see or tick this; bots do -->
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+
+        <div class="sm:col-span-2">
+          <label for="cf-type" class="sr-only">Enquiry type</label>
+          <select id="cf-type" name="enquiry_type" class="hc-form-field hc-form-select" required>
+            <option>General Enquiry</option>
+            <option>Vanilla Cultivation Plan</option>
+            <option>Cinnamon Estate Plan</option>
+            <option>Mango Growth Plan</option>
+            <option>Plantation Visit</option>
+            <option>Exports &amp; Partnerships</option>
+          </select>
+        </div>
+        <div>
+          <label for="cf-name" class="sr-only">Full name</label>
+          <input id="cf-name" name="name" type="text" class="hc-form-field" placeholder="Full Name" autocomplete="name" required>
+        </div>
+        <div>
+          <label for="cf-email" class="sr-only">Email address</label>
+          <input id="cf-email" name="email" type="email" maxlength="254" class="hc-form-field" placeholder="Email Address" autocomplete="email" aria-describedby="cf-email-error" required>
+          <p id="cf-email-error" class="hc-field-error" role="alert"></p>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="cf-phone" class="sr-only">Phone number</label>
+          <input id="cf-phone" name="phone" type="tel" inputmode="numeric" maxlength="10" class="hc-form-field" placeholder="Phone Number (e.g. 0771234567)" autocomplete="tel" aria-describedby="cf-phone-error" required>
+          <p id="cf-phone-error" class="hc-field-error" role="alert"></p>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="cf-message" class="sr-only">Message</label>
+          <textarea id="cf-message" name="message" rows="4" class="hc-form-field hc-form-textarea" placeholder="Message" required></textarea>
+        </div>
+        <button type="submit" id="cf-submit" class="hc-btn-primary sm:col-span-2 justify-center inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-medium">
+          <span class="hc-submit-label">Request an Investment Consultation</span> <span class="hc-btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <p id="cf-status" class="hc-form-status sm:col-span-2 text-sm" role="status" aria-live="polite"></p>
+      </form>
+      <p class="hc-note-text text-[11px] mt-2">Your details are used only to respond to your enquiry.</p>
     </div>
   </div>
 </section>
