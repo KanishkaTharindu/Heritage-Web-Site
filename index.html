@@ -664,46 +664,100 @@ EL:SECTION  (Management — intro: Image | Text, then Image Box widgets grouped 
       </p>
     </div>
 
-    <!-- EL:INNER-SECTION  (Chairman / Managing Director) -->
-    <div class="mt-16">
-      <h3 class="hc-team-group-title text-center">Chairman / Managing Director</h3>
-      <div class="mt-8 flex justify-center">
-        <!-- EL:WIDGET:Image Box -->
-        <article class="hc-lift-card hc-team-card rounded-2xl p-6 text-center w-full max-w-xs">
-          <div class="hc-team-photo hc-team-photo--trim">
-            <img src="https://heritagecrops.lk/wp-content/uploads/Mr.-Ganganath-Kumarasinghe.jpg" alt="Portrait of Dr. Ganganath Kumarasinghe" loading="lazy">
-          </div>
-          <h4 class="font-display text-xl mt-5">Dr. Ganganath Kumarasinghe</h4>
-          <p class="hc-team-role mt-1">Chairman | Managing Director</p>
-        </article>
-      </div>
-    </div>
+    <!-- EL:INNER-SECTION  (Organisation chart: Chairman → Directors → Managers)
+         Built with plain CSS connectors so it rebuilds easily with Inner Sections + Image Box widgets. -->
+    <div class="hc-org mt-16" id="org-chart">
+      <h3 class="sr-only">Chairman / Managing Director</h3>
 
-    <!-- EL:WIDGET:Image (decorative ornament divider) -->
-    <img src="https://heritagecrops.lk/wp-content/uploads/2022/12/WhatsApp_Image_2022-12-25_at_4.12.59_PM-removebg-preview1.png" alt="" aria-hidden="true" class="hc-ornament hc-ornament-sm mx-auto mt-16" loading="lazy">
+      <!-- Tier 1 — Chairman -->
+      <div class="hc-org-tier">
+        <article class="hc-org-card hc-org-card--chair hc-lift-card">
+          <div class="hc-org-avatar">
+            <div class="hc-team-photo hc-team-photo--trim">
+              <img src="https://heritagecrops.lk/wp-content/uploads/Mr.-Ganganath-Kumarasinghe.jpg" alt="Portrait of Dr. Ganganath Kumarasinghe" loading="lazy">
+            </div>
+          </div>
+          <h4 class="hc-org-name font-display">Dr. Ganganath Kumarasinghe</h4>
+          <p class="hc-org-role">Chairman | Managing Director</p>
+        </article>
+      </div>
 
-    <!-- EL:INNER-SECTION  (Directors | Company Lawyers) -->
-    <div class="mt-12 grid sm:grid-cols-2 gap-12 max-w-3xl mx-auto">
-      <div>
-        <h3 class="hc-team-group-title text-center">Directors</h3>
-        <article class="hc-lift-card hc-team-card rounded-2xl p-6 text-center mt-8 max-w-xs mx-auto">
-          <div class="hc-team-photo">
-            <img src="https://heritagecrops.lk/wp-content/uploads/Heritage-team2-800x800.png" alt="Portrait of Mr. Prasad Rubasinghe" loading="lazy">
-          </div>
-          <h4 class="font-display text-xl mt-5">Mr. Prasad Rubasinghe</h4>
-          <p class="hc-team-role mt-1">Director / CEO</p>
-        </article>
+      <div class="hc-org-link hc-org-link--branch" data-org-reveal>
+        <h3 class="hc-org-tag">Directors</h3>
       </div>
-      <div>
-        <h3 class="hc-team-group-title text-center">Company Lawyers</h3>
-        <article class="hc-lift-card hc-team-card rounded-2xl p-6 text-center mt-8 max-w-xs mx-auto">
-          <div class="hc-team-photo hc-team-photo--trim">
-            <img src="https://heritagecrops.lk/wp-content/uploads/Heritage-team-800x800.webp" alt="Portrait of Mr. Ayeshmantha Gayan Fransiscus" loading="lazy">
-          </div>
-          <h4 class="font-display text-xl mt-5">Mr. Ayeshmantha Gayan Fransiscus</h4>
-          <p class="hc-team-role mt-1">Company Lawyer</p>
-        </article>
+
+      <!-- Tier 2 — Directors (one <li> per director; add/remove freely, 2–4 fit comfortably in one row).
+           To add a photo, replace the .hc-org-avatar--empty block with:
+           <div class="hc-org-avatar"><div class="hc-team-photo"><img src="..." alt="Portrait of NAME" loading="lazy"></div></div> -->
+      <ul class="hc-org-row hc-org-row--directors" role="list" data-org-reveal>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--director hc-lift-card">
+            <div class="hc-org-avatar">
+              <div class="hc-team-photo">
+                <img src="https://heritagecrops.lk/wp-content/uploads/Heritage-team2-800x800.png" alt="Portrait of Mr. Prasad Rubasinghe" loading="lazy">
+              </div>
+            </div>
+            <h4 class="hc-org-name font-display">Mr. Prasad Rubasinghe</h4>
+            <p class="hc-org-role">Director / CEO</p>
+          </article>
+          <span class="hc-org-merge" aria-hidden="true"></span>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--director hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Director Name</h4>
+            <p class="hc-org-role">Director</p>
+          </article>
+          <span class="hc-org-merge" aria-hidden="true"></span>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--director hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Director Name</h4>
+            <p class="hc-org-role">Director</p>
+          </article>
+          <span class="hc-org-merge" aria-hidden="true"></span>
+        </li>
+      </ul>
+
+      <div class="hc-org-link hc-org-link--branch" data-org-reveal>
+        <h3 class="hc-org-tag">Managers</h3>
       </div>
+
+      <!-- Tier 3 — Managers
+           To add a photo: replace the .hc-org-avatar--empty block's inner <span> with
+           <div class="hc-team-photo"><img src="..." alt="Portrait of NAME" loading="lazy"></div>
+           and remove the --empty modifier + aria-hidden. Add or remove <li> items freely (2–5 fit in one row). -->
+      <ul class="hc-org-row" role="list" data-org-reveal>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Plantation Manager</p>
+          </article>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Finance Manager</p>
+          </article>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Exports &amp; Logistics Manager</p>
+          </article>
+        </li>
+        <li class="hc-org-row-item">
+          <article class="hc-org-card hc-org-card--manager hc-lift-card">
+            <div class="hc-org-avatar hc-org-avatar--empty" aria-hidden="true"><span class="hc-org-initial"><i data-lucide="user-round"></i></span></div>
+            <h4 class="hc-org-name font-display">Manager Name</h4>
+            <p class="hc-org-role">Investor Relations Manager</p>
+          </article>
+        </li>
+      </ul>
     </div>
 
   </div>
@@ -802,36 +856,36 @@ EL:SECTION  (Blog / News — 3 Image Box widgets)
         <p class="hc-eyebrow mb-5">Blog &amp; News</p>
         <h2 class="font-display text-4xl lg:text-5xl">From the Plantation</h2>
       </div>
-      <a href="#" class="hc-text-link inline-flex items-center gap-2 pb-1 whitespace-nowrap">Visit the Blog <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
+      <a href="https://www.facebook.com/heritagecropsplantation/" target="_blank" rel="noopener noreferrer" class="hc-text-link inline-flex items-center gap-2 pb-1 whitespace-nowrap">Follow us on Facebook <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
     </div>
-    <div class="mt-16 grid md:grid-cols-3 gap-6">
-      <!-- EL:WIDGET:Image Box -->
-      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
-      <a href="#" class="hc-lift-card hc-blog-card block rounded-2xl overflow-hidden">
-        <div class="hc-img-zoom h-48"><img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Plantation landscape update"></div>
-        <div class="p-6">
-          <p class="hc-blog-category text-[11px] uppercase tracking-wide">Plantation Updates</p>
-          <h3 class="font-display text-lg mt-2">Season Progress Across Our Vanilla Estates</h3>
-          <p class="hc-blog-date text-xs mt-3">XX Month 2026</p>
-        </div>
-      </a>
-      <a href="#" class="hc-lift-card hc-blog-card block rounded-2xl overflow-hidden">
-        <div class="hc-img-zoom h-48"><img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Tea and spice plantation rows"></div>
-        <div class="p-6">
-          <p class="hc-blog-category text-[11px] uppercase tracking-wide">Investment Insights</p>
-          <h3 class="font-display text-lg mt-2">Understanding Cultivation-Linked Investment</h3>
-          <p class="hc-blog-date text-xs mt-3">XX Month 2026</p>
-        </div>
-      </a>
-      <a href="#" class="hc-lift-card hc-blog-card block rounded-2xl overflow-hidden">
-        <div class="hc-img-zoom h-48"><img src="https://images.unsplash.com/photo-1615486364836-45b8f8de8d0a?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Export shipment preparation"></div>
-        <div class="p-6">
-          <p class="hc-blog-category text-[11px] uppercase tracking-wide">Export News</p>
-          <h3 class="font-display text-lg mt-2">Sri Lankan Cinnamon in International Markets</h3>
-          <p class="hc-blog-date text-xs mt-3">XX Month 2026</p>
-        </div>
-      </a>
-    </div>
+
+    <!-- EL:WIDGET:Posts / Loop Grid — one <li> per Facebook post, newest first.
+         HOW TO ADD A POST: copy a whole <li>, then change: the Facebook post URL (href), image src + alt,
+         category, date (both the datetime="YYYY-MM-DD" value and the visible text), title and excerpt. -->
+    <ul class="hc-news-list mt-14" role="list">
+
+      <li>
+        <!-- TODO: replace href with this post's own Facebook link (Facebook → "..." on the post → Copy link).
+             It currently points to the Facebook page. -->
+        <a href="https://www.facebook.com/share/p/1D8qJgut2N/" target="_blank" rel="noopener noreferrer" class="hc-news-item hc-lift-card hc-blog-card"
+           aria-label="Our First Harvest at Girandurukotte Mango Farm — read on Facebook (opens in a new tab)">
+          <div class="hc-news-media hc-img-zoom">
+            <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/blogs/mangoPost.jpg" alt="Two people holding freshly harvested mangoes among the trees at Girandurukotte Mango Farm" loading="lazy">
+          </div>
+          <div class="hc-news-body">
+            <div class="hc-news-meta">
+              <span class="hc-news-source"><svg class="hc-fb-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.34l-.53 3.49h-2.81V24C19.61 23.1 24 18.1 24 12.07z"/></svg>Facebook</span>
+              <span class="hc-blog-category text-xs font-semibold">Plantation Updates</span>
+              <time class="hc-blog-date text-xs" datetime="2026-09-18">18 September 2026</time>
+            </div>
+            <h3 class="hc-news-title font-display">Our First Harvest at Girandurukotte Mango Farm</h3>
+            <p class="hc-body-copy hc-news-excerpt">From the very first planting to nurturing every tree, we celebrated the first harvest at our Girandurukotte Mango Farm. It is the result of time, patience and hard work, and only the beginning.</p>
+            <span class="hc-news-cta">Read on Facebook <span class="hc-btn-arrow" aria-hidden="true">↗</span></span>
+          </div>
+        </a>
+      </li>
+
+    </ul>
   </div>
 </section>
 

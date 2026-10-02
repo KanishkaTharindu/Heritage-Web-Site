@@ -151,6 +151,24 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ----------------------------------------------------------
+     5c) ORG CHART — draw the connector lines as each tier scrolls into view
+     (Presentation only; without JS the chart is simply fully drawn.)
+  ----------------------------------------------------------- */
+  var org = document.getElementById('org-chart');
+  if (org && 'IntersectionObserver' in window) {
+    var orgIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        orgIO.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.01 });
+
+    org.classList.add('is-armed');
+    org.querySelectorAll('[data-org-reveal]').forEach(function (el) { orgIO.observe(el); });
+  }
+
+  /* ----------------------------------------------------------
      6) CONTACT FORM — sends enquiries to info@heritagecrops.lk
      Uses Web3Forms (free). Set the access_key in index.html.
   ----------------------------------------------------------- */

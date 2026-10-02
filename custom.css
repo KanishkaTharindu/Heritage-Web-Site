@@ -439,3 +439,183 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
    The filter shifts the original blue artwork toward the brand green; delete the filter line to see the original colour. */
 .hc-ornament{ display:block; width:min(280px,70%); height:auto; opacity:.9; filter:hue-rotate(-32deg) saturate(1.1) brightness(.8); }
 .hc-ornament-sm{ width:min(200px,55%); opacity:.8; }
+
+/* ---------------------------------------------------------------
+   ORGANISATION CHART  (Chairman → Directors → Managers)
+   Reads like a plant: one gold stem grows from the Chairman and
+   branches at the Managers tier. Size + tone encode seniority.
+   Connectors are pure CSS; tier tags sit on the stem as nodes.
+----------------------------------------------------------------*/
+.hc-org{ display:flex; flex-direction:column; align-items:center; }
+.hc-org-tier{ display:flex; justify-content:center; width:100%; }
+
+.hc-org-card{ width:100%; text-align:center; border-radius:20px; }
+.hc-org-avatar{
+  width:var(--avatar); margin:0 auto; padding:5px; border-radius:9999px;
+  border:1.5px solid var(--hc-gold); background:#fff;
+}
+.hc-org-name{ line-height:1.2; }
+.hc-org-role{ margin-top:6px; font-size:13px; font-weight:600; letter-spacing:.03em; color:var(--hc-green); }
+
+/* Tier 1 — Chairman: the one dark, large card */
+.hc-org-card--chair{
+  --avatar:176px; max-width:340px; padding:36px 28px 32px;
+  background:var(--hc-forest); color:#fff;
+  border:1px solid rgba(200,169,81,.45);
+  box-shadow:0 34px 60px -30px rgba(6,59,42,.65);
+}
+.hc-org-card--chair .hc-org-avatar{ background:var(--hc-forest); box-shadow:0 0 0 7px rgba(200,169,81,.14); }
+.hc-org-card--chair .hc-org-name{ margin-top:22px; font-size:1.75rem; color:#fff; }
+.hc-org-card--chair .hc-org-role{ color:var(--hc-gold); }
+
+/* Tier 2 — Directors: cream, medium */
+.hc-org-card--director{
+  --avatar:136px; padding:30px 20px 26px;
+  background:var(--hc-cream); border:1px solid rgba(6,59,42,.1);
+  border-top:3px solid var(--hc-gold);
+  box-shadow:0 22px 44px -26px rgba(6,59,42,.3);
+}
+.hc-org-card--director .hc-org-name{ margin-top:18px; font-size:1.4rem; }
+
+/* Tier 3 — Managers: light, compact */
+.hc-org-card--manager{
+  --avatar:96px; padding:22px 16px 20px;
+  background:#fff; border:1px solid rgba(6,59,42,.12);
+  box-shadow:0 14px 30px -22px rgba(6,59,42,.3);
+}
+.hc-org-card--manager .hc-org-name{ margin-top:14px; font-size:1.1rem; }
+.hc-org-card--manager .hc-org-role{ font-size:12.5px; }
+
+/* Placeholder avatar until a photo is supplied */
+.hc-org-initial{
+  display:flex; align-items:center; justify-content:center; aspect-ratio:1/1; border-radius:9999px;
+  background:linear-gradient(145deg, var(--hc-cream), rgba(0,106,80,.16)); color:var(--hc-green);
+}
+.hc-org-initial svg{ width:34%; height:34%; stroke-width:1.5; }
+
+/* Stem between tiers, with the tier tag sitting on it */
+.hc-org-link{ position:relative; width:100%; height:104px; display:flex; align-items:center; justify-content:center; }
+.hc-org-link::before{
+  content:""; position:absolute; left:50%; top:0; bottom:0; width:2px; margin-left:-1px;
+  background:var(--hc-gold); transform-origin:top;
+}
+.hc-org-link::after{
+  content:""; position:absolute; left:50%; bottom:0; width:8px; height:8px; margin-left:-4px;
+  border-radius:9999px; background:var(--hc-gold);
+}
+.hc-org-link--branch::after{ bottom:-5px; z-index:1; }
+.hc-org-tag{
+  position:relative; z-index:1; padding:6px 18px; border-radius:9999px;
+  background:#fff; border:1px solid var(--hc-gold);
+  font-size:12.5px; font-weight:700; letter-spacing:.06em; color:var(--hc-charcoal);
+}
+
+/* Managers row: bus line + a drop to every card (desktop) */
+.hc-org-row{ list-style:none; margin:0; padding:0; width:100%; display:flex; justify-content:center; }
+.hc-org-row-item{ position:relative; flex:1 1 0; max-width:264px; padding:44px 12px 0; }
+.hc-org-row-item::before{
+  content:""; position:absolute; top:0; left:50%; width:2px; height:44px; margin-left:-1px;
+  background:var(--hc-gold); transform-origin:top;
+}
+.hc-org-row-item::after{
+  content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--hc-gold); transform-origin:center;
+}
+.hc-org-row-item:first-child::after{ left:50%; transform-origin:left; }
+.hc-org-row-item:last-child::after{ right:50%; transform-origin:right; }
+.hc-org-row-item:only-child::after{ display:none; }
+
+/* Directors row: wider cards, plus lines that merge back into one stem below */
+.hc-org-row--directors{ position:relative; }
+.hc-org-row--directors .hc-org-row-item{ max-width:300px; padding-bottom:44px; }
+.hc-org-merge{ position:absolute; left:0; right:0; bottom:0; height:44px; pointer-events:none; }
+.hc-org-merge::before{
+  content:""; position:absolute; top:0; bottom:0; left:50%; width:2px; margin-left:-1px;
+  background:var(--hc-gold); transform-origin:top;
+}
+.hc-org-merge::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+  background:var(--hc-gold); transform-origin:center;
+}
+.hc-org-row-item:first-child .hc-org-merge::after{ left:50%; transform-origin:left; }
+.hc-org-row-item:last-child .hc-org-merge::after{ right:50%; transform-origin:right; }
+.hc-org-row-item:only-child .hc-org-merge::after{ display:none; }
+.hc-org-row--directors::after{
+  content:""; position:absolute; left:50%; bottom:-3px; width:8px; height:8px; margin-left:-4px;
+  border-radius:9999px; background:var(--hc-gold);
+}
+
+/* Tablet / mobile: managers stack on the same central stem */
+@media (max-width:1023px){
+  .hc-org-link{ height:80px; }
+  .hc-org-link--branch::after{ bottom:0; }
+  .hc-org-row{ flex-direction:column; align-items:center; gap:28px; }
+  .hc-org-row-item{ width:100%; max-width:280px; padding:0; }
+  .hc-org-row-item::after{ display:none; }
+  .hc-org-row-item::before{ top:-28px; height:28px; }
+  .hc-org-row-item:first-child::before{ display:none; }
+  .hc-org-card--chair{ --avatar:150px; }
+  .hc-org-row--directors .hc-org-row-item{ max-width:280px; padding-bottom:0; }
+  .hc-org-merge, .hc-org-row--directors::after{ display:none; }
+}
+
+/* One reveal: stems draw downward as each tier scrolls into view.
+   Only active once JS adds .is-armed, so the chart is fully drawn without JS. */
+.hc-org.is-armed .hc-org-link::before,
+.hc-org.is-armed .hc-org-row-item::before,
+.hc-org.is-armed .hc-org-merge::before{ transform:scaleY(0); }
+.hc-org.is-armed .hc-org-row-item::after,
+.hc-org.is-armed .hc-org-merge::after{ transform:scaleX(0); }
+.hc-org.is-armed .hc-org-row--directors::after{ transform:scale(0); }
+.hc-org.is-armed .hc-org-link::after{ transform:scale(0); }
+.hc-org.is-armed .hc-org-link::before{ transition:transform .8s var(--hc-ease); }
+.hc-org.is-armed .hc-org-link::after{ transition:transform .4s var(--hc-ease) .7s; }
+.hc-org.is-armed .hc-org-row-item::after{ transition:transform .7s var(--hc-ease) .1s; }
+.hc-org.is-armed .hc-org-row-item::before{ transition:transform .6s var(--hc-ease) .7s; }
+.hc-org.is-armed .hc-org-merge::before{ transition:transform .6s var(--hc-ease) 1.1s; }
+.hc-org.is-armed .hc-org-merge::after{ transition:transform .7s var(--hc-ease) 1.6s; }
+.hc-org.is-armed .hc-org-row--directors::after{ transition:transform .4s var(--hc-ease) 2.2s; }
+.hc-org.is-armed .is-in.hc-org-link::before,
+.hc-org.is-armed .is-in.hc-org-link::after,
+.hc-org.is-armed .is-in .hc-org-row-item::before,
+.hc-org.is-armed .is-in .hc-org-row-item::after,
+.hc-org.is-armed .is-in .hc-org-merge::before,
+.hc-org.is-armed .is-in .hc-org-merge::after,
+.hc-org.is-armed .is-in.hc-org-row--directors::after{ transform:none; }
+@media (max-width:1023px){
+  .hc-org.is-armed .hc-org-row-item::before{ transition-delay:.1s; }
+}
+
+/* ---------------------------------------------------------------
+   BLOG & NEWS LIST  (Facebook posts — each row links to its post)
+----------------------------------------------------------------*/
+.hc-news-list{ list-style:none; margin-left:0; margin-right:0; margin-bottom:0; padding:0; display:flex; flex-direction:column; gap:24px; }
+.hc-news-item{
+  display:flex; flex-direction:column; border-radius:20px; overflow:hidden; color:inherit; text-decoration:none;
+  border:1px solid rgba(6,59,42,.08);
+}
+.hc-news-media{ height:300px; flex-shrink:0; }
+.hc-news-media img{ width:100%; height:100%; object-fit:cover; object-position:50% 30%; display:block; }
+.hc-news-body{ display:flex; flex-direction:column; padding:28px 26px 30px; }
+.hc-news-meta{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 18px; }
+.hc-news-source{ display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:600; color:#1877F2; }
+.hc-fb-icon{ width:16px; height:16px; }
+.hc-news-title{ margin-top:14px; font-size:1.65rem; line-height:1.22; color:var(--hc-charcoal); }
+.hc-news-excerpt{ margin-top:14px; max-width:60ch; line-height:1.7; }
+.hc-news-cta{
+  align-self:flex-start; margin-top:24px; display:inline-flex; align-items:center; gap:8px;
+  font-size:14px; font-weight:600; color:var(--hc-green);
+  border-bottom:1px solid rgba(0,106,80,.3); padding-bottom:2px; transition:border-color .3s var(--hc-ease);
+}
+.hc-news-item:hover .hc-news-cta, .hc-news-item:focus-visible .hc-news-cta{ border-color:var(--hc-green); }
+.hc-news-item:hover .hc-btn-arrow{ transform:translate(2px,-2px); }
+.hc-news-item:hover .hc-news-media img{ transform:scale(1.04); }
+
+@media (min-width:768px){
+  .hc-news-item{ flex-direction:row; }
+  .hc-news-media{ width:38%; max-width:480px; height:auto; min-height:340px; }
+  .hc-news-body{ flex:1; justify-content:center; padding:36px 44px; }
+}
+@media (min-width:1024px){
+  .hc-news-title{ font-size:2rem; }
+}
