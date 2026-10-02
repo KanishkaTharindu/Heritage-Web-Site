@@ -121,7 +121,7 @@ EL:SECTION  (Hero — background image + overlay)
       <!-- EL:COLUMN (hero copy) -->
       <div class="lg:col-span-7">
         <!-- EL:WIDGET:Text (eyebrow) -->
-        <p class="hc-eyebrow hc-eyebrow-on-dark mb-6">Smart Agriculture · Responsible Investment</p>
+        <!-- <p class="hc-eyebrow mb-6">Smart Agriculture · Responsible Investment</p> -->
         <!-- EL:WIDGET:Heading (H1) -->
         <h1 class="hc-hero-heading font-display text-[2.6rem] leading-[1.08] sm:text-6xl lg:text-7xl">
           Growing<br>
@@ -448,42 +448,49 @@ EL:SECTION  (Our Plantations preview — 3 Image Box widgets)
         <p class="hc-eyebrow mb-5">Our Plantations</p>
         <h2 class="font-display text-4xl lg:text-5xl max-w-xl">Rooted in Sri Lankan Soil.<br>Built for the Future.</h2>
       </div>
-      <a href="#" class="hc-text-link inline-flex items-center gap-2 pb-1 whitespace-nowrap">
-        View All Plantations <span class="hc-btn-arrow" aria-hidden="true">→</span>
-      </a>
     </div>
 
-    <div class="mt-16 grid md:grid-cols-3 gap-6">
+    <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <!-- EL:COLUMN / EL:WIDGET:Image Box -->
-      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
+      <!-- Images hosted on ImageKit (HeritageCrops/CropsImg) -->
       <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
         <div class="hc-img-zoom h-56 relative">
-          <img src="https://images.unsplash.com/photo-1594970484552-4390e8b4a6ea?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Vanilla plantation cultivation project in Kandy">
+          <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/vanilla.jpg?updatedAt=1790929993652" class="w-full h-full object-cover" alt="Vanilla plantation cultivation project in Kandy">
           <span class="hc-status-badge hc-status-active absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full">Active</span>
         </div>
         <div class="p-6">
           <h3 class="font-display text-xl">Vanilla Estate — Kandy</h3>
-          <p class="hc-card-copy text-sm mt-1">Land Extent: XX Acres · Cultivation Stage: Growth</p>
+          <p class="hc-card-copy text-sm mt-1">Premium vanilla grown for global flavour markets.</p>
         </div>
       </div>
       <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
         <div class="hc-img-zoom h-56 relative">
-          <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Cinnamon plantation cultivation project in Matara">
+          <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/cinnamon.jpg?updatedAt=1790929991883" class="w-full h-full object-cover" alt="Cinnamon plantation cultivation project in Matara">
           <span class="hc-status-badge hc-status-developing absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full font-medium">Developing</span>
         </div>
         <div class="p-6">
           <h3 class="font-display text-xl">Cinnamon Grove — Matara</h3>
-          <p class="hc-card-copy text-sm mt-1">Land Extent: XX Acres · Cultivation Stage: Planting</p>
+          <p class="hc-card-copy text-sm mt-1">True Ceylon cinnamon, cultivated for export.</p>
         </div>
       </div>
       <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
         <div class="hc-img-zoom h-56 relative">
-          <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Cardamom plantation cultivation project in Nuwara Eliya">
+          <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/mango.jpg?updatedAt=1790929989047" class="w-full h-full object-cover" alt="TJC Mango plantation cultivation project">
           <span class="hc-status-badge hc-status-harvesting absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full">Harvesting</span>
         </div>
         <div class="p-6">
-          <h3 class="font-display text-xl">Cardamom Fields — Nuwara Eliya</h3>
-          <p class="hc-card-copy text-sm mt-1">Land Extent: XX Acres · Cultivation Stage: Harvest</p>
+          <h3 class="font-display text-xl">TJC Mango Orchard</h3>
+          <p class="hc-card-copy text-sm mt-1">Sweet, high-quality mangoes for fresh and export markets.</p>
+        </div>
+      </div>
+      <div class="hc-lift-card hc-plantation-card rounded-2xl overflow-hidden">
+        <div class="hc-img-zoom h-56 relative">
+          <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/ginger.jpg?updatedAt=1790930914061" class="w-full h-full object-cover" alt="Ginger plantation cultivation project">
+          <span class="hc-status-badge hc-status-developing font-medium absolute top-4 left-4 text-[11px] px-3 py-1 rounded-full">Developing</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-xl">Ginger Fields</h3>
+          <p class="hc-card-copy text-sm mt-1">Aromatic, flavourful ginger for fresh and dried trade.</p>
         </div>
       </div>
     </div>
@@ -502,39 +509,35 @@ EL:SECTION  (Our Crops — 4 Image Box widgets w/ overlay caption)
 
     <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <!-- EL:WIDGET:Image Box -->
-      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
-      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
-        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Vanilla pods on the vine">
+      <!-- Images hosted on ImageKit (HeritageCrops/CropsImg) -->
+      <div class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/VanillaCloseup.jpg" class="w-full h-full object-cover" alt="Close-up of vanilla pods">
         <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
         <div class="absolute bottom-0 p-6 hc-crop-card-text">
           <h3 class="font-display text-2xl">Vanilla</h3>
-          <p class="text-xs mt-1">Explore Crop →</p>
         </div>
-      </a>
-      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
-        <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Cinnamon sticks and bark">
+      </div>
+      <div class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/CinnamonCloseup.jpg" class="w-full h-full object-cover" alt="Close-up of cinnamon">
         <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
         <div class="absolute bottom-0 p-6 hc-crop-card-text">
           <h3 class="font-display text-2xl">Cinnamon</h3>
-          <p class="text-xs mt-1">Explore Crop →</p>
         </div>
-      </a>
-      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
-        <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Cardamom pods">
+      </div>
+      <div class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/MangoCloseup.jpg" class="w-full h-full object-cover" alt="Close-up of TJC mango">
         <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
         <div class="absolute bottom-0 p-6 hc-crop-card-text">
-          <h3 class="font-display text-2xl">Cardamom</h3>
-          <p class="text-xs mt-1">Explore Crop →</p>
+          <h3 class="font-display text-2xl">TJC Mango</h3>
         </div>
-      </a>
-      <a href="#" class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
-        <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Fresh pomegranate fruit">
+      </div>
+      <div class="hc-lift-card hc-img-zoom hc-crop-card relative rounded-2xl overflow-hidden h-80 block">
+        <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/CropsImg/GingerCloseup.jpg" class="w-full h-full object-cover" alt="Close-up of ginger">
         <div class="hc-crop-card-overlay absolute inset-0" aria-hidden="true"></div>
         <div class="absolute bottom-0 p-6 hc-crop-card-text">
-          <h3 class="font-display text-2xl">Pomegranate</h3>
-          <p class="text-xs mt-1">Explore Crop →</p>
+          <h3 class="font-display text-2xl">Ginger</h3>
         </div>
-      </a>
+      </div>
     </div>
     <!-- EL:WIDGET:Text -->
     <p class="hc-note-text text-[11px] mt-6">Crop list to be verified against heritagecrops.lk before final publish (Scotch Bonnet not shown above — confirm inclusion).</p>
@@ -551,27 +554,55 @@ EL:SECTION  (Exports teaser — 2 columns: text/process | Image)
       <h2 class="font-display text-4xl lg:text-5xl leading-tight hc-heading-on-dark">From Sri Lankan Soil<br>to Global Markets.</h2>
       <p class="hc-body-copy-on-dark mt-6 max-w-md leading-relaxed">Every export shipment follows the same disciplined path — from plantation to processing, quality control, packaging and international delivery.</p>
 
-      <!-- EL:WIDGET:Icon List (process steps) -->
-      <ol class="mt-9 flex flex-wrap gap-3 text-xs tracking-[0.12em] uppercase hc-process-list">
-        <li class="hc-process-step px-4 py-2 rounded-full">Plantation</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Harvest</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Processing</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Quality Control</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step px-4 py-2 rounded-full">Packaging</li>
-        <li class="hc-process-arrow self-center" aria-hidden="true">→</li>
-        <li class="hc-process-step hc-process-step-final px-4 py-2 rounded-full font-medium">Global Market</li>
-      </ol>
-      <a href="#" class="hc-text-link-gold mt-9 inline-flex items-center gap-2 pb-1">Explore Exports <span class="hc-btn-arrow" aria-hidden="true">→</span></a>
     </div>
     <div class="lg:col-span-6">
-      <!-- EL:WIDGET:Image -->
-      <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
-      <div class="hc-img-zoom rounded-2xl overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1524594152303-9fd13543fe64?auto=format&fit=crop&w=1000&q=80" class="w-full h-[420px] object-cover" alt="Export-ready packaging of Sri Lankan spices">
+      <!-- Animated export process cycle (replaces the old static step list + photo). Driven by script.js section 7. -->
+      <div class="hc-cycle" id="hc-cycle">
+        <svg viewBox="0 0 660 600" role="img" aria-label="Export process cycle: Plantation, Harvest, Processing, Quality Control, Packaging, Global Market">
+          <circle class="hc-cycle-track" cx="330" cy="300" r="170"/>
+          <circle class="hc-cycle-progress" cx="330" cy="300" r="170" transform="rotate(-90 330 300)"/>
+          <g class="hc-cycle-dot" aria-hidden="true"><circle cx="330" cy="130" r="7"/></g>
+      <g class="hc-cycle-node is-active">
+        <circle class="hc-cycle-pulse" cx="330.0" cy="130.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="330.0" cy="130.0" r="30"/>
+        <text class="hc-cycle-node-num" x="330.0" y="136.0" text-anchor="middle">01</text>
+        <text class="hc-cycle-label" text-anchor="middle" x="330.0" y="84.0">Plantation</text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="477.2" cy="215.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="477.2" cy="215.0" r="30"/>
+        <text class="hc-cycle-node-num" x="477.2" y="221.0" text-anchor="middle">02</text>
+        <text class="hc-cycle-label" text-anchor="start" x="521.2" y="222.0">Harvest</text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="477.2" cy="385.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="477.2" cy="385.0" r="30"/>
+        <text class="hc-cycle-node-num" x="477.2" y="391.0" text-anchor="middle">03</text>
+        <text class="hc-cycle-label" text-anchor="start" x="521.2" y="392.0">Processing</text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="330.0" cy="470.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="330.0" cy="470.0" r="30"/>
+        <text class="hc-cycle-node-num" x="330.0" y="476.0" text-anchor="middle">04</text>
+        <text class="hc-cycle-label" text-anchor="middle" x="330.0" y="528.0"><tspan x="330.0" y="528.0">Quality</tspan><tspan x="330.0" y="552.0">Control</tspan></text>
+      </g>
+      <g class="hc-cycle-node">
+        <circle class="hc-cycle-pulse" cx="182.8" cy="385.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="182.8" cy="385.0" r="30"/>
+        <text class="hc-cycle-node-num" x="182.8" y="391.0" text-anchor="middle">05</text>
+        <text class="hc-cycle-label" text-anchor="end" x="138.8" y="392.0">Packaging</text>
+      </g>
+      <g class="hc-cycle-node hc-cycle-node-final">
+        <circle class="hc-cycle-pulse" cx="182.8" cy="215.0" r="30"/>
+        <circle class="hc-cycle-node-bg" cx="182.8" cy="215.0" r="30"/>
+        <text class="hc-cycle-node-num" x="182.8" y="221.0" text-anchor="middle">06</text>
+        <text class="hc-cycle-label" text-anchor="end" x="138.8" y="222.0"><tspan x="138.8" y="210.0">Global</tspan><tspan x="138.8" y="234.0">Market</tspan></text>
+      </g>
+          <g class="hc-cycle-center" aria-hidden="true">
+            <text class="hc-cycle-count" x="330" y="286" text-anchor="middle">STEP 01 / 06</text>
+            <text class="hc-cycle-name font-display" x="330" y="328" text-anchor="middle">Plantation</text>
+          </g>
+        </svg>
       </div>
     </div>
   </div>
