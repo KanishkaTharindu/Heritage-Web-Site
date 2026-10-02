@@ -150,4 +150,151 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ----------------------------------------------------------
+     6) CONTACT FORM — sends enquiries to info@heritagecrops.lk
+     Uses Web3Forms (free). Set the access_key in index.html.
+  ----------------------------------------------------------- */
+  var form = document.getElementById('contact-form');
+  if (form) {
+    var statusEl = document.getElementById('cf-status');
+    var submitBtn = document.getElementById('cf-submit');
+    var submitLabel = submitBtn.querySelector('.hc-submit-label');
+    var defaultLabel = submitLabel.textContent;
+
+    /* Sri Lankan phone validation.
+       Form accepts 10 digits starting with 0, e.g. 0771234567 (mobile) or 0112809340 (landline); helper also tolerates +94 forms
+       Mobile = 07X (070–078); landline = 0 + valid area code. Returns +94XXXXXXXXX or null. */
+    var phoneInput = document.getElementById('cf-phone');
+    var phoneError = document.getElementById('cf-phone-error');
+    var LK_MOBILE = /^7[0-8]\d{7}$/;
+    var LK_LANDLINE = /^(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)\d{7}$/;
+
+    function normalizeLkPhone(raw) {
+      var v = String(raw).replace(/[\s\-().]/g, '');
+      if (!/^\+?\d+$/.test(v)) return null;
+      var national;
+      if (v.indexOf('+94') === 0) national = v.slice(3);
+      else if (v.indexOf('0094') === 0) national = v.slice(4);
+      else if (v.indexOf('94') === 0 && v.length === 11) national = v.slice(2);
+      else if (v.charAt(0) === '0') national = v.slice(1);
+      else return null;
+      return (LK_MOBILE.test(national) || LK_LANDLINE.test(national)) ? '+94' + national : null;
+    }
+
+    function phoneProblem(value) {
+      if (value === '') return 'Please enter your phone number.';
+      if (value.charAt(0) !== '0') return 'Phone number must start with 0, e.g. 0771234567.';
+      if (value.length !== 10) return 'Phone number must be exactly 10 digits, e.g. 0771234567.';
+      if (normalizeLkPhone(value) === null) return 'Please enter a valid Sri Lankan mobile (07X) or landline number, e.g. 0771234567 or 0112809340.';
+      return '';
+    }
+
+    function checkPhone(showMessage) {
+      if (!phoneInput) return true;
+      var problem = phoneProblem(phoneInput.value.trim());
+      var ok = problem === '';
+      phoneInput.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (!showMessage && ok) { phoneError.textContent = ''; return true; }
+      phoneError.textContent = problem;
+      return ok;
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('blur', function () { if (phoneInput.value.trim() !== '') checkPhone(true); });
+      phoneInput.addEventListener('input', function () {
+        // Digits only, maximum 10 (Sri Lankan local format, e.g. 0771234567).
+        // Pasted +94 / 0094 numbers are converted to the local 0-format first.
+        var typed = phoneInput.value.replace(/^\s*(\+94|0094)/, '0');
+        var cleaned = typed.replace(/\D/g, '').slice(0, 10);
+        if (cleaned !== phoneInput.value) phoneInput.value = cleaned;
+        // Warn immediately if the first digit is not 0; otherwise re-check only after an earlier error.
+        if (cleaned !== '' && cleaned.charAt(0) !== '0') checkPhone(true);
+        else if (phoneInput.getAttribute('aria-invalid') === 'true') checkPhone(false);
+      });
+    }
+
+    var setStatus = function (type, text) {
+      statusEl.className = 'hc-form-status sm:col-span-2 text-sm ' + (type ? 'is-' + type : '');
+      statusEl.textContent = text;
+    };
+
+    /* Email validation: one @, valid characters, a real domain with a dot, and a 2+ letter ending (e.g. .com, .lk). */
+    var emailInput = document.getElementById('cf-email');
+    var emailError = document.getElementById('cf-email-error');
+    var EMAIL_RE = /^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$/;
+
+    function emailProblem(value) {
+      if (value === '') return 'Please enter your email address.';
+      if (/\s/.test(value)) return 'Email address cannot contain spaces.';
+      if (value.indexOf('@') === -1) return 'Email address must include "@", e.g. name@example.com.';
+      if (value.indexOf('@') !== value.lastIndexOf('@')) return 'Email address can only contain one "@".';
+      if (/\.\./.test(value) || /^\.|\.@|@\.|\.$/.test(value)) return 'Please check the dots in your email address.';
+      if (!EMAIL_RE.test(value)) return 'Please enter a valid email address, e.g. name@example.com.';
+      return '';
+    }
+
+    function checkEmail(showMessage) {
+      if (!emailInput) return true;
+      var problem = emailProblem(emailInput.value.trim());
+      var ok = problem === '';
+      emailInput.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (!showMessage && ok) { emailError.textContent = ''; return true; }
+      emailError.textContent = problem;
+      return ok;
+    }
+
+    if (emailInput) {
+      emailInput.addEventListener('blur', function () {
+        emailInput.value = emailInput.value.trim();
+        if (emailInput.value !== '') checkEmail(true);
+      });
+      emailInput.addEventListener('input', function () {
+        if (emailInput.getAttribute('aria-invalid') === 'true') checkEmail(false);
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var emailOk = checkEmail(true);
+      var phoneOk = checkPhone(true);
+      if (!emailOk) { emailInput.focus(); return; }
+      if (!phoneOk) { phoneInput.focus(); return; }
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      var data = Object.fromEntries(new FormData(form));
+      data.phone = normalizeLkPhone(data.phone); // send in a consistent +94 format
+      data.email = data.email.trim().toLowerCase();
+      if (data.access_key === 'YOUR_ACCESS_KEY_HERE') {
+        setStatus('error', 'Form is not set up yet: add the Web3Forms access key in index.html.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitLabel.textContent = 'Sending…';
+      setStatus('', '');
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (result) {
+          if (result.success) {
+            form.reset();
+            setStatus('success', 'Thank you! Your enquiry has been sent. Our team will be in touch shortly.');
+          } else {
+            throw new Error(result.message || 'Submission failed');
+          }
+        })
+        .catch(function () {
+          setStatus('error', 'Sorry, something went wrong. Please try again or email us at info@heritagecrops.lk.');
+        })
+        .then(function () {
+          submitBtn.disabled = false;
+          submitLabel.textContent = defaultLabel;
+        });
+    });
+  }
+
 });
