@@ -168,6 +168,17 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-img-zoom img{ transition: transform .8s var(--hc-ease); }
 .hc-img-zoom:hover img{ transform:scale(1.06); }
 
+/* About: recognition & certification logos (2-up on phones, one row of 6 on desktop) */
+.hc-recog-card{
+  display:flex; align-items:center; justify-content:center;
+  height:96px; padding:14px 16px; list-style:none;
+  background:#fff; border:1px solid rgba(6,59,42,.08); border-radius:16px;
+  box-shadow:0 14px 30px -22px rgba(6,59,42,.35);
+}
+.hc-recog-card img{ width:100%; height:100%; object-fit:contain; }
+@media (min-width:640px){ .hc-recog-card{ height:112px; } }
+@media (min-width:1024px){ .hc-recog-card{ height:120px; padding:14px 18px; } }
+
 .hc-floating-badge{
   background:var(--hc-offwhite); box-shadow:0 20px 40px -18px rgba(6,59,42,.35);
   border:1px solid rgba(0,106,80,.1); color:var(--hc-green);
