@@ -1,0 +1,248 @@
+/* ==================================================================
+   HERITAGE CROPS — MOTION SYSTEM (styles)  ·  pairs with motion.js
+   Everything is scoped to html.mo, a class that is only added when the
+   visitor has NOT asked for reduced motion. Only transform / opacity /
+   translate / scale / clip-path are animated (GPU-friendly).
+   ================================================================== */
+
+/* Cinematic preloader: wordmark + gold line draw on forest green, then the curtain lifts with a curved
+   lower edge. Pure CSS (no flash); lifted by motion.js, or by itself after 3.4s if JS never loads. */
+.mo body::before{
+  content:"HERITAGE CROPS"; display:grid; place-items:center; padding-bottom:3rem;
+  position:fixed; inset:0; z-index:9999; pointer-events:none;
+  font:500 clamp(16px,2.6vw,26px)/1 Fraunces,Georgia,serif; letter-spacing:.5em; text-indent:.5em; color:var(--hc-gold);
+  background:linear-gradient(var(--hc-gold),var(--hc-gold)) 50% calc(50% + 2.2rem)/0 2px no-repeat, var(--hc-forest);
+  border-radius:0 0 50% 50% / 0 0 10vh 10vh;
+  transition:transform 1s cubic-bezier(.76,0,.24,1), color .35s;
+  animation:mo-load 1.4s cubic-bezier(.65,0,.35,1) forwards, mo-out 1s cubic-bezier(.76,0,.24,1) 3.4s forwards;
+}
+.mo.mo-go body::before{ transform:translateY(-100%); color:transparent; }
+@keyframes mo-load{ to{ background-size:min(220px,50vw) 2px, auto; } }
+@keyframes mo-out{ to{ transform:translateY(-100%); } }
+
+/* Hero starts hidden, then motion.js reveals it. Failsafe shows it after 3.6s regardless. */
+.mo .hc-hero-section h1,
+.mo .hc-hero-copy,
+.mo .hc-hero-section .mt-9 > *{ opacity:0; animation:mo-show 0s linear 3.6s forwards; }
+.mo .hc-float-panel{ opacity:0; animation:mo-show 0s linear 3.6s forwards, mo-float 8s ease-in-out 4.2s infinite; }
+@keyframes mo-show{ to{ opacity:1; } }
+
+/* Scroll reveals */
+.mo-pre{ opacity:0; }
+.mo-w{ display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .14em 0; margin:0 -.06em -.14em 0; }
+.mo-wi{ display:inline-block; will-change:transform; }
+
+/* Ambient motion (uses the independent `translate` property so it never fights other transforms) */
+@keyframes mo-float{ 50%{ translate:0 -8px; } }
+.mo .hc-floating-badge{ animation:mo-float 7s ease-in-out infinite; }
+.mo #about .hc-img-zoom img{ scale:1.12; }
+
+/* Scroll progress bar */
+.mo-progress{
+  position:fixed; top:0; left:0; right:0; height:3px; z-index:60; pointer-events:none;
+  background:linear-gradient(90deg,var(--hc-gold),#e6cf8a); transform:scaleX(0); transform-origin:0 50%;
+}
+
+/* Cursor ring (fine pointers only; the real cursor is never hidden) */
+.mo-cursor{
+  position:fixed; top:0; left:0; width:38px; height:38px; margin:-19px 0 0 -19px; z-index:9998; pointer-events:none;
+  border:1.5px solid var(--hc-gold); border-radius:50%; opacity:0;
+  transition:opacity .3s, scale .35s var(--hc-ease), background-color .3s;
+}
+.mo-cursor.is-on{ opacity:.9; }
+.mo-cursor.is-link{ scale:1.7; background-color:rgba(200,169,81,.16); }
+
+/* Magnetic buttons + tilt cards: GSAP drives transform, so CSS hover transforms/transitions step aside */
+.mo-mag{ transition:box-shadow .35s var(--hc-ease), background-color .35s, color .35s !important; }
+.mo-mag:hover{ transform:none; }
+.mo-tilt{ transition:box-shadow .5s var(--hc-ease) !important; }
+.mo-tilt:hover{ transform:none; }
+
+/* Button light-sweep micro-interaction */
+.mo .hc-btn-primary{ position:relative; overflow:hidden; }
+.mo .hc-btn-primary::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);
+  translate:-120% 0; transition:translate .8s var(--hc-ease);
+}
+.mo .hc-btn-primary:hover::after{ translate:120% 0; }
+
+/* ================= LAYER 2 ================= */
+/* Nav links wait for the intro; failsafe shows them anyway */
+.mo .hc-nav-links .hc-nav-link{ opacity:0; animation:mo-show 0s linear 3.6s forwards; }
+
+/* Eyebrow dash draws itself when its label is revealed */
+.mo .hc-eyebrow::before{ transform-origin:left center; transition:scale .9s var(--hc-ease) .25s; }
+.mo .hc-eyebrow.mo-pre::before{ scale:0 1; }
+
+/* Ambient light drifting behind dark sections (cheap: gradient + translate only) */
+.mo-host{ position:relative; overflow:hidden; isolation:isolate; }
+.mo-orb{
+  position:absolute; z-index:-1; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(200,169,81,.20), transparent 65%);
+  animation:mo-drift var(--d,18s) ease-in-out infinite alternate;
+}
+@keyframes mo-drift{ to{ translate:var(--x,40px) var(--y,-30px); } }
+
+/* Image parallax needs a little bleed so edges never show */
+.mo .mo-px{ scale:1.1; }
+
+/* Hover micro-interactions */
+.mo .hc-icon-box-circle{ transition:background-color .35s var(--hc-ease), color .35s var(--hc-ease), scale .5s var(--hc-ease), rotate .5s var(--hc-ease); }
+.mo .hc-icon-box:hover .hc-icon-box-circle{ scale:1.14; rotate:-8deg; }
+.mo .hc-crop-card-text{ transition:translate .6s var(--hc-ease); }
+.mo .hc-crop-card:hover .hc-crop-card-text{ translate:0 -8px; }
+.mo .hc-footer-links a{ display:inline-block; transition:color .3s var(--hc-ease), translate .4s var(--hc-ease); }
+.mo .hc-footer-links a:hover{ translate:5px 0; }
+.mo .hc-org-avatar{ transition:box-shadow .5s var(--hc-ease); }
+.mo .hc-org-card:hover .hc-org-avatar{ box-shadow:0 0 0 9px rgba(200,169,81,.22); }
+.mo .hc-status-active, .mo .hc-status-harvesting{ animation:mo-pulse 2.8s ease-out infinite; }
+@keyframes mo-pulse{ 0%{ box-shadow:0 0 0 0 rgba(255,255,255,.5); } 70%,100%{ box-shadow:0 0 0 10px rgba(255,255,255,0); } }
+.mo-cursor.is-down{ scale:.75; }
+.mo-ripple{ position:absolute; border-radius:50%; background:rgba(255,255,255,.35); pointer-events:none; }
+
+/* ================= LAYER 3 ================= */
+/* Cross-document view transitions: gives any future second page a cinematic hand-off for free */
+@media (prefers-reduced-motion: no-preference){
+  @view-transition{ navigation:auto; }
+  ::view-transition-old(root){ animation:.5s cubic-bezier(.76,0,.24,1) both mo-vt-out; }
+  ::view-transition-new(root){ animation:.8s cubic-bezier(.16,1,.3,1) both mo-vt-in; }
+}
+@keyframes mo-vt-out{ to{ opacity:0; transform:translateY(-24px) scale(.99); } }
+@keyframes mo-vt-in{ from{ opacity:0; transform:translateY(28px); } }
+
+/* Film grain (desktop/tablet): a tiny noise tile jittered in steps */
+.mo body::after{
+  content:""; position:fixed; inset:-50%; z-index:8990; pointer-events:none; opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:mo-grain .9s steps(6) infinite;
+}
+@keyframes mo-grain{ 20%{ translate:-6% 4%; } 40%{ translate:5% -7%; } 60%{ translate:-4% -3%; } 80%{ translate:7% 6%; } }
+@media (max-width:767px){ .mo body::after{ display:none; } }
+
+/* WebGL canvases (inserted by motion-gl.js). Tune the hero with --mo-gl-o / mix-blend-mode. */
+.mo-gl{ position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; opacity:0;
+  mix-blend-mode:soft-light; transition:opacity 1.8s ease; }
+.mo-gl.is-on{ opacity:var(--mo-gl-o,.9); }
+.mo-liq-host{ position:relative; }
+.mo-liq{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0; transition:opacity .35s; }
+.mo-liq.is-on{ opacity:1; }
+
+/* Pointer spotlight on dark sections + lighting on plan cards */
+.mo-spot{ position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:0; transition:opacity .6s;
+  background:radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(200,169,81,.13), transparent 62%); }
+.mo .hc-plan-card:hover{ background-image:radial-gradient(280px circle at var(--cx,50%) var(--cy,0), rgba(200,169,81,.17), transparent 60%); }
+
+/* Kinetic marquee band: speed and direction follow scroll velocity */
+.mo-track{ display:flex; width:max-content; will-change:transform; }
+.mo-track span{ flex:none; padding-right:.35em; white-space:nowrap; color:transparent; -webkit-text-stroke:1.2px rgba(6,59,42,.28);
+  font:400 clamp(64px,11vw,168px)/1 Fraunces,Georgia,serif; }
+.mo-track i{ font-style:normal; color:var(--hc-gold); -webkit-text-stroke:0; padding:0 .25em; }
+
+/* Nav: one gold indicator glides between links (replaces per-link underlines) */
+.mo .hc-nav-link::after{ display:none; }
+.mo-nav-ind{ position:absolute; left:0; bottom:-8px; height:2px; width:0; border-radius:2px; background:var(--hc-gold); pointer-events:none; opacity:0; }
+
+/* "How it works": the step at reading height lights up, others recede */
+.mo .hc-timeline .flex.items-start > div{ opacity:.5; transition:opacity .5s var(--hc-ease), translate .6s var(--hc-ease); }
+.mo .hc-timeline .flex.items-start.is-done > div{ opacity:.85; }
+.mo .hc-timeline .flex.items-start.is-live > div{ opacity:1; translate:6px 0; }
+.mo .hc-timeline-dot{ transition:background-color .4s, color .4s, scale .5s var(--hc-ease), box-shadow .5s; }
+.mo .is-live .hc-timeline-dot{ scale:1.28; background-color:var(--hc-gold); color:var(--hc-forest); box-shadow:0 0 0 8px rgba(200,169,81,.25); }
+
+/* Form fields: soft lift + glow on focus */
+.mo .hc-form-field{ transition:box-shadow .4s var(--hc-ease), border-color .4s; }
+.mo .hc-form-field:focus{ box-shadow:0 14px 32px -18px rgba(0,106,80,.55); }
+
+@media (prefers-reduced-motion: reduce){
+  .mo-cursor, .mo-progress{ display:none; }
+}
+
+
+/* ================= TEXT FX ================= */
+.mo .mo-wi{ transition:color .35s; }
+.mo section h2 .mo-w:hover .mo-wi{ color:var(--hc-gold); }
+
+/* Gold shimmer: applied to the split word spans (a gradient on the parent would hide them) */
+.mo .hc-hero-heading-accent .mo-wi, .mo .hc-stat-number{
+  background:linear-gradient(100deg,var(--hc-gold) 0%,var(--hc-gold) 30%,#fff2c4 50%,var(--hc-gold) 70%,var(--hc-gold) 100%);
+  background-size:200% 100%; background-repeat:repeat-x; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  animation:mo-shimmer 5s linear infinite;
+}
+/* 200% size + 0% -> 200% position = exactly one tile of travel, so the loop is seamless */
+@keyframes mo-shimmer{ from{ background-position:200% 0; } to{ background-position:0 0; } }
+
+/* Gold rule under section headings */
+.mo-hline{ display:block; width:64px; height:2px; margin-top:18px; background:var(--hc-gold); transform-origin:left center; }
+.text-center + .mo-hline, .hc-howitworks-section .mo-hline{ }
+.text-center .mo-hline, .justify-center ~ .mo-hline{ margin-inline:auto; transform-origin:center; }
+
+/* Timeline + journey glow */
+.mo .hc-timeline h3{ transition:color .5s, text-shadow .5s; }
+.mo .hc-timeline .is-live h3{ text-shadow:0 0 22px rgba(200,169,81,.3); }
+.mo .hc-journey-step-current{ text-shadow:0 0 20px rgba(200,169,81,.7); }
+
+/* HERO: let the photo breathe. Lighter WebGL tint and softer gold haze so textures stay visible */
+.mo .hc-hero-section{ --mo-gl-o:.22; }
+.mo .hc-hero-section .mo-orb{ opacity:.35; }
+
+
+/* ==================================================================
+   MOBILE MENU (phones + tablets, below 1024px)
+   Top-aligned list that starts under the header, scrolls if needed,
+   with divider lines, hairline arrows and a hamburger that becomes an X.
+   Uses #mobile-menu so it always beats Tailwind's utility classes.
+   ================================================================== */
+@media (max-width:1023px){
+  #mobile-menu.hc-mobile-menu{
+    justify-content:flex-start; align-items:stretch; gap:0;
+    padding:calc(var(--hc-nav-h,88px) + 12px) 28px 40px;
+    overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+    background:linear-gradient(180deg,var(--hc-forest) 0%,#042a1e 100%);
+  }
+  #mobile-menu .hc-mobile-link{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:1.55rem; line-height:1.2; padding:15px 2px; text-align:left;
+    border-bottom:1px solid rgba(255,255,255,.1);
+  }
+  #mobile-menu .hc-mobile-link:not(.hc-btn-primary)::after{
+    content:"→"; font:400 1rem/1 Inter,sans-serif; color:var(--hc-gold);
+    opacity:.7; transition:translate .35s var(--hc-ease), opacity .35s;
+  }
+  #mobile-menu .hc-mobile-link:not(.hc-btn-primary):active{ color:var(--hc-gold); }
+  #mobile-menu .hc-mobile-link:not(.hc-btn-primary):active::after{ translate:6px 0; opacity:1; }
+  #mobile-menu .hc-btn-primary.hc-mobile-link{
+    justify-content:center; margin-top:28px; padding:16px 24px; border-bottom:0;
+    font:600 .95rem/1 Inter,sans-serif; border-radius:9999px;
+  }
+
+  /* While the menu is open: solid dark header, white logo glow + icon, no scrolling behind, no bottom bar */
+  body:has(#mobile-menu.is-open){ overflow:hidden; }
+  body:has(#mobile-menu.is-open) #site-nav{
+    background:var(--hc-forest) !important; box-shadow:none !important; backdrop-filter:none !important;
+  }
+  body:has(#mobile-menu.is-open) .hc-burger-line{ background:#fff !important; }
+  body:has(#mobile-menu.is-open) .hc-mobile-cta{ display:none; }
+  body:has(#mobile-menu.is-open) .hc-logo-badge img{
+    filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 7px rgba(255,255,255,.85)) !important;
+  }
+}
+
+/* Hamburger -> X */
+.hc-burger-line{ transition:transform .4s var(--hc-ease), opacity .25s, background-color .4s var(--hc-ease), width .3s; }
+.hc-burger[aria-expanded="true"] .hc-burger-line:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+.hc-burger[aria-expanded="true"] .hc-burger-line:nth-child(2){ opacity:0; }
+.hc-burger[aria-expanded="true"] .hc-burger-line:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); width:1.5rem; }
+
+
+/* Stop any tiny sideways overflow from showing a horizontal scrollbar (position:sticky/fixed keep working with clip) */
+html, body{ overflow-x:clip; }
+
+
+/* ---------- SMOOTHNESS ---------- */
+/* Lenis needs the browser's own smooth-scroll switched off while it is running */
+html.lenis, html.lenis body{ height:auto; }
+.lenis.lenis-smooth{ scroll-behavior:auto !important; }
+.lenis.lenis-stopped{ overflow:hidden; }
+/* Film grain was a full-screen layer 4x the viewport, jittering 6x a second. Now a calm static texture: same look, far cheaper. */
+.mo body::after{ animation:none; inset:0; opacity:.05; }
