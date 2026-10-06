@@ -1,107 +1,2510 @@
+```html
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Blog Admin · Heritage Crops</title>
-<style>
-:root{--forest:#063B2A;--green:#006A50;--gold:#C8A951;--cream:#F8F5EF;--ink:#1D2722;--line:rgba(6,59,42,.14)}
-*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--cream);color:var(--ink)}
-header{background:var(--forest);color:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold)}
-header h1{margin:0;font:600 18px Georgia,serif}header a{color:var(--gold);text-decoration:none;font-size:14px}
-main{max-width:1180px;margin:0 auto;padding:28px;display:grid;gap:28px;grid-template-columns:minmax(0,420px) 1fr;align-items:start}
-@media(max-width:860px){main{grid-template-columns:1fr;padding:16px}}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
-h2{margin:0 0 16px;font:600 18px Georgia,serif;color:var(--forest)}
-label{display:block;font-size:13px;font-weight:600;margin:14px 0 5px}
-input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--green);outline-offset:1px}
-textarea{min-height:96px;resize:vertical}small{color:#6b756f;font-size:12px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{font:600 14px inherit;border:0;border-radius:999px;padding:11px 22px;cursor:pointer;background:var(--green);color:#fff}
-button.ghost{background:transparent;color:var(--green);border:1px solid var(--line)}button.danger{background:transparent;color:#b3261e;border:1px solid #e9c4c1;padding:7px 14px}
-button:disabled{opacity:.6;cursor:wait}.actions{display:flex;gap:10px;margin-top:20px}
-#msg{margin-top:14px;font-size:14px;min-height:20px}.ok{color:var(--green)}.err{color:#b3261e}
-.post{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}.post:last-child{border:0}
-.post img,.thumb{width:84px;height:64px;border-radius:10px;object-fit:cover;background:var(--cream);flex-shrink:0}
-.post div{flex:1;min-width:0}.post b{display:block;font-family:Georgia,serif}.post span{font-size:12.5px;color:#6b756f}
-.empty{color:#6b756f;padding:18px 0}
-</style></head><body>
-<header><h1>Heritage Crops · Blog &amp; News</h1><a href="/api/posts" target="_blank">View public feed ↗</a></header>
-<main>
-  <section class="card"><h2 id="formTitle">Add a post</h2>
-    <form id="f">
-      <label for="title">Title</label><input id="title" name="title" required maxlength="160">
-      <label for="url">Facebook post link</label><input id="url" name="url" type="url" placeholder="https://www.facebook.com/…" required>
-      <div class="row">
-        <div><label for="category">Category</label>
-          <select id="category" name="category"><option>Plantation Updates</option><option>Investment Insights</option><option>Export News</option><option>Company News</option></select></div>
-        <div><label for="date">Post date</label><input id="date" name="date" type="date" required></div>
-      </div>
-      <label for="excerpt">Short summary <small>(max 500 characters)</small></label><textarea id="excerpt" name="excerpt" required maxlength="500"></textarea>
-      <label for="image">Photo <small>(JPG/PNG/WebP — large photos are shrunk automatically)</small></label><input id="image" name="image" type="file" accept="image/*">
-      <label for="image_url">…or photo link <small>(e.g. ImageKit)</small></label><input id="image_url" name="image_url" type="url" placeholder="https://…">
-      <small id="imgNote"></small>
-      <div class="actions"><button id="save" type="submit">Publish post</button><button type="button" class="ghost" id="cancel" hidden>Cancel edit</button></div>
-      <div id="msg" role="status"></div>
-    </form>
-  </section>
-  <section class="card"><h2>Published posts</h2><div id="list"><p class="empty">Loading…</p></div></section>
-</main>
-<script>
-const $ = id => document.getElementById(id), H = { 'X-Requested-With': 'admin' };
-const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let posts = [], editing = null;
-const fmt = d => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-const say = (t, ok) => { $('msg').className = ok ? 'ok' : 'err'; $('msg').textContent = t; };
 
-function reset() {
-  editing = null; $('f').reset(); $('date').valueAsDate = new Date();
-  $('formTitle').textContent = 'Add a post'; $('save').textContent = 'Publish post'; $('cancel').hidden = true; $('imgNote').textContent = '';
+<title>Blog Admin · Heritage Crops</title>
+
+<style>
+:root{
+  --forest:#063B2A;
+  --forest-2:#082F24;
+  --green:#006A50;
+  --green-light:#E8F4EF;
+  --gold:#C8A951;
+  --gold-light:#F7F0D9;
+  --cream:#F7F8F5;
+  --white:#FFFFFF;
+  --ink:#17231E;
+  --muted:#718078;
+  --line:#E2E9E5;
+  --danger:#B42318;
+  --danger-bg:#FFF1F0;
+  --shadow:0 10px 35px rgba(6,59,42,.08);
+  --shadow-hover:0 18px 45px rgba(6,59,42,.14);
 }
-async function load() {
-  posts = await (await fetch('/api/posts')).json();
-  $('list').innerHTML = posts.length ? posts.map(p => `
-    <div class="post">${p.image ? `<img src="${esc(p.image)}" alt="">` : '<div class="thumb"></div>'}
-      <div><b>${esc(p.title)}</b><span>${esc(p.category)} · ${fmt(p.date)}</span></div>
-      <button class="ghost" data-edit="${p.id}">Edit</button><button class="danger" data-del="${p.id}">Delete</button></div>`).join('')
-    : '<p class="empty">No posts yet. Add your first one on the left.</p>';
+
+*{
+  box-sizing:border-box;
 }
-$('list').addEventListener('click', async e => {
-  const ed = e.target.dataset.edit, del = e.target.dataset.del;
-  if (ed) {
-    const p = posts.find(x => x.id == ed); editing = p.id;
-    for (const k of ['title', 'url', 'category', 'date', 'excerpt']) $(k).value = p[k];
-    $('image_url').value = p.image && p.image.startsWith('http') ? p.image : '';
-    $('imgNote').textContent = p.image ? 'Leave the photo fields empty to keep the current photo.' : '';
-    $('formTitle').textContent = 'Edit post'; $('save').textContent = 'Save changes'; $('cancel').hidden = false;
-    scrollTo({ top: 0, behavior: 'smooth' });
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(200,169,81,.08), transparent 30%),
+    var(--cream);
+  color:var(--ink);
+}
+
+/* =========================
+   TOP NAVIGATION
+========================= */
+
+.topbar{
+  height:76px;
+  background:
+    linear-gradient(120deg,var(--forest),#07523E);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 34px;
+  border-bottom:3px solid var(--gold);
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 5px 25px rgba(0,0,0,.12);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.brand-mark{
+  width:43px;
+  height:43px;
+  border-radius:12px;
+  background:
+    linear-gradient(145deg,#D9BE67,#A78932);
+  display:grid;
+  place-items:center;
+  color:var(--forest);
+  font-size:20px;
+  font-weight:900;
+  box-shadow:0 5px 15px rgba(0,0,0,.16);
+}
+
+.brand-text strong{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:17px;
+  letter-spacing:.2px;
+}
+
+.brand-text span{
+  display:block;
+  font-size:11px;
+  color:#D7E5DE;
+  margin-top:2px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.public-link{
+  color:#fff;
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,.22);
+  padding:10px 16px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.public-link:hover{
+  background:rgba(255,255,255,.1);
+  border-color:var(--gold);
+  color:#fff;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  max-width:1400px;
+  margin:auto;
+  padding:32px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:25px;
+  margin-bottom:27px;
+}
+
+.hero h1{
+  margin:0;
+  color:var(--forest);
+  font-family:Georgia,serif;
+  font-size:32px;
+  line-height:1.15;
+}
+
+.hero p{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.hero-badge{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--gold-light);
+  color:#765F19;
+  border:1px solid #E9DDAF;
+  border-radius:999px;
+  padding:9px 14px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#2EA56F;
+  box-shadow:0 0 0 4px rgba(46,165,111,.12);
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:27px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:19px;
+  box-shadow:0 5px 20px rgba(6,59,42,.04);
+  display:flex;
+  align-items:center;
+  gap:15px;
+  transition:.25s;
+}
+
+.stat-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+
+.stat-icon{
+  width:47px;
+  height:47px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  flex-shrink:0;
+}
+
+.stat-icon.green{
+  background:var(--green-light);
+}
+
+.stat-icon.gold{
+  background:var(--gold-light);
+}
+
+.stat-icon.dark{
+  background:#E8ECEA;
+}
+
+.stat-info small{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  font-weight:800;
+}
+
+.stat-info strong{
+  display:block;
+  margin-top:3px;
+  color:var(--forest);
+  font-size:24px;
+}
+
+/* =========================
+   MAIN GRID
+========================= */
+
+.workspace{
+  display:grid;
+  grid-template-columns:430px minmax(0,1fr);
+  gap:24px;
+  align-items:start;
+}
+
+.card{
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+
+.form-card{
+  position:sticky;
+  top:96px;
+  overflow:hidden;
+}
+
+.card-header{
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.card-header h2{
+  margin:0;
+  font-family:Georgia,serif;
+  color:var(--forest);
+  font-size:19px;
+}
+
+.card-header p{
+  margin:4px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.header-icon{
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  background:var(--green-light);
+  display:grid;
+  place-items:center;
+  color:var(--green);
+  font-size:18px;
+}
+
+.form-body{
+  padding:22px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  color:#405049;
+  margin:15px 0 6px;
+}
+
+.required{
+  color:#B42318;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  border:1px solid #D9E2DD;
+  border-radius:11px;
+  background:#FBFCFB;
+  padding:12px 13px;
+  color:var(--ink);
+  font:inherit;
+  font-size:13px;
+  transition:.2s;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#A0AAA5;
+}
+
+input:hover,
+select:hover,
+textarea:hover{
+  border-color:#B8CAC2;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  outline:none;
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(0,106,80,.09);
+  background:#fff;
+}
+
+textarea{
+  min-height:105px;
+  resize:vertical;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.file-box{
+  border:1.5px dashed #BFD0C8;
+  background:#F8FBF9;
+  border-radius:12px;
+  padding:14px;
+  transition:.2s;
+}
+
+.file-box:hover{
+  border-color:var(--green);
+  background:#F4FAF7;
+}
+
+.file-box input{
+  border:0;
+  background:transparent;
+  padding:0;
+}
+
+.helper{
+  display:block;
+  margin-top:5px;
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.image-preview{
+  display:none;
+  margin-top:12px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:#f5f5f5;
+  position:relative;
+}
+
+.image-preview img{
+  width:100%;
+  height:180px;
+  display:block;
+  object-fit:cover;
+}
+
+.preview-label{
+  position:absolute;
+  left:10px;
+  top:10px;
+  background:rgba(0,0,0,.62);
+  color:#fff;
+  padding:5px 8px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.actions{
+  display:flex;
+  gap:9px;
+  margin-top:21px;
+}
+
+button{
+  border:0;
+  font:inherit;
+  cursor:pointer;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:42px;
+  padding:10px 17px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.btn-primary{
+  flex:1;
+  background:linear-gradient(135deg,var(--green),#008365);
+  color:#fff;
+  box-shadow:0 7px 18px rgba(0,106,80,.19);
+}
+
+.btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(0,106,80,.25);
+}
+
+.btn-primary:disabled{
+  opacity:.6;
+  cursor:wait;
+  transform:none;
+}
+
+.btn-secondary{
+  background:#F2F5F3;
+  color:var(--forest);
+  border:1px solid var(--line);
+}
+
+.btn-secondary:hover{
+  background:#EAF0ED;
+}
+
+.btn-danger{
+  background:var(--danger-bg);
+  color:var(--danger);
+  border:1px solid #F0CECA;
+}
+
+.btn-danger:hover{
+  background:#FFE4E1;
+}
+
+.edit-btn{
+  background:var(--green-light);
+  color:var(--green);
+}
+
+.edit-btn:hover{
+  background:#D9EEE6;
+}
+
+/* =========================
+   POSTS SECTION
+========================= */
+
+.posts-card{
+  min-width:0;
+  overflow:hidden;
+}
+
+.posts-toolbar{
+  padding:17px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.search{
+  position:relative;
+  flex:1;
+  max-width:310px;
+}
+
+.search input{
+  padding-left:37px;
+}
+
+.search-icon{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#83908A;
+  font-size:14px;
+}
+
+.filter{
+  min-width:170px;
+}
+
+.posts-list{
+  padding:4px 22px 20px;
+}
+
+.post{
+  display:grid;
+  grid-template-columns:120px minmax(0,1fr) auto;
+  gap:17px;
+  align-items:center;
+  padding:17px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.post:last-child{
+  border-bottom:0;
+}
+
+.post-image{
+  width:120px;
+  height:84px;
+  border-radius:13px;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,#EFF4F1,#E4ECE8);
+  flex-shrink:0;
+}
+
+.post-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.no-image{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+  color:#94A39C;
+  font-size:23px;
+}
+
+.post-content{
+  min-width:0;
+}
+
+.post-title{
+  color:var(--forest);
+  font-family:Georgia,serif;
+  font-weight:700;
+  font-size:16px;
+  line-height:1.35;
+  margin-bottom:6px;
+}
+
+.post-excerpt{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin-bottom:9px;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  align-items:center;
+}
+
+.category{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  background:var(--green-light);
+  color:var(--green);
+}
+
+.category.investment{
+  background:var(--gold-light);
+  color:#80691D;
+}
+
+.category.export{
+  background:#EEF1F6;
+  color:#435C7B;
+}
+
+.category.company{
+  background:#F2EBF7;
+  color:#704B84;
+}
+
+.date{
+  color:#89958F;
+  font-size:11px;
+}
+
+.post-actions{
+  display:flex;
+  gap:7px;
+  align-items:center;
+}
+
+.icon-btn{
+  width:36px;
+  height:36px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  font-size:14px;
+  transition:.2s;
+}
+
+.icon-btn:hover{
+  transform:translateY(-1px);
+}
+
+/* =========================
+   EMPTY / LOADING
+========================= */
+
+.empty{
+  text-align:center;
+  padding:65px 20px;
+  color:var(--muted);
+}
+
+.empty-icon{
+  width:58px;
+  height:58px;
+  border-radius:16px;
+  background:var(--green-light);
+  display:grid;
+  place-items:center;
+  margin:0 auto 13px;
+  font-size:23px;
+}
+
+.empty strong{
+  display:block;
+  color:var(--forest);
+  margin-bottom:4px;
+}
+
+.loading{
+  padding:45px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.spinner{
+  width:25px;
+  height:25px;
+  border:3px solid #DCE7E2;
+  border-top-color:var(--green);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 10px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  min-width:280px;
+  max-width:420px;
+  background:var(--forest);
+  color:#fff;
+  padding:14px 17px;
+  border-radius:12px;
+  box-shadow:0 15px 35px rgba(0,0,0,.2);
+  display:flex;
+  align-items:center;
+  gap:11px;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(15px);
+  transition:.25s;
+  z-index:500;
+  font-size:13px;
+  font-weight:600;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+#toast.success{
+  border-left:4px solid #50B985;
+}
+
+#toast.error{
+  border-left:4px solid #E25A50;
+}
+
+/* =========================
+   DELETE MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(3,29,21,.57);
+  backdrop-filter:blur(4px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(420px,100%);
+  background:#fff;
+  border-radius:20px;
+  padding:27px;
+  box-shadow:0 25px 70px rgba(0,0,0,.25);
+  animation:modalIn .2s ease;
+}
+
+@keyframes modalIn{
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(.98);
   }
-  if (del && confirm('Delete this post from the website?')) {
-    await fetch('/api/posts/' + del, { method: 'DELETE', headers: H }); if (editing == del) reset(); load();
+  to{
+    opacity:1;
+    transform:none;
   }
-});
-$('cancel').onclick = reset;
-/* Shrink big photos in the browser (max 1600px) so uploads stay small and fast. */
-async function buildForm() {
-  const fd = new FormData($('f')), file = $('image').files[0];
-  if (file && /^image\/(jpeg|png|webp)$/.test(file.type)) {
-    const bmp = await createImageBitmap(file), k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
-    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85));
-    fd.set('image', blob, file.name.replace(/\.\w+$/, '') + '.jpg');
+}
+
+.modal-icon{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+  background:var(--danger-bg);
+  color:var(--danger);
+  display:grid;
+  place-items:center;
+  font-size:21px;
+  margin-bottom:15px;
+}
+
+.modal-box h3{
+  margin:0;
+  color:var(--forest);
+  font-family:Georgia,serif;
+  font-size:20px;
+}
+
+.modal-box p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+  margin:8px 0 20px;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
   }
+
+  .workspace{
+    grid-template-columns:380px minmax(0,1fr);
+  }
+
+  .post{
+    grid-template-columns:95px minmax(0,1fr);
+  }
+
+  .post-image{
+    width:95px;
+    height:75px;
+  }
+
+  .post-actions{
+    grid-column:2;
+  }
+}
+
+@media(max-width:900px){
+  .topbar{
+    padding:0 18px;
+  }
+
+  .page{
+    padding:22px 16px;
+  }
+
+  .workspace{
+    grid-template-columns:1fr;
+  }
+
+  .form-card{
+    position:relative;
+    top:auto;
+  }
+}
+
+@media(max-width:650px){
+  .topbar{
+    height:auto;
+    min-height:70px;
+    padding:12px 15px;
+  }
+
+  .brand-text span{
+    display:none;
+  }
+
+  .public-link{
+    padding:9px 11px;
+    font-size:11px;
+  }
+
+  .hero{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .hero h1{
+    font-size:26px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .stat-card{
+    padding:14px;
+  }
+
+  .stat-icon{
+    width:39px;
+    height:39px;
+    font-size:16px;
+  }
+
+  .stat-info strong{
+    font-size:20px;
+  }
+
+  .row{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .posts-toolbar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .search{
+    max-width:none;
+  }
+
+  .filter{
+    width:100%;
+  }
+
+  .post{
+    grid-template-columns:82px minmax(0,1fr);
+    gap:12px;
+  }
+
+  .post-image{
+    width:82px;
+    height:68px;
+  }
+
+  .post-title{
+    font-size:14px;
+  }
+
+  .post-actions{
+    grid-column:1 / -1;
+  }
+
+  .post-actions .icon-btn{
+    flex:1;
+  }
+
+  #toast{
+    left:15px;
+    right:15px;
+    bottom:15px;
+    min-width:0;
+  }
+}
+
+@media(max-width:400px){
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .brand-mark{
+    width:38px;
+    height:38px;
+  }
+
+  .brand-text strong{
+    font-size:14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     TOP NAVIGATION
+========================= -->
+
+<header class="topbar">
+
+  <div class="brand">
+    <div class="brand-mark">HC</div>
+
+    <div class="brand-text">
+      <strong>Heritage Crops</strong>
+      <span>Plantation & Exports · Content Management</span>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <a
+      href="/api/posts"
+      target="_blank"
+      class="public-link"
+    >
+      View Public Feed ↗
+    </a>
+  </div>
+
+</header>
+
+
+<main class="page">
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <section class="hero">
+
+    <div>
+      <h1>Blog & News Management</h1>
+
+      <p>
+        Create, manage and publish Heritage Crops stories, updates and company news.
+      </p>
+    </div>
+
+    <div class="hero-badge">
+      <span class="status-dot"></span>
+      Publishing System Active
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       STATISTICS
+  ========================= -->
+
+  <section class="stats">
+
+    <div class="stat-card">
+      <div class="stat-icon green">📰</div>
+
+      <div class="stat-info">
+        <small>Total Posts</small>
+        <strong id="totalPosts">0</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon green">🌱</div>
+
+      <div class="stat-info">
+        <small>Plantation Updates</small>
+        <strong id="plantationPosts">0</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon gold">◆</div>
+
+      <div class="stat-info">
+        <small>Investment Insights</small>
+        <strong id="investmentPosts">0</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon dark">🏢</div>
+
+      <div class="stat-info">
+        <small>Company News</small>
+        <strong id="companyPosts">0</strong>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       WORKSPACE
+  ========================= -->
+
+  <section class="workspace">
+
+
+    <!-- =========================
+         CREATE / EDIT FORM
+    ========================= -->
+
+    <section class="card form-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2 id="formTitle">Create New Post</h2>
+
+          <p id="formSubtitle">
+            Add a new article to the public website.
+          </p>
+        </div>
+
+        <div class="header-icon">
+          ✎
+        </div>
+
+      </div>
+
+
+      <div class="form-body">
+
+        <form id="f">
+
+          <!-- TITLE -->
+
+          <label for="title">
+            Post Title <span class="required">*</span>
+          </label>
+
+          <input
+            id="title"
+            name="title"
+            required
+            maxlength="160"
+            placeholder="Enter an attractive post title..."
+          >
+
+
+          <!-- FACEBOOK URL -->
+
+          <label for="url">
+            Facebook Post Link <span class="required">*</span>
+          </label>
+
+          <input
+            id="url"
+            name="url"
+            type="url"
+            required
+            placeholder="https://www.facebook.com/..."
+          >
+
+
+          <!-- CATEGORY + DATE -->
+
+          <div class="row">
+
+            <div>
+
+              <label for="category">
+                Category
+              </label>
+
+              <select id="category" name="category">
+
+                <option>Plantation Updates</option>
+
+                <option>Investment Insights</option>
+
+                <option>Export News</option>
+
+                <option>Company News</option>
+
+              </select>
+
+            </div>
+
+
+            <div>
+
+              <label for="date">
+                Post Date <span class="required">*</span>
+              </label>
+
+              <input
+                id="date"
+                name="date"
+                type="date"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- EXCERPT -->
+
+          <label for="excerpt">
+
+            Short Summary
+            <span class="required">*</span>
+
+          </label>
+
+          <textarea
+            id="excerpt"
+            name="excerpt"
+            maxlength="500"
+            required
+            placeholder="Write a short summary of this post..."
+          ></textarea>
+
+          <small class="helper">
+            Maximum 500 characters. This summary will be displayed on the website.
+          </small>
+
+
+          <!-- IMAGE -->
+
+          <label for="image">
+            Upload Photo
+          </label>
+
+          <div class="file-box">
+
+            <input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+            >
+
+            <small class="helper">
+              JPG, PNG or WebP. Large images are automatically optimized.
+            </small>
+
+          </div>
+
+
+          <!-- IMAGE PREVIEW -->
+
+          <div
+            class="image-preview"
+            id="imagePreview"
+          >
+
+            <span class="preview-label">
+              Image Preview
+            </span>
+
+            <img
+              id="previewImg"
+              alt="Image preview"
+            >
+
+          </div>
+
+
+          <!-- IMAGE URL -->
+
+          <label for="image_url">
+            Or Use Photo Link
+          </label>
+
+          <input
+            id="image_url"
+            name="image_url"
+            type="url"
+            placeholder="https://..."
+          >
+
+          <small
+            id="imgNote"
+            class="helper"
+          ></small>
+
+
+          <!-- ACTIONS -->
+
+          <div class="actions">
+
+            <button
+              id="save"
+              type="submit"
+              class="btn btn-primary"
+            >
+              <span id="saveIcon">＋</span>
+              <span id="saveText">Publish Post</span>
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="cancel"
+              hidden
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         POSTS
+    ========================= -->
+
+    <section class="card posts-card">
+
+      <div class="posts-toolbar">
+
+        <div>
+          <h2 style="
+            margin:0;
+            font-family:Georgia,serif;
+            color:var(--forest);
+            font-size:19px;
+          ">
+            Published Posts
+          </h2>
+
+          <p style="
+            margin:4px 0 0;
+            color:var(--muted);
+            font-size:12px;
+          ">
+            Manage your live website content.
+          </p>
+        </div>
+
+
+        <div style="
+          display:flex;
+          gap:9px;
+          align-items:center;
+          width:min(490px,100%);
+        ">
+
+          <div class="search">
+
+            <span class="search-icon">
+              🔎
+            </span>
+
+            <input
+              id="search"
+              type="search"
+              placeholder="Search posts..."
+            >
+
+          </div>
+
+
+          <select
+            id="filter"
+            class="filter"
+          >
+
+            <option value="all">
+              All Categories
+            </option>
+
+            <option value="Plantation Updates">
+              Plantation Updates
+            </option>
+
+            <option value="Investment Insights">
+              Investment Insights
+            </option>
+
+            <option value="Export News">
+              Export News
+            </option>
+
+            <option value="Company News">
+              Company News
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div id="list" class="posts-list">
+
+        <div class="loading">
+
+          <div class="spinner"></div>
+
+          Loading published posts...
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </section>
+
+</main>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  id="toast"
+  role="status"
+></div>
+
+
+<!-- =========================
+     DELETE MODAL
+========================= -->
+
+<div
+  id="deleteModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-icon">
+      🗑
+    </div>
+
+    <h3>
+      Delete this post?
+    </h3>
+
+    <p>
+      This action will permanently remove the post from the website.
+      This cannot be undone.
+    </p>
+
+    <div class="modal-actions">
+
+      <button
+        id="deleteCancel"
+        class="btn btn-secondary"
+      >
+        Cancel
+      </button>
+
+      <button
+        id="deleteConfirm"
+        class="btn btn-danger"
+      >
+        Delete Post
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   BASIC HELPERS
+========================================================== */
+
+const $ = id => document.getElementById(id);
+
+const H = {
+  "X-Requested-With":"admin"
+};
+
+const esc = value =>
+  String(value ?? "").replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[char])
+  );
+
+
+/* ==========================================================
+   STATE
+========================================================== */
+
+let posts = [];
+
+let editing = null;
+
+let pendingDelete = null;
+
+
+/* ==========================================================
+   DATE FORMAT
+========================================================== */
+
+const fmt = date => {
+
+  if(!date) return "";
+
+  return new Date(
+    date + "T00:00:00"
+  ).toLocaleDateString(
+    "en-GB",
+    {
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    }
+  );
+
+};
+
+
+/* ==========================================================
+   CATEGORY CLASS
+========================================================== */
+
+function categoryClass(category){
+
+  if(category === "Investment Insights")
+    return "investment";
+
+  if(category === "Export News")
+    return "export";
+
+  if(category === "Company News")
+    return "company";
+
+  return "";
+
+}
+
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+let toastTimer;
+
+function toast(message, type="success"){
+
+  const el = $("toast");
+
+  el.textContent = message;
+
+  el.className = "";
+
+  el.classList.add(type);
+
+  requestAnimationFrame(() => {
+    el.classList.add("show");
+  });
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    el.classList.remove("show");
+  }, 3500);
+
+}
+
+
+/* ==========================================================
+   FORM RESET
+========================================================== */
+
+function reset(){
+
+  editing = null;
+
+  $("f").reset();
+
+  $("date").valueAsDate = new Date();
+
+  $("formTitle").textContent = "Create New Post";
+
+  $("formSubtitle").textContent =
+    "Add a new article to the public website.";
+
+  $("saveText").textContent = "Publish Post";
+
+  $("saveIcon").textContent = "＋";
+
+  $("cancel").hidden = true;
+
+  $("imgNote").textContent = "";
+
+  $("imagePreview").style.display = "none";
+
+  $("previewImg").removeAttribute("src");
+
+}
+
+
+/* ==========================================================
+   STATISTICS
+========================================================== */
+
+function updateStats(){
+
+  $("totalPosts").textContent =
+    posts.length;
+
+  $("plantationPosts").textContent =
+    posts.filter(
+      p => p.category === "Plantation Updates"
+    ).length;
+
+  $("investmentPosts").textContent =
+    posts.filter(
+      p => p.category === "Investment Insights"
+    ).length;
+
+  $("companyPosts").textContent =
+    posts.filter(
+      p => p.category === "Company News"
+    ).length;
+
+}
+
+
+/* ==========================================================
+   RENDER POSTS
+========================================================== */
+
+function renderPosts(){
+
+  const search =
+    $("search").value
+      .trim()
+      .toLowerCase();
+
+  const filter =
+    $("filter").value;
+
+
+  const filtered = posts.filter(post => {
+
+    const searchable = [
+      post.title,
+      post.excerpt,
+      post.category
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    const matchesSearch =
+      !search ||
+      searchable.includes(search);
+
+    const matchesFilter =
+      filter === "all" ||
+      post.category === filter;
+
+    return matchesSearch && matchesFilter;
+
+  });
+
+
+  if(!filtered.length){
+
+    $("list").innerHTML = `
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          📰
+        </div>
+
+        <strong>
+          No posts found
+        </strong>
+
+        <span>
+          ${
+            posts.length
+              ? "Try changing your search or category filter."
+              : "Create your first Heritage Crops post."
+          }
+        </span>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  $("list").innerHTML = filtered.map(post => `
+
+    <article class="post">
+
+      <div class="post-image">
+
+        ${
+          post.image
+
+          ? `
+            <img
+              src="${esc(post.image)}"
+              alt=""
+              loading="lazy"
+            >
+          `
+
+          : `
+            <div class="no-image">
+              🌿
+            </div>
+          `
+        }
+
+      </div>
+
+
+      <div class="post-content">
+
+        <div class="post-title">
+          ${esc(post.title)}
+        </div>
+
+        <div class="post-excerpt">
+          ${esc(post.excerpt || "No summary available.")}
+        </div>
+
+        <div class="meta">
+
+          <span class="category ${categoryClass(post.category)}">
+            ${esc(post.category)}
+          </span>
+
+          <span class="date">
+            ${fmt(post.date)}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="post-actions">
+
+        <button
+          class="icon-btn edit-btn"
+          data-edit="${esc(post.id)}"
+          title="Edit post"
+          aria-label="Edit post"
+        >
+          ✎
+        </button>
+
+        <button
+          class="icon-btn btn-danger"
+          data-del="${esc(post.id)}"
+          title="Delete post"
+          aria-label="Delete post"
+        >
+          🗑
+        </button>
+
+      </div>
+
+    </article>
+
+  `).join("");
+
+}
+
+
+/* ==========================================================
+   LOAD POSTS
+========================================================== */
+
+async function load(){
+
+  $("list").innerHTML = `
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      Loading published posts...
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const response =
+      await fetch("/api/posts");
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Unable to load posts."
+      );
+
+    }
+
+
+    posts =
+      await response.json();
+
+
+    if(!Array.isArray(posts)){
+
+      posts = [];
+
+    }
+
+
+    updateStats();
+
+    renderPosts();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    $("list").innerHTML = `
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          ⚠
+        </div>
+
+        <strong>
+          Unable to load posts
+        </strong>
+
+        <span>
+          Please refresh the page and try again.
+        </span>
+
+      </div>
+
+    `;
+
+    toast(
+      error.message ||
+      "Unable to load posts.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   EDIT / DELETE
+========================================================== */
+
+$("list").addEventListener(
+  "click",
+  async event => {
+
+    const edit =
+      event.target.closest("[data-edit]");
+
+    const del =
+      event.target.closest("[data-del]");
+
+
+    /* ======================
+       EDIT
+    ====================== */
+
+    if(edit){
+
+      const id =
+        edit.dataset.edit;
+
+      const post =
+        posts.find(
+          item => String(item.id) === String(id)
+        );
+
+
+      if(!post) return;
+
+
+      editing = post.id;
+
+
+      for(
+        const key of [
+          "title",
+          "url",
+          "category",
+          "date",
+          "excerpt"
+        ]
+      ){
+
+        if($(key)){
+          $(key).value =
+            post[key] ?? "";
+        }
+
+      }
+
+
+      $("image_url").value =
+        post.image &&
+        post.image.startsWith("http")
+          ? post.image
+          : "";
+
+
+      $("imgNote").textContent =
+        post.image
+          ? "Leave the photo fields empty to keep the current photo."
+          : "";
+
+
+      if(post.image){
+
+        $("previewImg").src =
+          post.image;
+
+        $("imagePreview").style.display =
+          "block";
+
+      }
+      else{
+
+        $("imagePreview").style.display =
+          "none";
+
+      }
+
+
+      $("formTitle").textContent =
+        "Edit Published Post";
+
+      $("formSubtitle").textContent =
+        "Update the selected post and save your changes.";
+
+      $("saveText").textContent =
+        "Save Changes";
+
+      $("saveIcon").textContent =
+        "✓";
+
+      $("cancel").hidden =
+        false;
+
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+      return;
+    }
+
+
+    /* ======================
+       DELETE
+    ====================== */
+
+    if(del){
+
+      pendingDelete =
+        del.dataset.del;
+
+      $("deleteModal")
+        .classList.add("show");
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   DELETE CONFIRMATION
+========================================================== */
+
+$("deleteCancel").onclick = () => {
+
+  pendingDelete = null;
+
+  $("deleteModal")
+    .classList.remove("show");
+
+};
+
+
+$("deleteConfirm").onclick =
+  async () => {
+
+    if(!pendingDelete)
+      return;
+
+
+    const id =
+      pendingDelete;
+
+
+    $("deleteConfirm").disabled =
+      true;
+
+    $("deleteConfirm").textContent =
+      "Deleting...";
+
+
+    try{
+
+      const response =
+        await fetch(
+          "/api/posts/" + encodeURIComponent(id),
+          {
+            method:"DELETE",
+            headers:H
+          }
+        );
+
+
+      if(!response.ok){
+
+        let data = {};
+
+        try{
+          data = await response.json();
+        }catch(_){}
+
+        throw new Error(
+          data.error ||
+          "Unable to delete the post."
+        );
+
+      }
+
+
+      if(
+        editing != null &&
+        String(editing) === String(id)
+      ){
+        reset();
+      }
+
+
+      $("deleteModal")
+        .classList.remove("show");
+
+
+      pendingDelete = null;
+
+
+      toast(
+        "Post deleted successfully.",
+        "success"
+      );
+
+
+      await load();
+
+    }
+    catch(error){
+
+      toast(
+        error.message ||
+        "Delete failed.",
+        "error"
+      );
+
+    }
+    finally{
+
+      $("deleteConfirm").disabled =
+        false;
+
+      $("deleteConfirm").textContent =
+        "Delete Post";
+
+    }
+
+  };
+
+
+/* Close modal by clicking outside */
+
+$("deleteModal").addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      $("deleteModal")
+    ){
+
+      $("deleteModal")
+        .classList.remove("show");
+
+      pendingDelete = null;
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   CANCEL EDIT
+========================================================== */
+
+$("cancel").onclick = () => {
+
+  reset();
+
+  toast(
+    "Edit cancelled.",
+    "success"
+  );
+
+};
+
+
+/* ==========================================================
+   SEARCH / FILTER
+========================================================== */
+
+$("search").addEventListener(
+  "input",
+  renderPosts
+);
+
+$("filter").addEventListener(
+  "change",
+  renderPosts
+);
+
+
+/* ==========================================================
+   IMAGE PREVIEW
+========================================================== */
+
+$("image").addEventListener(
+  "change",
+  event => {
+
+    const file =
+      event.target.files[0];
+
+
+    if(!file){
+
+      $("imagePreview")
+        .style.display = "none";
+
+      return;
+
+    }
+
+
+    if(!file.type.startsWith("image/")){
+
+      toast(
+        "Please select a valid image file.",
+        "error"
+      );
+
+      event.target.value = "";
+
+      return;
+
+    }
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload = e => {
+
+      $("previewImg").src =
+        e.target.result;
+
+      $("imagePreview").style.display =
+        "block";
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+  }
+);
+
+
+/* ==========================================================
+   IMAGE URL PREVIEW
+========================================================== */
+
+$("image_url").addEventListener(
+  "change",
+  () => {
+
+    const url =
+      $("image_url").value.trim();
+
+
+    if(
+      !url ||
+      $("image").files.length
+    ){
+
+      return;
+
+    }
+
+
+    $("previewImg").src =
+      url;
+
+    $("imagePreview").style.display =
+      "block";
+
+  }
+);
+
+
+/* ==========================================================
+   IMAGE OPTIMIZATION
+========================================================== */
+
+async function buildForm(){
+
+  const fd =
+    new FormData($("f"));
+
+  const file =
+    $("image").files[0];
+
+
+  if(
+    file &&
+    /image\/(jpeg|png|webp)/i.test(
+      file.type
+    )
+  ){
+
+    try{
+
+      const bmp =
+        await createImageBitmap(file);
+
+
+      const maxSize =
+        1600;
+
+
+      const scale =
+        Math.min(
+          1,
+          maxSize /
+          Math.max(
+            bmp.width,
+            bmp.height
+          )
+        );
+
+
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+
+      canvas.width =
+        Math.round(
+          bmp.width * scale
+        );
+
+      canvas.height =
+        Math.round(
+          bmp.height * scale
+        );
+
+
+      const context =
+        canvas.getContext("2d");
+
+
+      context.drawImage(
+        bmp,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+
+      const blob =
+        await new Promise(
+          resolve =>
+            canvas.toBlob(
+              resolve,
+              "image/jpeg",
+              .85
+            )
+        );
+
+
+      if(blob){
+
+        fd.set(
+          "image",
+          blob,
+          file.name
+            .replace(
+              /\.[^.]+$/,
+              ""
+            ) + ".jpg"
+        );
+
+      }
+
+    }
+    catch(error){
+
+      console.warn(
+        "Image optimization failed:",
+        error
+      );
+
+    }
+
+  }
+
+
   return fd;
+
 }
-$('f').addEventListener('submit', async e => {
-  e.preventDefault(); $('save').disabled = true; say('Saving…', true);
-  try {
-    const r = await fetch(editing ? '/api/posts/' + editing : '/api/posts', { method: editing ? 'PUT' : 'POST', headers: H, body: await buildForm() });
-    const j = await r.json();
-    if (!r.ok) throw new Error(j.error || 'Something went wrong');
-    say(editing ? 'Changes saved.' : 'Post published. It is now live on the website.', true); reset(); load();
-  } catch (err) { say(err.message, false); }
-  $('save').disabled = false;
-});
-reset(); load();
-</script></body></html>
+
+
+/* ==========================================================
+   FORM SUBMIT
+========================================================== */
+
+$("f").addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    const saveButton =
+      $("save");
+
+
+    saveButton.disabled =
+      true;
+
+
+    $("saveText").textContent =
+      editing
+        ? "Saving..."
+        : "Publishing...";
+
+
+    try{
+
+      const endpoint =
+        editing
+          ? "/api/posts/" + encodeURIComponent(editing)
+          : "/api/posts";
+
+
+      const method =
+        editing
+          ? "PUT"
+          : "POST";
+
+
+      const response =
+        await fetch(
+          endpoint,
+          {
+            method,
+            headers:H,
+            body:await buildForm()
+          }
+        );
+
+
+      let data = {};
+
+      try{
+
+        data =
+          await response.json();
+
+      }
+      catch(_){
+
+        data = {};
+
+      }
+
+
+      if(!response.ok){
+
+        throw new Error(
+          data.error ||
+          "Something went wrong."
+        );
+
+      }
+
+
+      toast(
+        editing
+          ? "Post updated successfully."
+          : "Post published successfully.",
+        "success"
+      );
+
+
+      reset();
+
+      await load();
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      toast(
+        error.message ||
+        "Unable to save the post.",
+        "error"
+      );
+
+    }
+    finally{
+
+      saveButton.disabled =
+        false;
+
+      $("saveText").textContent =
+        editing
+          ? "Save Changes"
+          : "Publish Post";
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   ESC KEY
+========================================================== */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape"
+    ){
+
+      $("deleteModal")
+        .classList.remove("show");
+
+      pendingDelete = null;
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   INITIALIZE
+========================================================== */
+
+reset();
+
+load();
+
+</script>
+
+</body>
+</html>
+```
