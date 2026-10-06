@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Blog Admin · Heritage Crops</title>
+<style>
+:root{--forest:#063B2A;--green:#006A50;--gold:#C8A951;--cream:#F8F5EF;--ink:#1D2722;--line:rgba(6,59,42,.14)}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--cream);color:var(--ink)}
+header{background:var(--forest);color:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold)}
+header h1{margin:0;font:600 18px Georgia,serif}header a{color:var(--gold);text-decoration:none;font-size:14px}
+main{max-width:1180px;margin:0 auto;padding:28px;display:grid;gap:28px;grid-template-columns:minmax(0,420px) 1fr;align-items:start}
+@media(max-width:860px){main{grid-template-columns:1fr;padding:16px}}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+h2{margin:0 0 16px;font:600 18px Georgia,serif;color:var(--forest)}
+label{display:block;font-size:13px;font-weight:600;margin:14px 0 5px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--green);outline-offset:1px}
+textarea{min-height:96px;resize:vertical}small{color:#6b756f;font-size:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:600 14px inherit;border:0;border-radius:999px;padding:11px 22px;cursor:pointer;background:var(--green);color:#fff}
+button.ghost{background:transparent;color:var(--green);border:1px solid var(--line)}button.danger{background:transparent;color:#b3261e;border:1px solid #e9c4c1;padding:7px 14px}
+button:disabled{opacity:.6;cursor:wait}.actions{display:flex;gap:10px;margin-top:20px}
+#msg{margin-top:14px;font-size:14px;min-height:20px}.ok{color:var(--green)}.err{color:#b3261e}
+.post{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}.post:last-child{border:0}
+.post img,.thumb{width:84px;height:64px;border-radius:10px;object-fit:cover;background:var(--cream);flex-shrink:0}
+.post div{flex:1;min-width:0}.post b{display:block;font-family:Georgia,serif}.post span{font-size:12.5px;color:#6b756f}
+.empty{color:#6b756f;padding:18px 0}
+</style></head><body>
+<header><h1>Heritage Crops · Blog &amp; News</h1><a href="/api/posts" target="_blank">View public feed ↗</a></header>
+<main>
+  <section class="card"><h2 id="formTitle">Add a post</h2>
+    <form id="f">
+      <label for="title">Title</label><input id="title" name="title" required maxlength="160">
+      <label for="url">Facebook post link</label><input id="url" name="url" type="url" placeholder="https://www.facebook.com/…" required>
+      <div class="row">
+        <div><label for="category">Category</label>
+          <select id="category" name="category"><option>Plantation Updates</option><option>Investment Insights</option><option>Export News</option><option>Company News</option></select></div>
+        <div><label for="date">Post date</label><input id="date" name="date" type="date" required></div>
+      </div>
+      <label for="excerpt">Short summary <small>(max 500 characters)</small></label><textarea id="excerpt" name="excerpt" required maxlength="500"></textarea>
+      <label for="image">Photo <small>(JPG/PNG/WebP — large photos are shrunk automatically)</small></label><input id="image" name="image" type="file" accept="image/*">
+      <label for="image_url">…or photo link <small>(e.g. ImageKit)</small></label><input id="image_url" name="image_url" type="url" placeholder="https://…">
+      <small id="imgNote"></small>
+      <div class="actions"><button id="save" type="submit">Publish post</button><button type="button" class="ghost" id="cancel" hidden>Cancel edit</button></div>
+      <div id="msg" role="status"></div>
+    </form>
+  </section>
+  <section class="card"><h2>Published posts</h2><div id="list"><p class="empty">Loading…</p></div></section>
+</main>
+<script>
+const $ = id => document.getElementById(id), H = { 'X-Requested-With': 'admin' };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let posts = [], editing = null;
+const fmt = d => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const say = (t, ok) => { $('msg').className = ok ? 'ok' : 'err'; $('msg').textContent = t; };
+
+function reset() {
+  editing = null; $('f').reset(); $('date').valueAsDate = new Date();
+  $('formTitle').textContent = 'Add a post'; $('save').textContent = 'Publish post'; $('cancel').hidden = true; $('imgNote').textContent = '';
+}
+async function load() {
+  posts = await (await fetch('/api/posts')).json();
+  $('list').innerHTML = posts.length ? posts.map(p => `
+    <div class="post">${p.image ? `<img src="${esc(p.image)}" alt="">` : '<div class="thumb"></div>'}
+      <div><b>${esc(p.title)}</b><span>${esc(p.category)} · ${fmt(p.date)}</span></div>
+      <button class="ghost" data-edit="${p.id}">Edit</button><button class="danger" data-del="${p.id}">Delete</button></div>`).join('')
+    : '<p class="empty">No posts yet. Add your first one on the left.</p>';
+}
+$('list').addEventListener('click', async e => {
+  const ed = e.target.dataset.edit, del = e.target.dataset.del;
+  if (ed) {
+    const p = posts.find(x => x.id == ed); editing = p.id;
+    for (const k of ['title', 'url', 'category', 'date', 'excerpt']) $(k).value = p[k];
+    $('image_url').value = p.image && p.image.startsWith('http') ? p.image : '';
+    $('imgNote').textContent = p.image ? 'Leave the photo fields empty to keep the current photo.' : '';
+    $('formTitle').textContent = 'Edit post'; $('save').textContent = 'Save changes'; $('cancel').hidden = false;
+    scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  if (del && confirm('Delete this post from the website?')) {
+    await fetch('/api/posts/' + del, { method: 'DELETE', headers: H }); if (editing == del) reset(); load();
+  }
+});
+$('cancel').onclick = reset;
+/* Shrink big photos in the browser (max 1600px) so uploads stay small and fast. */
+async function buildForm() {
+  const fd = new FormData($('f')), file = $('image').files[0];
+  if (file && /^image\/(jpeg|png|webp)$/.test(file.type)) {
+    const bmp = await createImageBitmap(file), k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85));
+    fd.set('image', blob, file.name.replace(/\.\w+$/, '') + '.jpg');
+  }
+  return fd;
+}
+$('f').addEventListener('submit', async e => {
+  e.preventDefault(); $('save').disabled = true; say('Saving…', true);
+  try {
+    const r = await fetch(editing ? '/api/posts/' + editing : '/api/posts', { method: editing ? 'PUT' : 'POST', headers: H, body: await buildForm() });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || 'Something went wrong');
+    say(editing ? 'Changes saved.' : 'Post published. It is now live on the website.', true); reset(); load();
+  } catch (err) { say(err.message, false); }
+  $('save').disabled = false;
+});
+reset(); load();
+</script></body></html>

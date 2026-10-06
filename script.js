@@ -169,6 +169,45 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ----------------------------------------------------------
+     5d) BLOG & NEWS — load posts from the Blog Admin API
+     Posts are added at <api>/admin; no code changes needed. If the API is
+     unreachable or empty, the static markup already in the list stays.
+  ----------------------------------------------------------- */
+  var newsList = document.querySelector('[data-news-api]');
+  if (newsList && window.fetch) {
+    var api = (newsList.getAttribute('data-news-api') || '').replace(/\/$/, '');
+    var esc = function (s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    };
+    var FB = '<svg class="hc-fb-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.34l-.53 3.49h-2.81V24C19.61 23.1 24 18.1 24 12.07z"/></svg>';
+    var fmtDate = function (d) {
+      return new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
+
+    fetch(api + '/api/posts')
+      .then(function (res) { if (!res.ok) throw new Error('bad status'); return res.json(); })
+      .then(function (posts) {
+        if (!posts.length) return;
+        newsList.innerHTML = posts.map(function (p) {
+          var img = p.image ? (p.image.charAt(0) === '/' ? api + p.image : p.image) : '';
+          return '<li><a href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer" class="hc-news-item hc-lift-card hc-blog-card" aria-label="' + esc(p.title) + ' — read on Facebook (opens in a new tab)">' +
+            (img ? '<div class="hc-news-media hc-img-zoom"><img src="' + esc(img) + '" alt="" loading="lazy"></div>' : '') +
+            '<div class="hc-news-body"><div class="hc-news-meta">' +
+            '<span class="hc-news-source">' + FB + 'Facebook</span>' +
+            '<span class="hc-blog-category text-xs font-semibold">' + esc(p.category) + '</span>' +
+            '<time class="hc-blog-date text-xs" datetime="' + esc(p.date) + '">' + fmtDate(p.date) + '</time></div>' +
+            '<h3 class="hc-news-title font-display">' + esc(p.title) + '</h3>' +
+            '<p class="hc-body-copy hc-news-excerpt">' + esc(p.excerpt) + '</p>' +
+            '<span class="hc-news-cta">Read on Facebook <span class="hc-btn-arrow" aria-hidden="true">↗</span></span>' +
+            '</div></a></li>';
+        }).join('');
+      })
+      .catch(function () { /* keep static fallback */ });
+  }
+
+  /* ----------------------------------------------------------
      6) CONTACT FORM — sends enquiries to info@heritagecrops.lk
      Uses Web3Forms (free). Set the access_key in index.html.
   ----------------------------------------------------------- */
@@ -314,7 +353,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
   }
-
 
   /* ----------------------------------------------------------
      7) EXPORTS — animated process cycle
