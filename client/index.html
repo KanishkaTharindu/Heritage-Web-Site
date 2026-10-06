@@ -38,8 +38,10 @@
 <!-- Lucide icons — swap for Elementor's native Icon Library on rebuild -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('mo')</script>
 <!-- Custom stylesheet (paste into WP Customizer → Additional CSS after Elementor rebuild) -->
 <link rel="stylesheet" href="custom.css">
+<link rel="stylesheet" href="motion.css">
 </head>
 
 <body class="font-body bg-offwhite text-charcoal antialiased">
@@ -51,12 +53,12 @@
 EL:SECTION  (Header — sticky, transparent-to-solid on scroll)
 ============================================================= -->
 <header id="site-nav" class="hc-nav-header fixed top-0 inset-x-0 z-50" role="banner">
-  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 flex items-center justify-between py-3">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 flex items-center justify-between py-0">
 
     <!-- EL:COLUMN (logo) -->
     <a href="#home" class="flex items-center gap-3 group hc-logo-link" aria-label="Heritage Crops — home">
       <!-- EL:WIDGET:Image (logo) -->
-      <span class="hc-logo-badge"><img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/Logo/HeritageCrops%20Logo.jpeg?updatedAt=1790922453704" alt="Heritage Crops Plantation and Exports logo" height="76" decoding="async"></span>
+      <span class="hc-logo-badge"><img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/Logo/logo-glow.png" alt="Heritage Crops Plantation and Exports logo" height="76" decoding="async"></span>
     </a>
 
     <!-- EL:COLUMN (nav) / EL:WIDGET:Icon List (horizontal nav links — free Elementor has no Nav Menu widget;
@@ -131,7 +133,7 @@ EL:SECTION  (Hero — background image + overlay)
         <!-- EL:WIDGET:Text Editor (supporting paragraph) -->
         <p class="hc-hero-copy mt-7 max-w-lg text-[15px] leading-relaxed">
           Heritage Crops combines plantation development, agricultural expertise and investment
-          opportunities to create long-term value — while contributing to a more sustainable
+          opportunities to create long-term value while contributing to a more sustainable
           agricultural future for Sri Lanka.
         </p>
         <!-- EL:INNER-SECTION (button row) -->
@@ -200,7 +202,7 @@ EL:SECTION  (Trust statistics — dark background, 5 Counter widgets)
       </div>
     </div>
     <!-- EL:WIDGET:Text -->
-    <p class="hc-stats-note text-center text-[11px] mt-10">Figures marked "XX" are placeholders pending verified company data — replace via the editable stats config.</p>
+    
   </div>
 </section>
 
@@ -216,7 +218,7 @@ EL:SECTION  (About — 2 columns: Image | Text)
         <!-- EL:WIDGET:Image -->
         <!-- Placeholder photography via Unsplash (unsplash.com) — replace with licensed Heritage Crops photography -->
         <div class="hc-img-zoom rounded-2xl overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80" alt="Green rolling plantation hillside in Sri Lanka" class="w-full h-[420px] lg:h-[540px] object-cover">
+          <img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/Logo/logo-glow.png" alt="Green rolling plantation hillside in Sri Lanka" class="w-full h-[20px] lg:h-[400px] object-cover">
         </div>
         <!-- EL:INNER-SECTION (floating badge) / EL:WIDGET:Text -->
         <div class="hc-floating-badge absolute -bottom-6 left-6 rounded-xl px-5 py-3">
@@ -354,8 +356,7 @@ EL:SECTION  (Investment Plans preview — dark, 3 columns)
       </div>
     </div>
     <!-- EL:WIDGET:Text -->
-    <p class="hc-investment-disclaimer text-[11px] mt-8 max-w-2xl">Plan figures shown are structural placeholders. No returns are guaranteed; see the full Investment Disclaimer on the Resources page before proceeding.</p>
-  </div>
+    
 </section>
 
 <!-- ============================================================
@@ -842,7 +843,6 @@ EL:SECTION  (Testimonials — static pair of native Testimonial + Star Rating wi
         <p class="hc-testimonial-byline mt-6 text-sm">— Investor Name, Cinnamon Estate Plan</p>
       </div>
     </div>
-    <p class="hc-note-text text-center text-[11px] mt-10">Only genuine, approved testimonials should appear here — do not publish placeholder quotes.</p>
   </div>
 </section>
 
@@ -1004,7 +1004,6 @@ EL:SECTION  (Contact — 2 columns: details/map | static dummy form)
         </button>
         <p id="cf-status" class="hc-form-status sm:col-span-2 text-sm" role="status" aria-live="polite"></p>
       </form>
-      <p class="hc-note-text text-[11px] mt-2">Your details are used only to respond to your enquiry.</p>
     </div>
   </div>
 </section>
@@ -1023,7 +1022,7 @@ lives ONLY here, never in main nav.)
       <!-- EL:COLUMN -->
       <div class="lg:col-span-4">
         <div class="flex items-center gap-3">
-          <span class="hc-logo-badge"><img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/Logo/HeritageCrops%20Logo.jpeg?updatedAt=1790922453704" alt="Heritage Crops Plantation and Exports logo" height="76" decoding="async"></span>
+          <span class="hc-logo-badge"><img src="https://ik.imagekit.io/HeritageCrops/HeritageCrops/Logo/logo-glow.png" alt="Heritage Crops Plantation and Exports logo" height="76" decoding="async"></span>
         </div>
         <p class="hc-footer-copy mt-5 text-sm max-w-xs leading-relaxed">Plantation development, agricultural investment and export-oriented agriculture, grown from Sri Lankan soil.</p>
         <!-- EL:WIDGET:Icon List (social) -->
@@ -1102,5 +1101,8 @@ see build notes in custom.css.)
 </div>
 
 <script src="script.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer src="motion.js"></script>
 </body>
 </html>
