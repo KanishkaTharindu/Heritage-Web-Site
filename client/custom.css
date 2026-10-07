@@ -208,6 +208,20 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   .hc-vm-text{ font-size:1.6rem; }
 }
 
+/* About: Heritage Partners (3 logos, centred; wraps cleanly on phones) */
+.hc-partner-card{ width:calc(50% - 6px); height:130px; padding:16px; }
+@media (min-width:640px){ .hc-partner-card{ width:200px; height:160px; } }
+@media (min-width:1024px){ .hc-partner-card{ width:240px; height:180px; padding:22px; } }
+
+/* Partner logos: the 400x400 files hold a small wide logo in the middle of a square, so make the square image
+   wider than the card (transparent areas overflow harmlessly) until the logo itself fills the card width */
+.hc-partner-card{ padding:12px; }
+.hc-partner-card--sq img{ flex:none; width:110%; height:auto; max-width:none; aspect-ratio:1; }
+@media (min-width:1024px){ .hc-partner-card{ padding:16px; } }
+.hc-partner-card{ overflow:hidden; }                       /* clip the oversized square images to the card */
+.hc-partner-card img{ mix-blend-mode:multiply; }          /* the Herbals file has an off-white background: make it vanish on the white card */
+.hc-partner-card--crops img{ transform:scale(1.15); }     /* bring the stacked Heritage Crops logo up to the same visual width */
+
 /* About: "Why choose us" cards */
 .hc-why-card{
   list-style:none; padding:18px 20px; border-radius:16px; line-height:1.6; font-size:.97rem;
@@ -672,3 +686,62 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 @media (min-width:1024px){
   .hc-news-title{ font-size:2rem; }
 }
+
+/* ---------- Chairman's message ---------- */
+/* Portrait: forest panel with the cut-out rising above its top edge + a name-plate strip */
+.hc-chair-photo{ position:relative; width:100%; max-width:360px; aspect-ratio:1/1.1; margin-top:56px; isolation:isolate; }
+.hc-chair-photo::before{
+  content:""; position:absolute; inset:0; z-index:-1; border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(200,169,81,.38), transparent 46%),
+    linear-gradient(165deg,var(--hc-forest) 0%,#042a1e 100%);
+  box-shadow:0 34px 60px -34px rgba(6,59,42,.7);
+}
+.hc-chair-photo{ perspective:900px; }
+.hc-chair-stage{
+  position:absolute; inset:0; transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.hc-chair-photo.is-tilting .hc-chair-stage{ transition:transform .08s linear; }
+/* gold halo ring behind the head (sits deepest) */
+.hc-chair-ring{
+  position:absolute; left:50%; top:12%; width:68%; aspect-ratio:1; translate:-50% 0; transform:translateZ(-50px);
+  border-radius:50%; border:2px solid rgba(200,169,81,.55);
+  box-shadow:0 0 0 14px rgba(200,169,81,.08), 0 0 60px rgba(200,169,81,.35), inset 0 0 50px rgba(200,169,81,.18);
+}
+/* contact shadow on the "floor" under his feet */
+.hc-chair-floor{
+  position:absolute; left:50%; bottom:3%; width:78%; height:9%; translate:-50% 0; transform:translateZ(-10px);
+  background:radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter:blur(7px);
+}
+/* the figure: pushed toward the viewer, with depth shadows + a gold rim light on the left edge */
+.hc-chair-photo img{
+  position:absolute; left:0; bottom:0; width:100%; height:118%; display:block;
+  object-fit:contain; object-position:center bottom; transform:translateZ(60px);
+  filter:drop-shadow(-6px 0 10px rgba(200,169,81,.35)) drop-shadow(0 22px 22px rgba(0,0,0,.5)) drop-shadow(0 6px 6px rgba(0,0,0,.35));
+}
+.hc-chair-photo::after{
+  content:"Chairman / Managing Director"; position:absolute; left:14px; right:14px; bottom:14px; z-index:2;
+  padding:12px 16px; border-radius:14px; text-align:center;
+  font:600 .68rem/1.3 Inter,sans-serif; letter-spacing:.16em; text-transform:uppercase; color:var(--hc-gold);
+  background:rgba(4,42,30,.72); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  border:1px solid rgba(200,169,81,.35);
+}
+.hc-chair-quote{ position:relative; padding-left:0; }
+.hc-chair-mark{
+  display:block; height:44px; font:400 96px/1 Fraunces,Georgia,serif; color:var(--hc-gold); opacity:.8; margin-bottom:6px;
+}
+.hc-chair-sign{ padding-top:20px; border-top:1px solid rgba(6,59,42,.15); max-width:420px; }
+.hc-chair-name{ font:500 1.5rem/1.2 Fraunces,Georgia,serif; color:var(--hc-forest); }
+.hc-chair-role{ margin-top:6px; font:600 .75rem/1.4 Inter,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--hc-green); }
+@media (min-width:1024px){
+  .hc-chair-photo{ max-width:none; }
+  .hc-chair-mark{ height:56px; font-size:120px; }
+}
+
+/* ---------- Exports: process video playing behind the content ---------- */
+.hc-exports-section{ position:relative; overflow:hidden; isolation:isolate; }
+.hc-exports-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; pointer-events:none; }
+.hc-exports-overlay{ position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,59,42,.82) 0%,rgba(6,59,42,.72) 50%,rgba(6,59,42,.85) 100%); }
+@media (max-width:1023px){ .hc-exports-overlay{ background:rgba(6,59,42,.82); } }

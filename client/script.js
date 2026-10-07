@@ -417,3 +417,36 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 });
+
+/* Chairman portrait: subtle 3D tilt that follows the pointer (fine pointers, motion allowed) */
+(function () {
+  var el = document.querySelector('.hc-chair-photo[data-tilt]');
+  if (!el || !window.matchMedia) return;
+  if (!matchMedia('(hover:hover) and (pointer:fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var max = 9;
+  el.addEventListener('pointermove', function (e) {
+    var r = el.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    el.classList.add('is-tilting');
+    el.style.setProperty('--ry', (x * max * 2).toFixed(2) + 'deg');
+    el.style.setProperty('--rx', (-y * max * 2).toFixed(2) + 'deg');
+  });
+  el.addEventListener('pointerleave', function () {
+    el.classList.remove('is-tilting');
+    el.style.setProperty('--ry', '0deg'); el.style.setProperty('--rx', '0deg');
+  });
+})();
+
+/* Exports background video: respect reduced motion, and only play while on screen (saves battery + data) */
+(function () {
+  var v = document.querySelector('.hc-exports-video');
+  if (!v) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { v.removeAttribute('autoplay'); v.pause(); return; }
+  if (!('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else { v.pause(); }
+    });
+  }, { threshold: 0.1 }).observe(v);
+})();
