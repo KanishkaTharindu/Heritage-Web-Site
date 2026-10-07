@@ -168,6 +168,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-img-zoom img{ transition: transform .8s var(--hc-ease); }
 .hc-img-zoom:hover img{ transform:scale(1.06); }
 
+/* About image on phones/tablets: show the whole image (no edge cropping) - cancel the zoom/parallax bleed */
+@media (max-width:1023px){
+  .mo #about .hc-img-zoom img.hc-about-img{ scale:1 !important; translate:none !important; }
+  .hc-about-section .hc-img-zoom{ padding:8px 0; }
+}
+
 /* About: recognition & certification logos (2-up on phones, one row of 6 on desktop) */
 .hc-recog-card{
   display:flex; align-items:center; justify-content:center;
@@ -176,6 +182,42 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   box-shadow:0 14px 30px -22px rgba(6,59,42,.35);
 }
 .hc-recog-card img{ width:100%; height:100%; object-fit:contain; }
+
+/* About: Vision & Mission cards */
+.hc-vm-card{
+  position:relative; overflow:hidden; border-radius:20px; padding:28px 24px;
+  background:linear-gradient(160deg,var(--hc-forest) 0%,#042a1e 100%); color:#fff;
+  box-shadow:0 24px 50px -30px rgba(6,59,42,.7);
+}
+.hc-vm-card::after{
+  content:""; position:absolute; right:-60px; top:-60px; width:180px; height:180px; border-radius:50%;
+  background:radial-gradient(circle,rgba(200,169,81,.22),transparent 65%); pointer-events:none;
+}
+.hc-vm-icon{
+  display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%;
+  border:1px solid rgba(200,169,81,.5); color:var(--hc-gold);
+}
+.hc-vm-label{
+  margin-top:18px; font:600 .75rem/1 Inter,sans-serif; letter-spacing:.2em; text-transform:uppercase; color:var(--hc-gold);
+}
+.hc-vm-text{
+  margin-top:12px; font:400 1.3rem/1.4 Fraunces,Georgia,serif; color:#fff;
+}
+@media (min-width:1024px){
+  .hc-vm-card{ padding:40px 40px; }
+  .hc-vm-text{ font-size:1.6rem; }
+}
+
+/* About: "Why choose us" cards */
+.hc-why-card{
+  list-style:none; padding:18px 20px; border-radius:16px; line-height:1.6; font-size:.97rem;
+  background:#fff; border:1px solid rgba(6,59,42,.08); box-shadow:0 14px 30px -24px rgba(6,59,42,.35);
+}
+.hc-why-icon{
+  flex:none; display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; margin-top:1px;
+  border-radius:50%; background:rgba(0,106,80,.1); color:var(--hc-green,#006a50);
+}
+@media (min-width:1024px){ .hc-why-card{ padding:22px 26px; } }
 @media (min-width:640px){ .hc-recog-card{ height:112px; } }
 @media (min-width:1024px){ .hc-recog-card{ height:120px; padding:14px 18px; } }
 
