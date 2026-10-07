@@ -95,7 +95,7 @@
   watch([
     '.hc-eyebrow', '.hc-text-link', '.hc-text-link-gold',
     '.hc-icon-box', '.hc-plan-card', '.hc-plantation-card', '.hc-crop-card', '.hc-sustain-card',
-    '.hc-recog-card', '.hc-testimonial-card', '.hc-org-card', '.hc-stats-section .grid > div', '.hc-timeline .flex.items-start',
+    '.hc-vm-card', '.hc-why-card', '.hc-recog-card', '.hc-testimonial-card', '.hc-org-card', '.hc-stats-section .grid > div', '.hc-timeline .flex.items-start',
     '.hc-journey-list li', '.hc-accordion-item', '.hc-form > div', '.hc-form > button',
     '.hc-footer .grid > div', '.hc-footer-bottom'
   ].join(','));
