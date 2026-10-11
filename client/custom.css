@@ -448,7 +448,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-footer-brand{ color:#fff; }
 .hc-footer-copy{ color:rgba(255,255,255,.5); }
 .hc-social-list a{ color:rgba(255,255,255,.6); transition:color .3s var(--hc-ease); }
-.hc-social-list a:hover{ color:var(--hc-gold); }
+.hc-social-list a{ display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.2); transition:color .3s var(--hc-ease), border-color .3s var(--hc-ease), background-color .3s var(--hc-ease), translate .3s var(--hc-ease); }
+.hc-social-list a svg{ width:18px; height:18px; }
+.hc-social-list a:hover{ color:var(--hc-gold); border-color:var(--hc-gold); background:rgba(200,169,81,.1); translate:0 -3px; }
 .hc-footer-col-title{ color:var(--hc-gold); }
 .hc-footer-links{ list-style:none; padding:0; margin:0; }
 .hc-footer-links a{ color:rgba(255,255,255,.6); transition:color .3s var(--hc-ease); }
