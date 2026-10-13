@@ -8,6 +8,8 @@
    5) Minimal demo interactivity: stat counters, single-open accordion
    ================================================================== */
 
+function hcMotionPaused() { return document.documentElement.classList.contains('hc-paused'); }
+
 document.addEventListener('DOMContentLoaded', function () {
 
   if (window.lucide) window.lucide.createIcons();
@@ -28,35 +30,70 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ----------------------------------------------------------
-     2) MOBILE MENU
+     2) MOBILE MENU — accessible overlay
+        Focus moves into the menu, Tab is trapped, the page behind is
+        inert, Esc closes and returns focus to the toggle.
+        `.is-open` on #mobile-menu is the single source of truth, so
+        motion.js can open/close it without breaking any state.
   ----------------------------------------------------------- */
   var menuToggle = document.getElementById('menu-toggle');
   var mobileMenu = document.getElementById('mobile-menu');
+  var logoLink = document.querySelector('.hc-logo-link');
+  var pageRegions = [document.getElementById('main-content'), document.querySelector('.hc-footer'), document.querySelector('.hc-mobile-cta')].filter(Boolean);
 
-  function closeMobileMenu() {
-    if (!mobileMenu) return;
+  function menuOpen() { return !!(mobileMenu && mobileMenu.classList.contains('is-open')); }
+  function menuLinks() { return Array.prototype.slice.call(mobileMenu.querySelectorAll('a')); }
+  function syncMenu() {
+    var open = menuOpen();
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    pageRegions.forEach(function (el) { if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
+  }
+  function closeMobileMenu(returnFocus) {
+    if (!menuOpen()) return;
     mobileMenu.classList.remove('is-open');
-    if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+    syncMenu();
+    if (returnFocus) menuToggle.focus();
   }
 
   if (menuToggle && mobileMenu) {
+    new MutationObserver(syncMenu).observe(mobileMenu, { attributes: true, attributeFilter: ['class'] });
     menuToggle.addEventListener('click', function () {
-      var isOpen = mobileMenu.classList.toggle('is-open');
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      var open = mobileMenu.classList.toggle('is-open');
+      syncMenu();
+      if (open) {                       // the overlay is visibility:hidden for its first ~50ms of fading in, so retry until focus lands
+        var tries = 0, first = menuLinks()[0];
+        (function focusFirst() {
+          if (!first || !menuOpen()) return;
+          first.focus();
+          if (document.activeElement !== first && ++tries < 12) setTimeout(focusFirst, 40);
+        })();
+      }
     });
     mobileMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', closeMobileMenu);
+      link.addEventListener('click', function () { closeMobileMenu(false); });
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeMobileMenu();
+      if (!menuOpen()) return;
+      if (e.key === 'Escape') { closeMobileMenu(true); return; }
+      if (e.key !== 'Tab') return;
+      var list = [logoLink, menuToggle].concat(menuLinks()).filter(Boolean);
+      var i = list.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); list[list.length - 1].focus(); }
+      else if (!e.shiftKey && (i === -1 || i === list.length - 1)) { e.preventDefault(); list[0].focus(); }
     });
+    if (window.matchMedia) {            // resizing up to the desktop nav closes the overlay
+      var desktopMQ = matchMedia('(min-width:1280px)');
+      var onDesktop = function (e) { if (e.matches) closeMobileMenu(false); };
+      if (desktopMQ.addEventListener) desktopMQ.addEventListener('change', onDesktop);
+    }
   }
 
   /* ----------------------------------------------------------
      3) SMOOTH-SCROLL ANCHOR NAVIGATION
-     (html{scroll-behavior:smooth} in custom.css already covers
-     most cases; this adds focus management for accessibility and
-     closes the mobile menu before scrolling.)
+     (html{scroll-behavior:smooth} in custom.css covers most cases; this
+     adds focus management and closes the mobile menu before scrolling.
+     With motion.js running, Lenis handles the scroll and the same focus move.)
   ----------------------------------------------------------- */
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
@@ -65,33 +102,87 @@ document.addEventListener('DOMContentLoaded', function () {
       var target = document.querySelector(targetId);
       if (!target) return;
       e.preventDefault();
-      closeMobileMenu();
+      closeMobileMenu(false);
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
     });
   });
 
+  /* "View Plan" style links carry data-enquiry: pre-select that plan in the contact form.
+     Capture phase + no preventDefault, so it runs even when motion.js takes over the scroll. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-enquiry]');
+    var sel = document.getElementById('cf-type');
+    if (!a || !sel) return;
+    var want = a.getAttribute('data-enquiry');
+    Array.prototype.some.call(sel.options, function (o) { if (o.text === want) { sel.value = o.value || o.text; return true; } });
+  }, true);
+
   /* ----------------------------------------------------------
      4) SCROLLSPY — highlight the current section's nav link
+        (a link inside the "Company" dropdown also lights its parent trigger;
+        the hero clears the highlight so nothing is "active" at the very top)
   ----------------------------------------------------------- */
-  var sectionIds = ['about', 'plantations', 'investment', 'crops', 'exports', 'sustainability', 'management', 'resources', 'contact'];
-  var navLinks = document.querySelectorAll('.hc-nav-link');
+  var spyLinks = {};
+  document.querySelectorAll('.hc-nav-links a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    if (id) spyLinks[id] = a;
+  });
+  function setActiveNav(id) {
+    document.querySelectorAll('.hc-nav-links .active').forEach(function (l) { l.classList.remove('active'); l.removeAttribute('aria-current'); });
+    var a = id && spyLinks[id];
+    if (!a) return;
+    a.classList.add('active'); a.setAttribute('aria-current', 'location');
+    var group = a.closest('.hc-nav-group');
+    if (group) { var trig = group.querySelector('.hc-nav-trigger'); if (trig) trig.classList.add('active'); }
+  }
 
-  if ('IntersectionObserver' in window && navLinks.length) {
+  if ('IntersectionObserver' in window) {
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        navLinks.forEach(function (l) { l.classList.remove('active'); });
-        var match = document.querySelector('.hc-nav-link[href="#' + entry.target.id + '"]');
-        if (match) match.classList.add('active');
+        setActiveNav(entry.target.classList.contains('hc-hero-section') ? null : entry.target.id);
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
-
-    sectionIds.forEach(function (id) {
+    var heroEl = document.querySelector('.hc-hero-section');
+    if (heroEl) spy.observe(heroEl);
+    Object.keys(spyLinks).forEach(function (id) {
       var el = document.getElementById(id);
       if (el) spy.observe(el);
     });
+  }
+
+  /* ----------------------------------------------------------
+     4b) NAV DROPDOWN ("Company") — click / hover / keyboard, Esc closes
+  ----------------------------------------------------------- */
+  var navGroup = document.querySelector('.hc-nav-group');
+  if (navGroup) {
+    var navTrig = navGroup.querySelector('.hc-nav-trigger');
+    var navPanel = navGroup.querySelector('.hc-nav-menu');
+    var navLinksIn = Array.prototype.slice.call(navPanel.querySelectorAll('a'));
+    var hoverTimer = null, pinned = false;
+    var setNavOpen = function (open) { navTrig.setAttribute('aria-expanded', String(open)); navPanel.hidden = !open; if (!open) pinned = false; };
+    navTrig.addEventListener('click', function () {
+      if (!navPanel.hidden && !pinned) { pinned = true; return; }   // opened by hover: the click keeps it open
+      setNavOpen(navPanel.hidden);
+    });
+    navGroup.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !navPanel.hidden) { setNavOpen(false); navTrig.focus(); return; }
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      e.preventDefault();
+      if (navPanel.hidden) setNavOpen(true);
+      var i = navLinksIn.indexOf(document.activeElement);
+      var next = e.key === 'ArrowDown' ? (i + 1) % navLinksIn.length : (i <= 0 ? navLinksIn.length - 1 : i - 1);
+      navLinksIn[next].focus();
+    });
+    navGroup.addEventListener('focusout', function (e) { if (!navGroup.contains(e.relatedTarget)) setNavOpen(false); });
+    document.addEventListener('pointerdown', function (e) { if (!navGroup.contains(e.target)) setNavOpen(false); });
+    navLinksIn.forEach(function (a) { a.addEventListener('click', function () { setNavOpen(false); }); });
+    if (window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      navGroup.addEventListener('mouseenter', function () { clearTimeout(hoverTimer); setNavOpen(true); });
+      navGroup.addEventListener('mouseleave', function () { if (pinned) return; hoverTimer = setTimeout(function () { setNavOpen(false); }, 180); });
+    }
   }
 
   /* ----------------------------------------------------------
@@ -110,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var suffix = el.getAttribute('data-suffix') || '';
         var end = parseInt(raw, 10);
 
-        if (isNaN(end)) {
+        if (isNaN(end) || (end > 1900 && end < 2100)) {   // placeholders and calendar years are shown as-is
           el.textContent = raw + suffix;
           counterIO.unobserve(el);
           return;
@@ -400,7 +491,8 @@ document.addEventListener('DOMContentLoaded', function () {
       cycle.classList.remove('is-reset');
     }
 
-    function cStart() { if (!cTimer) { cTick(); cTimer = setInterval(cTick, STEP_MS); } }
+    var cInView = false;
+    function cStart() { if (!cTimer && !hcMotionPaused()) { cTick(); cTimer = setInterval(cTick, STEP_MS); } }
     function cStop() { clearInterval(cTimer); cTimer = null; }
 
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -409,11 +501,70 @@ document.addEventListener('DOMContentLoaded', function () {
       cName.textContent = '6 steps';
     } else if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
-        entries[0].isIntersecting ? cStart() : cStop();
+        cInView = entries[0].isIntersecting;
+        cInView ? cStart() : cStop();
       }, { threshold: 0.3 }).observe(cycle);
     } else {
       cStart();
     }
+    document.addEventListener('hc:motion', function (e) { if (e.detail.paused) cStop(); else if (cInView) cStart(); });
+  }
+
+  /* ----------------------------------------------------------
+     8) MOTION TOGGLE (WCAG 2.2.2) — "Pause animations" in the footer.
+        Pauses the looping effects (hero zoom, light orbs, export cycle,
+        journey highlight, background video). Choice is remembered.
+  ----------------------------------------------------------- */
+  var motionBtn = document.querySelector('.hc-motion-toggle');
+  if (motionBtn) {
+    var MOTION_KEY = 'hcMotionPaused';
+    var setPaused = function (p, persist) {
+      document.documentElement.classList.toggle('hc-paused', p);
+      motionBtn.setAttribute('aria-pressed', String(p));
+      motionBtn.textContent = p ? 'Resume animations' : 'Pause animations';
+      document.dispatchEvent(new CustomEvent('hc:motion', { detail: { paused: p } }));
+      if (persist) { try { localStorage.setItem(MOTION_KEY, p ? '1' : '0'); } catch (err) { /* storage blocked: fine */ } }
+    };
+    var savedMotion = null;
+    try { savedMotion = localStorage.getItem(MOTION_KEY); } catch (err) { /* ignore */ }
+    if (savedMotion === '1') setPaused(true, false);
+    motionBtn.addEventListener('click', function () { setPaused(!hcMotionPaused(), true); });
   }
 
 });
+
+/* Chairman portrait: subtle 3D tilt that follows the pointer (fine pointers, motion allowed) */
+(function () {
+  var el = document.querySelector('.hc-chair-photo[data-tilt]');
+  if (!el || !window.matchMedia) return;
+  if (!matchMedia('(hover:hover) and (pointer:fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var max = 9;
+  el.addEventListener('pointermove', function (e) {
+    var r = el.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    el.classList.add('is-tilting');
+    el.style.setProperty('--ry', (x * max * 2).toFixed(2) + 'deg');
+    el.style.setProperty('--rx', (-y * max * 2).toFixed(2) + 'deg');
+  });
+  el.addEventListener('pointerleave', function () {
+    el.classList.remove('is-tilting');
+    el.style.setProperty('--ry', '0deg'); el.style.setProperty('--rx', '0deg');
+  });
+})();
+
+/* Exports background video: respect reduced motion, and only play while on screen (saves battery + data) */
+(function () {
+  var v = document.querySelector('.hc-exports-video');
+  if (!v) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { v.removeAttribute('autoplay'); v.pause(); return; }
+  if (!('IntersectionObserver' in window)) return;
+  var vOnScreen = false;
+  var vSync = function () {
+    if (vOnScreen && !hcMotionPaused()) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else { v.pause(); }
+  };
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { vOnScreen = e.isIntersecting; vSync(); });
+  }, { threshold: 0.1 }).observe(v);
+  document.addEventListener('hc:motion', vSync);
+})();
