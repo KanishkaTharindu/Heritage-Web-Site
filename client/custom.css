@@ -15,12 +15,16 @@
 :root{
   --hc-green:#006A50;
   --hc-forest:#063B2A;
-  --hc-darkgreen:#0B3D2E;
+  --hc-darkgreen:var(--hc-forest);   /* was #0B3D2E: a near-duplicate of forest */
   --hc-gold:#C8A951;
   --hc-cream:#F7F5ED;
   --hc-offwhite:#FCFCF8;
   --hc-charcoal:#1D2722;
   --hc-ease:cubic-bezier(.16,.8,.24,1);
+  /* semantic tokens (UX pass): text that meets WCAG AA (>= 4.5:1) on every light / dark surface used */
+  --hc-muted:rgba(29,39,34,.72);          /* secondary text on cream / off-white */
+  --hc-muted-dark:rgba(255,255,255,.68);  /* secondary text on forest / dark green */
+  --hc-focus:var(--hc-green);             /* focus ring: green on light, gold on dark (see below) */
 }
 
 html{ scroll-behavior:smooth; }
@@ -36,7 +40,7 @@ html{ scroll-behavior:smooth; }
 .hc-skip-link:focus{ left:16px; top:16px; }
 
 a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
-  outline:2px solid var(--hc-gold); outline-offset:3px; border-radius:2px;
+  outline:3px solid var(--hc-focus); outline-offset:3px; border-radius:2px;
 }
 
 /* ---------------------------------------------------------------
@@ -116,7 +120,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 ----------------------------------------------------------------*/
 .hc-eyebrow{
   letter-spacing:.22em; text-transform:uppercase; font-weight:600;
-  font-size:.72rem; color:var(--hc-green);
+  font-size:.78rem; color:var(--hc-green);
 }
 .hc-eyebrow.hc-eyebrow-on-dark{ color:var(--hc-gold); }
 .hc-eyebrow::before{
@@ -127,16 +131,20 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 /* ---------------------------------------------------------------
    HERO
 ----------------------------------------------------------------*/
-.hc-hero-section{
+.hc-hero-section{ position:relative; isolation:isolate; overflow:hidden; background:var(--hc-forest); }
+/* The photo lives on a pseudo-element so the slow zoom moves ONLY the picture, never the headline / buttons
+   (previously the whole section, text included, scaled). One gentle 30s zoom, then it rests. */
+.hc-hero-section::before{
+  content:""; position:absolute; inset:0; z-index:-2; pointer-events:none;
   background-image: linear-gradient(180deg, rgba(6,59,42,.55) 0%, rgba(6,59,42,.35) 40%, rgba(6,59,42,.78) 100%),
     url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=2000&q=80');
   background-size:cover; background-position:center;
-  animation: hcHeroZoom 24s ease-in-out infinite alternate;
+  animation: hcHeroZoom 30s ease-out forwards;
 }
 @keyframes hcHeroZoom{ from{ transform:scale(1);} to{ transform:scale(1.07);} }
 
 .hc-hero-heading{ color:#fff; }
-.hc-hero-heading-accent{ color:var(--hc-green); }
+.hc-hero-heading-accent{ color:var(--hc-gold); }
 .hc-hero-copy{ color:rgba(255,255,255,.85); }
 
 .hc-float-panel{
@@ -145,8 +153,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   border:1px solid rgba(255,255,255,.18);
   color:#fff;
 }
-.hc-float-panel-title{ color:var(--hc-green); }
-.hc-icon-gold{ color:var(--hc-green); }
+.hc-float-panel-title{ color:var(--hc-gold); }
+.hc-icon-gold{ color:var(--hc-gold); }
 .hc-icon-green{ color:var(--hc-green); }
 
 .hc-scroll-cue{ color:rgba(255,255,255,.7); }
@@ -157,7 +165,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 ----------------------------------------------------------------*/
 .hc-stats-section{ background:var(--hc-forest); }
 .hc-stat-number{ color:var(--hc-gold); font-variant-numeric:tabular-nums; }
-.hc-stat-label{ font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.6); }
+.hc-stat-label{ font-size:.75rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.78); }
 .hc-stats-note{ color:rgba(255,255,255,.35); }
 
 /* ---------------------------------------------------------------
@@ -185,7 +193,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 
 /* About: Vision & Mission cards */
 .hc-vm-card{
-  position:relative; overflow:hidden; border-radius:20px; padding:28px 24px;
+  position:relative; overflow:hidden; border-radius:16px; padding:28px 24px;
   background:linear-gradient(160deg,var(--hc-forest) 0%,#042a1e 100%); color:#fff;
   box-shadow:0 24px 50px -30px rgba(6,59,42,.7);
 }
@@ -239,15 +247,16 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   background:var(--hc-offwhite); box-shadow:0 20px 40px -18px rgba(6,59,42,.35);
   border:1px solid rgba(0,106,80,.1); color:var(--hc-green);
 }
-.hc-body-copy{ color:rgba(29,39,34,.7); }
-.hc-body-copy-on-dark{ color:rgba(255,255,255,.7); }
+.hc-body-copy{ color:rgba(29,39,34,.78); }
+.hc-body-copy-on-dark{ color:rgba(255,255,255,.78); }
 .hc-check-list li{ color:var(--hc-charcoal); }
 
 /* ---------------------------------------------------------------
    CARD LIFT (shared hover treatment)
 ----------------------------------------------------------------*/
 .hc-lift-card{ transition: transform .5s var(--hc-ease), box-shadow .5s var(--hc-ease); }
-.hc-lift-card:hover{ transform:translateY(-6px); box-shadow: 0 26px 50px -22px rgba(6,59,42,.28); }
+/* Only things you can actually click rise on hover (links + plan cards); informational cards stay still */
+a.hc-lift-card:hover, .hc-plan-card.hc-lift-card:hover{ transform:translateY(-6px); box-shadow: 0 26px 50px -22px rgba(6,59,42,.28); }
 
 /* ---------------------------------------------------------------
    WHAT WE DO — Icon Box cards
@@ -256,7 +265,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-icon-box{ background:var(--hc-offwhite); border:1px solid rgba(29,39,34,.06); }
 .hc-icon-box-circle{ background:rgba(0,106,80,.1); color:var(--hc-green); transition: background-color .35s var(--hc-ease), color .35s var(--hc-ease); }
 .hc-icon-box:hover .hc-icon-box-circle{ background:var(--hc-green); color:#fff; }
-.hc-card-copy{ color:rgba(29,39,34,.6); }
+.hc-card-copy{ color:var(--hc-muted); }
 
 /* ---------------------------------------------------------------
    INVESTMENT PLANS
@@ -265,7 +274,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-heading-on-dark{ color:#fff; }
 .hc-plan-card{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); }
 .hc-plan-card-featured{ background:rgba(255,255,255,.06); border:1px solid rgba(200,169,81,.3); }
-.hc-plan-list{ color:rgba(255,255,255,.7); }
+.hc-plan-list{ color:rgba(255,255,255,.78); }
 .hc-plan-value{ color:#fff; }
 .hc-investment-disclaimer{ color:rgba(255,255,255,.35); }
 
@@ -285,7 +294,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 }
 .hc-journey-overlay{ background:rgba(6,59,42,.78); }
 .hc-journey-list{ list-style:none; padding:0; margin:0; }
-.hc-journey-step{ color:rgba(255,255,255,.45); transition:color .3s var(--hc-ease); }
+.hc-journey-step{ color:rgba(255,255,255,.7); transition:color .3s var(--hc-ease); }
 .hc-journey-step-current, .hc-journey-step:hover{ color:var(--hc-gold); }
 .hc-journey-arrow{ color:rgba(255,255,255,.25); }
 
@@ -297,7 +306,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-status-badge{ color:#fff; }
 .hc-status-active{ background:var(--hc-green); }
 .hc-status-developing{ background:var(--hc-gold); color:var(--hc-forest); }
-.hc-status-harvesting{ background:#2563eb; }
+.hc-status-harvesting{ background:#0f6b66; }   /* was off-palette blue */
 
 /* ---------------------------------------------------------------
    CROPS
@@ -305,7 +314,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-crops-section{ background:var(--hc-offwhite); }
 .hc-crop-card-overlay{ background:linear-gradient(0deg, rgba(6,59,42,.92) 0%, rgba(6,59,42,.08) 55%, transparent 100%); }
 .hc-crop-card-text{ color:#fff; }
-.hc-note-text{ color:rgba(29,39,34,.4); }
+.hc-note-text{ color:var(--hc-muted); }
 
 /* ---------------------------------------------------------------
    EXPORTS
@@ -361,7 +370,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 ----------------------------------------------------------------*/
 .hc-sustainability-section{ background:var(--hc-cream); }
 .hc-sustain-card{ background:var(--hc-offwhite); border:1px solid rgba(29,39,34,.06); }
-.hc-sustain-label{ font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; color:rgba(29,39,34,.5); }
+.hc-sustain-label{ font-size:.75rem; letter-spacing:.05em; text-transform:uppercase; color:var(--hc-muted); }
 
 /* ---------------------------------------------------------------
    TECHNOLOGY / DASHBOARD MOCK
@@ -371,7 +380,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-dashboard-inner{ background:var(--hc-offwhite); }
 .hc-live-badge{ color:var(--hc-green); background:rgba(0,106,80,.1); }
 .hc-dashboard-tile{ background:var(--hc-cream); }
-.hc-dashboard-label{ color:rgba(29,39,34,.5); }
+.hc-dashboard-label{ color:var(--hc-muted); }
 .hc-progress-track{ background:#fff; }
 .hc-progress-fill{ background:var(--hc-green); }
 
@@ -381,7 +390,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-testimonials-section{ background:var(--hc-cream); }
 .hc-star-rating{ color:var(--hc-gold); }
 .hc-star-rating i{ fill:var(--hc-gold); }
-.hc-testimonial-byline{ color:rgba(29,39,34,.5); }
+.hc-testimonial-byline{ color:var(--hc-muted); }
 
 /* ---------------------------------------------------------------
    BLOG
@@ -389,7 +398,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-blog-section{ background:var(--hc-offwhite); }
 .hc-blog-card{ background:var(--hc-cream); }
 .hc-blog-category{ color:var(--hc-green); }
-.hc-blog-date{ color:rgba(29,39,34,.4); }
+.hc-blog-date{ color:var(--hc-muted); }
 
 /* ---------------------------------------------------------------
    FAQ / ACCORDION
@@ -423,7 +432,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   border-radius:.5rem; padding:.75rem 1rem; font-size:.875rem; font-family:inherit;
   transition:border-color .25s var(--hc-ease), box-shadow .25s var(--hc-ease);
 }
-.hc-form-field::placeholder{ color:rgba(29,39,34,.45); }
+.hc-form-field::placeholder{ color:rgba(29,39,34,.62); }
 .hc-form-field:focus{ outline:none; border-color:var(--hc-green); box-shadow:0 0 0 3px rgba(0,106,80,.15); }
 .hc-form-textarea{ min-height:110px; resize:vertical; }
 .hc-form-select{
@@ -446,20 +455,20 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-footer{ background:var(--hc-darkgreen); color:#fff; }
 .hc-footer-hairline{ height:2px; background:linear-gradient(90deg, transparent, var(--hc-gold), transparent); }
 .hc-footer-brand{ color:#fff; }
-.hc-footer-copy{ color:rgba(255,255,255,.5); }
-.hc-social-list a{ color:rgba(255,255,255,.6); transition:color .3s var(--hc-ease); }
+.hc-footer-copy{ color:var(--hc-muted-dark); }
+.hc-social-list a{ color:rgba(255,255,255,.78); transition:color .3s var(--hc-ease); }
 .hc-social-list a{ display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%;
   border:1px solid rgba(255,255,255,.2); transition:color .3s var(--hc-ease), border-color .3s var(--hc-ease), background-color .3s var(--hc-ease), translate .3s var(--hc-ease); }
 .hc-social-list a svg{ width:18px; height:18px; }
 .hc-social-list a:hover{ color:var(--hc-gold); border-color:var(--hc-gold); background:rgba(200,169,81,.1); translate:0 -3px; }
 .hc-footer-col-title{ color:var(--hc-gold); }
 .hc-footer-links{ list-style:none; padding:0; margin:0; }
-.hc-footer-links a{ color:rgba(255,255,255,.6); transition:color .3s var(--hc-ease); }
+.hc-footer-links a{ color:var(--hc-muted-dark); transition:color .3s var(--hc-ease); }
 .hc-footer-links a:hover{ color:#fff; }
 .hc-investor-login{ color:var(--hc-gold); }
 .hc-investor-login:hover{ color:#fff; }
-.hc-footer-bottom{ border-top:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.4); }
-.hc-footer-legal-links a{ color:rgba(255,255,255,.4); transition:color .3s var(--hc-ease); }
+.hc-footer-bottom{ border-top:1px solid rgba(255,255,255,.1); color:var(--hc-muted-dark); }
+.hc-footer-legal-links a{ color:var(--hc-muted-dark); transition:color .3s var(--hc-ease); }
 .hc-footer-legal-links a:hover{ color:#fff; }
 
 /* ---------------------------------------------------------------
@@ -496,7 +505,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 /* Portraits that ship with a white square around the circle: zoom slightly so the circle clip trims the white */
 .hc-team-photo--trim img{ transform:scale(1.1); }
 .hc-team-card{ background:var(--hc-cream); border:1px solid rgba(6,59,42,.08); }
-.hc-team-role{ color:var(--hc-green); font-size:13px; font-weight:600; letter-spacing:.04em; }
+.hc-team-role{ color:var(--hc-green); font-size:14px; font-weight:600; letter-spacing:.04em; }
 .hc-team-group-title{
   font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
   color:var(--hc-charcoal); display:flex; align-items:center; justify-content:center; gap:14px;
@@ -525,7 +534,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   border:1.5px solid var(--hc-gold); background:#fff;
 }
 .hc-org-name{ line-height:1.2; }
-.hc-org-role{ margin-top:6px; font-size:13px; font-weight:600; letter-spacing:.03em; color:var(--hc-green); }
+.hc-org-role{ margin-top:6px; font-size:14px; font-weight:600; letter-spacing:.03em; color:var(--hc-green); }
 
 /* Tier 1 — Chairman: the one dark, large card */
 .hc-org-card--chair{
@@ -554,7 +563,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   box-shadow:0 14px 30px -22px rgba(6,59,42,.3);
 }
 .hc-org-card--manager .hc-org-name{ margin-top:14px; font-size:1.1rem; }
-.hc-org-card--manager .hc-org-role{ font-size:12.5px; }
+.hc-org-card--manager .hc-org-role{ font-size:13.5px; }
 
 /* Placeholder avatar until a photo is supplied */
 .hc-org-initial{
@@ -748,3 +757,71 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .hc-exports-overlay{ position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:linear-gradient(180deg,rgba(6,59,42,.82) 0%,rgba(6,59,42,.72) 50%,rgba(6,59,42,.85) 100%); }
 @media (max-width:1023px){ .hc-exports-overlay{ background:rgba(6,59,42,.82); } }
+
+/* =====================================================================
+   UX REFINEMENTS (audit pass) — accessibility
+   ===================================================================== */
+/* Focus ring flips to gold on dark surfaces (gold on off-white was only 2.2:1) */
+.hc-stats-section, .hc-investment-section, .hc-exports-section, .hc-finalcta-section, .hc-footer,
+.hc-journey-section, .hc-hero-section, #mobile-menu, .hc-mobile-cta, .hc-skip-link,
+.hc-nav-header:not(.is-scrolled){ --hc-focus:var(--hc-gold); }
+
+/* Sections / <main> receive focus from skip link + anchors: no giant ring around them */
+[tabindex="-1"]:focus, [tabindex="-1"]:focus-visible{ outline:none; }
+
+/* --- Navigation: Company dropdown -------------------------------------- */
+.hc-logo-link{ flex-shrink:0; }
+.hc-nav-group{ position:relative; display:inline-flex; }
+.hc-nav-trigger{ display:inline-flex; align-items:center; gap:7px; background:none; border:0; padding:0; font:inherit; cursor:pointer; }
+.hc-nav-caret{ transition:rotate .3s var(--hc-ease); }
+.hc-nav-trigger[aria-expanded="true"] .hc-nav-caret{ rotate:180deg; }
+.hc-nav-menu{
+  position:absolute; top:calc(100% + 14px); left:-18px; min-width:210px; padding:8px; z-index:60;
+  --hc-focus:var(--hc-green);
+  background:var(--hc-offwhite); border:1px solid rgba(6,59,42,.1); border-radius:14px;
+  box-shadow:0 24px 50px -20px rgba(6,59,42,.35);
+}
+.hc-nav-menu[hidden]{ display:none; }
+.hc-nav-menu::before{ content:""; position:absolute; left:0; right:0; top:-16px; height:16px; }   /* hover bridge */
+.hc-nav-sublink{ display:block; padding:11px 14px; border-radius:9px; color:var(--hc-charcoal); font-size:.9rem; transition:background-color .25s var(--hc-ease), color .25s var(--hc-ease); }
+.hc-nav-sublink:hover, .hc-nav-sublink:focus-visible{ background:rgba(0,106,80,.08); color:var(--hc-green); }
+.hc-nav-sublink.active{ color:var(--hc-green); font-weight:600; }
+
+/* --- Mobile / layout ----------------------------------------------------- */
+/* Hero fits the *visible* viewport on phones (plain 100vh ignores the browser toolbar) */
+.hc-hero-section.min-h-screen{ min-height:100vh; min-height:100svh; }
+/* The fixed bottom CTA bar must never cover the end of the page */
+@media (max-width:1279px){
+  .hc-footer{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
+  .hc-mobile-cta{ padding-bottom:calc(.75rem + env(safe-area-inset-bottom,0px)); }
+}
+
+/* --- Forms ---------------------------------------------------------------- */
+.hc-form-label{ display:block; margin-bottom:.4rem; font-size:.8125rem; font-weight:600; letter-spacing:.02em; color:var(--hc-charcoal); }
+.hc-form-note{ font-size:.8125rem; color:var(--hc-muted); margin:-.25rem 0 0; }
+.hc-form-field{ font-size:1rem; }                     /* 16px: stops iOS Safari zooming the page on focus */
+
+/* --- Touch targets (>= 44px) ----------------------------------------------- */
+.hc-social-list a{ width:44px; height:44px; }
+@media (max-width:1023px){
+  .hc-footer-links a, .hc-footer-legal-links a{ display:inline-flex; align-items:center; min-height:44px; }
+  .hc-footer-links.space-y-3 > :not([hidden]) ~ :not([hidden]){ margin-top:0; }
+}
+
+/* =====================================================================
+   UX REFINEMENTS (audit pass) — consistency
+   ===================================================================== */
+/* One vertical rhythm for every content section (was a mix of py-24 / 28 / 32) */
+:root{ --hc-sec-y:clamp(72px,9vw,112px); }
+main > section:not(.hc-hero-section):not(.hc-stats-section):not(.hc-journey-section){
+  padding-top:var(--hc-sec-y); padding-bottom:var(--hc-sec-y);
+}
+/* Anchors inside long sections land below the fixed header */
+#chairman, #org-chart{ scroll-margin-top:96px; }
+
+/* Motion toggle (WCAG 2.2.2): pauses the looping decorative effects */
+.hc-motion-toggle{ background:none; border:0; padding:0; font:inherit; color:var(--hc-muted-dark); cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px; transition:color .3s var(--hc-ease); }
+.hc-motion-toggle:hover{ color:#fff; }
+@media (max-width:1023px){ .hc-motion-toggle{ min-height:44px; } }
+html.hc-paused .mo-orb, html.hc-paused .hc-cycle-pulse, html.hc-paused .hc-hero-section::before{ animation-play-state:paused; }

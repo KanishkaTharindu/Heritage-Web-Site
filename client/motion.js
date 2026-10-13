@@ -135,17 +135,7 @@
 
   /* ---------- pointer effects (mouse / trackpad only) ---------- */
   if (fine) {
-    var ring = document.createElement('div');                      // cursor ring with spring-like lag
-    ring.className = 'mo-cursor'; ring.setAttribute('aria-hidden', 'true'); document.body.appendChild(ring);
-    var cx = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3' });
-    var cy = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3' });
-    window.addEventListener('pointermove', function (e) {
-      cx(e.clientX); cy(e.clientY); ring.classList.add('is-on');
-      ring.classList.toggle('is-link', !!e.target.closest('a,button,summary,[role="button"],.hc-lift-card'));
-    }, { passive: true });
-    window.addEventListener('pointerdown', function () { ring.classList.add('is-down'); });
-    window.addEventListener('pointerup', function () { ring.classList.remove('is-down'); });
-    root.addEventListener('mouseleave', function () { ring.classList.remove('is-on'); });
+    // (Custom cursor ring removed in the UX pass: it duplicated the real cursor and added a per-frame cost.)
 
     $$('.hc-btn-primary, .hc-btn-ghost-dark, .hc-social-list a').forEach(function (b) {   // magnetic buttons
       if (b.closest('.hc-mobile-cta')) return;
@@ -159,7 +149,7 @@
       b.addEventListener('pointerleave', function () { mx(0); my(0); });
     });
 
-    $$('.hc-plantation-card, .hc-crop-card, .hc-plan-card').forEach(function (c) {   // 3D tilt
+    $$('.hc-plan-card').forEach(function (c) {   // 3D tilt: plan cards only (informational cards stay still)
       c.classList.add('mo-tilt');
       gsap.set(c, { transformPerspective: 900 });
       var cfg = { duration: 0.6, ease: 'power3' };
@@ -174,48 +164,7 @@
   }
 
   /* ================= TEXT FX (kept deliberately calm and readable) ================= */
-  var CH = '!<>-_/[]{}=+*^?#ABCDEFGHJKLMNOPRSTUVWXYZ';
-  function scramble(el, text, dur) {
-    var t0 = performance.now(), n = text.length;
-    (function step(now) {
-      var p = Math.min(1, (now - t0) / dur), out = '', k = Math.floor(p * n);
-      for (var i = 0; i < n; i++) out += (i < k || text[i] === ' ') ? text[i] : CH[(Math.random() * CH.length) | 0];
-      el.textContent = out;
-      if (p < 1) requestAnimationFrame(step); else el.textContent = text;
-    })(t0);
-  }
-  // Small section labels decode once as they scroll in
-  var eyeIO = new IntersectionObserver(function (en) {
-    en.forEach(function (e) {
-      if (!e.isIntersecting) return; eyeIO.unobserve(e.target);
-      var tn = Array.prototype.filter.call(e.target.childNodes, function (n) { return n.nodeType === 3 && n.textContent.trim(); })[0];
-      if (!tn) return;
-      var span = document.createElement('span'), txt = tn.textContent.trim();
-      span.textContent = txt; e.target.replaceChild(span, tn); scramble(span, txt, 800);
-    });
-  }, { threshold: 0.6 });
-  $$('.hc-eyebrow').forEach(function (e) { if (!inHero(e)) eyeIO.observe(e); });
-
-  // Paragraphs: words fade from dim to full as you read down (opacity only, so it stays crisp)
-  $$('.hc-body-copy, .hc-body-copy-on-dark').forEach(function (p) {
-    if (inHero(p)) return;
-    var words = [];
-    (function walk(node) {
-      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
-        if (n.nodeType === 3) {
-          var f = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach(function (part) {
-            if (!part) return;
-            if (/^\s+$/.test(part)) { f.appendChild(document.createTextNode(' ')); return; }
-            var w = document.createElement('span'); w.textContent = part; f.appendChild(w); words.push(w);
-          });
-          node.replaceChild(f, n);
-        } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
-      });
-    })(p);
-    gsap.fromTo(words, { opacity: 0.2 }, { opacity: 1, ease: 'none', stagger: 0.12,
-      scrollTrigger: { trigger: p, start: 'top 88%', end: 'bottom 62%', scrub: true } });
-  });
+  // (Removed in UX pass: the scrambling-letters eyebrow effect exposed random characters to screen readers.)
 
   // Card / timeline titles: clean masked slide-up
   $$('.hc-icon-box h3, .hc-plan-card h3, .hc-plantation-card h3, .hc-timeline h3, .hc-org-name').forEach(function (h) {
@@ -273,7 +222,7 @@
   var steps = $$('.hc-journey-step');
   if (steps.length) {
     var ji = 0, jt = null;
-    var jtick = function () { steps.forEach(function (s, i) { s.classList.toggle('hc-journey-step-current', i === ji); }); ji = (ji + 1) % steps.length; };
+    var jtick = function () { if (document.documentElement.classList.contains('hc-paused')) return; steps.forEach(function (s, i) { s.classList.toggle('hc-journey-step-current', i === ji); }); ji = (ji + 1) % steps.length; };
     new IntersectionObserver(function (en) {
       if (en[0].isIntersecting) { if (!jt) { jtick(); jt = setInterval(jtick, 1300); } } else { clearInterval(jt); jt = null; }
     }, { threshold: 0.3 }).observe(steps[0].closest('section'));
@@ -320,7 +269,8 @@
     var ind = document.createElement('span'); ind.className = 'mo-nav-ind'; navWrap.appendChild(ind);
     var moveInd = function () {
       var a = navWrap.querySelector('.hc-nav-link.active');
-      gsap.to(ind, a ? { x: a.offsetLeft, width: a.offsetWidth, opacity: 1, duration: 0.7, ease: 'power4.out' } : { opacity: 0, duration: 0.3 });
+      var nr = navWrap.getBoundingClientRect(), ar = a ? a.getBoundingClientRect() : null;   // rect-based: the Company trigger sits inside a wrapper
+      gsap.to(ind, a ? { x: ar.left - nr.left, width: ar.width, opacity: 1, duration: 0.7, ease: 'power4.out' } : { opacity: 0, duration: 0.3 });
     };
     new MutationObserver(moveInd).observe(navWrap, { subtree: true, attributes: true, attributeFilter: ['class'] });
     window.addEventListener('resize', moveInd); setTimeout(moveInd, 1800);
@@ -398,6 +348,7 @@
         lenis.start();
       }
       lenis.scrollTo(t, { duration: 1.3, force: true });
+      t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true });   // keep keyboard focus with the destination
     }, true);
     var menu = document.getElementById('mobile-menu');       // no page scrolling behind the open mobile menu
     if (menu) {
@@ -419,7 +370,7 @@
   var gl0 = document.createElement('canvas'), hasGL = false;
   try { hasGL = !!gl0.getContext('webgl'); } catch (err) { hasGL = false; }
   var saveData = navigator.connection && navigator.connection.saveData;
-  if (hasGL && !saveData) window.addEventListener('load', function () {
+  if (hasGL && !saveData && fine && !LOW) window.addEventListener('load', function () {
     var go = function () {
       var s = document.createElement('script');
       s.src = SELF ? SELF.replace(/motion\.js(\?.*)?$/, 'motion-gl.js') : 'motion-gl.js'; s.async = true;
@@ -441,7 +392,11 @@
   var heroWords = h1 ? splitWords(h1) : [];
   if (h1) h1.style.opacity = '1';
 
+  var quick = root.classList.contains('mo-seen');        // already saw the intro this session
+  var introDone = false;
   function intro() {
+    if (introDone) return; introDone = true;
+    try { sessionStorage.setItem('hcIntro', '1'); } catch (err) { /* private mode: fine */ }
     root.classList.add('mo-go');
     setTimeout(function () {
       revealWords(heroWords, 0);
@@ -449,10 +404,11 @@
       $$('.hc-hero-section .mt-9 > *').forEach(function (e, i) { rise(e, 700 + i * 110); });
       $$('.hc-float-panel').forEach(function (e) { rise(e, 900, 44); });
       $$('.hc-nav-links .hc-nav-link').forEach(function (e, i) { rise(e, 300 + i * 55, -14); });
-    }, 600);
+    }, quick ? 0 : 300);
   }
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-  Promise.all([Promise.race([fontsReady, new Promise(function (r) { setTimeout(r, 2200); })]), new Promise(function (r) { setTimeout(r, 1500); })]).then(intro);
+  Promise.all([Promise.race([fontsReady, new Promise(function (r) { setTimeout(r, 2200); })]), new Promise(function (r) { setTimeout(r, quick ? 0 : 800); })]).then(intro);
+  ['pointerdown', 'keydown'].forEach(function (ev) { window.addEventListener(ev, intro, { once: true, passive: true }); });   // any tap / key skips the intro
 
   var tick = 0;
   function onScroll() { if (tick) return; tick = requestAnimationFrame(function () { tick = 0; heroScroll(); timelineScroll(); }); }
